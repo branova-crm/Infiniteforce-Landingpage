@@ -1,4 +1,5 @@
 ---
+import GoldEdgeGlow from '../ui/GoldEdgeGlow.astro';
 import { resolveLocale, type Locale } from '../../i18n/config';
 import { getHome } from '../../i18n/home';
 
@@ -10,7 +11,8 @@ const { stories } = getHome(resolveLocale(Astro.props.locale));
 ---
 
 <section class="quote-section section-pad-sm on-light" aria-label={stories.quoteBy}>
-  <div class="container-x">
+  <GoldEdgeGlow />
+  <div class="container-x relative z-10">
     <figure class="quote-section__inner mx-auto max-w-[40rem] text-center" data-reveal>
       <blockquote class="quote-section__text">{stories.quote}</blockquote>
       <figcaption class="quote-section__by">— {stories.quoteBy}</figcaption>
@@ -20,6 +22,8 @@ const { stories } = getHome(resolveLocale(Astro.props.locale));
 
 <style>
   .quote-section {
+    position: relative;
+    overflow: hidden;
     background: #f7f1e6;
   }
 

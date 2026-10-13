@@ -1,0 +1,135 @@
+---
+/**
+ * Goldrand + Strahl + Partikel (wie WebinarIntro).
+ * Parent braucht position: relative; overflow: hidden (oder visible mit clipping-Intent).
+ */
+import FxSparkles from './fx-sparkles.astro';
+
+interface Props {
+  /** Nur oben, nur unten, oder beides */
+  edges?: 'top' | 'bottom' | 'both';
+  class?: string;
+}
+
+const { edges = 'both', class: className } = Astro.props;
+const showTop = edges === 'top' || edges === 'both';
+const showBottom = edges === 'bottom' || edges === 'both';
+---
+
+<div class:list={['gold-edge', className]} aria-hidden="true">
+  {
+    showTop && (
+      <div class="gold-edge__glow gold-edge__glow--top">
+        <div class="gold-edge__line gold-edge__line--soft" />
+        <div class="gold-edge__line gold-edge__line--core" />
+        <div class="gold-edge__line gold-edge__line--accent" />
+        <div class="gold-edge__haze" />
+        <div class="gold-edge__sparkles">
+          <FxSparkles particleColor="#E0B76B" density="0.0007" minSize="0.7" maxSize="2.2" />
+        </div>
+      </div>
+    )
+  }
+  {
+    showBottom && (
+      <div class="gold-edge__glow gold-edge__glow--bottom">
+        <div class="gold-edge__line gold-edge__line--soft" />
+        <div class="gold-edge__line gold-edge__line--core" />
+        <div class="gold-edge__line gold-edge__line--accent" />
+        <div class="gold-edge__haze" />
+        <div class="gold-edge__sparkles">
+          <FxSparkles particleColor="#E0B76B" density="0.0007" minSize="0.7" maxSize="2.2" />
+        </div>
+      </div>
+    )
+  }
+</div>
+
+<style>
+  .gold-edge {
+    position: absolute;
+    inset: 0;
+    z-index: 2;
+    pointer-events: none;
+    overflow: hidden;
+  }
+
+  .gold-edge__glow {
+    position: absolute;
+    left: 0;
+    right: 0;
+    height: clamp(140px, 20vw, 260px);
+  }
+
+  .gold-edge__glow--top {
+    top: 0;
+  }
+
+  .gold-edge__glow--bottom {
+    bottom: 0;
+    transform: scaleY(-1);
+  }
+
+  .gold-edge__sparkles {
+    position: absolute;
+    inset: 0;
+  }
+
+  .gold-edge__line {
+    position: absolute;
+    top: 0;
+    left: 12%;
+    right: 12%;
+  }
+
+  .gold-edge__line--soft {
+    height: 3px;
+    filter: blur(3px);
+    background: linear-gradient(90deg, rgba(224, 183, 107, 0), #e0b76b 50%, rgba(224, 183, 107, 0));
+  }
+
+  .gold-edge__line--core {
+    height: 1px;
+    background: linear-gradient(90deg, rgba(240, 197, 122, 0), #f0c57a 50%, rgba(240, 197, 122, 0));
+  }
+
+  .gold-edge__line--accent {
+    left: 32%;
+    right: 32%;
+    height: 6px;
+    filter: blur(4px);
+    background: linear-gradient(90deg, rgba(240, 197, 122, 0), #f5d78a 50%, rgba(240, 197, 122, 0));
+  }
+
+  .gold-edge__haze {
+    position: absolute;
+    left: 18%;
+    right: 18%;
+    top: -40px;
+    height: 120px;
+    filter: blur(12px);
+    background: radial-gradient(ellipse at 50% 50%, rgba(224, 183, 107, 0.38), rgba(201, 149, 69, 0) 72%);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .gold-edge__line--accent,
+    .gold-edge__haze {
+      animation: gold-edge-pulse 4.5s ease-in-out infinite;
+    }
+
+    .gold-edge__glow--bottom .gold-edge__line--accent,
+    .gold-edge__glow--bottom .gold-edge__haze {
+      animation-delay: 1.1s;
+    }
+  }
+
+  @keyframes gold-edge-pulse {
+    0%,
+    100% {
+      opacity: 0.6;
+    }
+    50% {
+      opacity: 1;
+    }
+  }
+</style>

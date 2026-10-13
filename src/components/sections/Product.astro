@@ -2,6 +2,7 @@
 import fs from 'node:fs';
 import path from 'node:path';
 import CtaButton from '../CtaButton.astro';
+import GoldEdgeGlow from '../ui/GoldEdgeGlow.astro';
 import { resolveLocale, type Locale } from '../../i18n/config';
 import { getHome } from '../../i18n/home';
 
@@ -24,7 +25,9 @@ const marqueeItems = [proof.label, ...proof.items];
 ---
 
 <section id="product" class="product-section" aria-label={product.name}>
-  <div class="container-x product-section__inner">
+  <div class="product-section__stage">
+    <GoldEdgeGlow />
+    <div class="container-x product-section__inner">
     <article class:list={['product-item', !hasProductImage && 'product-item--solo']} data-reveal>
       {
         hasProductImage ? (
@@ -68,6 +71,7 @@ const marqueeItems = [proof.label, ...proof.items];
         <CtaButton label={product.cta} class="btn-shine" />
       </div>
     </article>
+    </div>
   </div>
 
   <div class="product-marquee" aria-label={proof.label}>
@@ -98,7 +102,15 @@ const marqueeItems = [proof.label, ...proof.items];
     background: #ffffff;
   }
 
+  .product-section__stage {
+    position: relative;
+    overflow: hidden;
+    background: #ffffff;
+  }
+
   .product-section__inner {
+    position: relative;
+    z-index: 10;
     padding-block: clamp(56px, 8vw, 110px);
     overflow: visible;
   }

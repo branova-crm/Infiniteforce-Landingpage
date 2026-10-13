@@ -1,5 +1,6 @@
 ---
 import ChatMock from '../ui/ChatMock.astro';
+import GoldEdgeGlow from '../ui/GoldEdgeGlow.astro';
 import { resolveLocale, type Locale } from '../../i18n/config';
 import { getHome } from '../../i18n/home';
 
@@ -10,8 +11,9 @@ interface Props {
 const { problem, chatUi } = getHome(resolveLocale(Astro.props.locale));
 ---
 
-<section id="problem" class="surface-cocoa grain section-pad" aria-labelledby="problem-title" data-section="problem">
-  <div class="container-x">
+<section id="problem" class="problem-section surface-cocoa grain section-pad" aria-labelledby="problem-title" data-section="problem">
+  <GoldEdgeGlow />
+  <div class="container-x relative z-10">
     <div class="mx-auto max-w-[46rem] text-center" data-reveal>
       <p class="eyebrow eyebrow--center">{problem.eyebrow}</p>
       <h2 id="problem-title" class="headline mt-6 text-[clamp(30px,4.2vw,52px)] leading-[1.12]">
@@ -46,6 +48,11 @@ const { problem, chatUi } = getHome(resolveLocale(Astro.props.locale));
 </section>
 
 <style>
+  .problem-section {
+    position: relative;
+    overflow: hidden;
+  }
+
   .problem-closing {
     max-width: 34rem;
     margin: 64px auto 0;

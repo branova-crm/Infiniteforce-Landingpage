@@ -4,6 +4,8 @@
 
 Kompakter Funnel für **The Success Seller**: Hero → Produkt → Principles → Problem-Chats → Stories → Quote → Voice (nach Patricia-Zitat; Desktop Text links / Chat rechts) → Offer → FAQ → Final CTA → Fragen. Abschnitte hell/dunkel abwechselnd. Keine Founder-Portraits mehr.
 
+**GoldEdgeGlow** (Strahl + Partikel, wie Webinar): Product, Problem, Quote, Offer, FinalCta – oben/unten am Section-Rand.
+
 ## Entscheidungen
 
 - Kauf direkt im Shop (`site.shopUrl`); Fragen-Formular am Ende

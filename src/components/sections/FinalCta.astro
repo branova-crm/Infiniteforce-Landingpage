@@ -1,5 +1,6 @@
 ---
 import CtaButton from '../CtaButton.astro';
+import GoldEdgeGlow from '../ui/GoldEdgeGlow.astro';
 import { resolveLocale, type Locale } from '../../i18n/config';
 import { getHome } from '../../i18n/home';
 
@@ -12,7 +13,8 @@ const chain = final.eyebrow.split(/\s*→\s*/).map((s) => s.trim()).filter(Boole
 ---
 
 <section class="final-cta grain section-pad" aria-labelledby="final-title">
-  <div class="container-x">
+  <GoldEdgeGlow />
+  <div class="container-x relative z-10">
     <div class="final-cta__inner mx-auto max-w-[44rem] text-center">
       <ol class="final-cta__chain" aria-label={final.eyebrow} data-reveal>
         {
@@ -53,6 +55,8 @@ const chain = final.eyebrow.split(/\s*→\s*/).map((s) => s.trim()).filter(Boole
 
 <style>
   .final-cta {
+    position: relative;
+    overflow: hidden;
     background:
       radial-gradient(ellipse 70% 55% at 50% 0%, rgba(200, 164, 110, 0.14), transparent 58%),
       linear-gradient(180deg, #17110d 0%, #100c0a 100%);

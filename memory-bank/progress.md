@@ -12,6 +12,7 @@
 - Shop-CTAs + Sticky/Float-CTA, Fragen-Formular (`type: question`)
 - GitHub: https://github.com/branova-crm/Infiniteforce-Landingpage
 - `astro build` erfolgreich
+- GoldEdgeGlow (Goldstrahl + Partikel) auf Product, Problem, Quote, Offer, FinalCta
 
 ## Offen
 

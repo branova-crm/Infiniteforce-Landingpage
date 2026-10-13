@@ -1,5 +1,6 @@
 ---
 import CtaButton from '../CtaButton.astro';
+import GoldEdgeGlow from '../ui/GoldEdgeGlow.astro';
 import { site } from '../../config/site';
 import { resolveLocale, type Locale } from '../../i18n/config';
 import { getHome } from '../../i18n/home';
@@ -12,8 +13,9 @@ const { offer } = getHome(resolveLocale(Astro.props.locale));
 const { card } = offer;
 ---
 
-<section id="offer" class="surface-cocoa grain section-pad" aria-labelledby="offer-title">
-  <div class="container-x grid gap-14 lg:grid-cols-12 lg:gap-16">
+<section id="offer" class="offer-section surface-cocoa grain section-pad" aria-labelledby="offer-title">
+  <GoldEdgeGlow />
+  <div class="container-x relative z-10 grid gap-14 lg:grid-cols-12 lg:gap-16">
     <div class="lg:col-span-7" data-reveal>
       <p class="eyebrow">{offer.eyebrow}</p>
       <h2 id="offer-title" class="headline mt-8 text-[clamp(42px,6vw,80px)] leading-[0.95] text-ivory">{offer.title}</h2>
@@ -84,7 +86,7 @@ const { card } = offer;
     </aside>
   </div>
 
-  <div class="offer-trio-band mt-16 md:mt-20" data-reveal>
+  <div class="offer-trio-band relative z-10 mt-16 md:mt-20" data-reveal>
     <div class="container-x">
       <p class="label-caps text-gold">{offer.trioTitle}</p>
       <ul class="offer-trio">
@@ -104,6 +106,11 @@ const { card } = offer;
 </section>
 
 <style>
+  .offer-section {
+    position: relative;
+    overflow: hidden;
+  }
+
   .offer-card {
     position: relative;
     overflow: visible;
