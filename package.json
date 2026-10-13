@@ -1,9 +1,9 @@
 {
-  "name": "baylan-webinar",
+  "name": "infiniteforce-lp",
   "type": "module",
   "version": "1.0.0",
   "private": true,
-  "description": "BAYLAN.MED Business Webinar – Landingpage (Astro + Tailwind CSS)",
+  "description": "BAYLAN.MED Business Webinar \u2013 Landingpage (Astro + Tailwind CSS)",
   "engines": {
     "node": ">=22.12.0"
   },
