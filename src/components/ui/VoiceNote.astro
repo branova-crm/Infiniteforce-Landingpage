@@ -1,0 +1,244 @@
+---
+import { Image } from 'astro:assets';
+import WhatsAppWindow from './WhatsAppWindow.astro';
+import patricia from '../../assets/images/patricia-baylan.jpg';
+import type { HomeCopy } from '../../i18n/home';
+
+interface Props {
+  src: string;
+  durationLabel: string;
+  voice: HomeCopy['voice'];
+  ui: HomeCopy['chatUi'];
+  class?: string;
+}
+
+const { src, durationLabel, voice, ui, class: className } = Astro.props;
+const bars = Array.from({ length: 34 }, (_, i) => 5 + ((i * 13 + (i % 4) * 5) % 19));
+---
+
+<div class:list={['voice', className]} data-voice-note data-play-label={voice.play} data-pause-label={voice.pause}>
+  <WhatsAppWindow contact={voice.from} status={voice.status} today={ui.today} placeholder={ui.placeholder} avatar={patricia}>
+    <div class="wa-bubble wa-bubble--them wa-bubble--tail">
+      {voice.intro}
+      <span class="wa-bubble__meta">{voice.introTime}</span>
+    </div>
+
+    <div class="wa-bubble wa-bubble--them voice__bubble">
+      <div class="voice__row">
+        <button type="button" class="voice__play" data-voice-play aria-label={voice.play}>
+          <svg data-icon-play width="26" height="26" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M8 5.5v13l10.5-6.5z"></path>
+          </svg>
+          <svg data-icon-pause hidden width="26" height="26" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M7 5h3.5v14H7zm6.5 0H17v14h-3.5z"></path>
+          </svg>
+        </button>
+        <div class="voice__wave" aria-hidden="true">
+          <div class="voice__bars" data-voice-wave>
+            {bars.map((h) => <span style={`height:${h}px`} />)}
+          </div>
+          <span class="voice__dot" data-voice-dot></span>
+        </div>
+        <span class="voice__avatar">
+          <Image src={patricia} alt="" width={96} height={96} class="h-full w-full rounded-full object-cover" />
+          <span class="voice__mic" data-voice-mic>
+            <svg width="11" height="11" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+              <path d="M12 15a3 3 0 0 0 3-3V5a3 3 0 0 0-6 0v7a3 3 0 0 0 3 3zm5.3-3a5.3 5.3 0 0 1-10.6 0H5a7 7 0 0 0 6 6.9V22h2v-3.1a7 7 0 0 0 6-6.9h-1.7z"></path>
+            </svg>
+          </span>
+        </span>
+      </div>
+      <div class="voice__foot">
+        <span data-voice-time>{durationLabel}</span>
+        <span>{voice.voiceTime}</span>
+      </div>
+    </div>
+  </WhatsAppWindow>
+
+  <details class="voice__transcript">
+    <summary>{voice.transcriptLabel}</summary>
+    <p>{voice.transcript}</p>
+  </details>
+  <audio data-voice-audio preload="none" src={src}></audio>
+</div>
+
+<style>
+  .voice__bubble {
+    width: min(330px, 92%);
+    padding: 6px 10px 6px 6px !important;
+  }
+
+  .voice__row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+
+  .voice__play {
+    display: grid;
+    flex: 0 0 auto;
+    place-items: center;
+    width: 40px;
+    height: 40px;
+    border: 0;
+    background: transparent;
+    color: #8696a0;
+    cursor: pointer;
+  }
+
+  .voice__play:hover {
+    color: #54656f;
+  }
+
+  .voice__wave {
+    position: relative;
+    flex: 1;
+    min-width: 0;
+    height: 30px;
+  }
+
+  .voice__bars {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: 100%;
+  }
+
+  .voice__bars span {
+    width: 2.5px;
+    border-radius: 2px;
+    background: #c3cbd0;
+    transition: background 0.15s;
+  }
+
+  .voice__bars span.is-played {
+    background: #54656f;
+  }
+
+  .voice__dot {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 12px;
+    height: 12px;
+    border-radius: 999px;
+    background: #00a884;
+    transform: translate(-50%, -50%);
+  }
+
+  .voice.is-listened .voice__dot {
+    background: #53bdeb;
+  }
+
+  .voice__avatar {
+    position: relative;
+    flex: 0 0 auto;
+    width: 48px;
+    height: 48px;
+    margin-left: 8px;
+  }
+
+  .voice__mic {
+    position: absolute;
+    bottom: -2px;
+    left: -4px;
+    display: grid;
+    place-items: center;
+    width: 18px;
+    height: 18px;
+    color: #00a884;
+  }
+
+  .voice.is-listened .voice__mic {
+    color: #53bdeb;
+  }
+
+  .voice__foot {
+    display: flex;
+    justify-content: space-between;
+    margin: -2px 0 0 46px;
+    color: #667781;
+    font-size: 11px;
+    font-variant-numeric: tabular-nums;
+  }
+
+  .voice__transcript {
+    margin-top: 18px;
+  }
+
+  .voice__transcript summary {
+    display: flex;
+    align-items: center;
+    min-height: 44px;
+    cursor: pointer;
+    list-style: none;
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+    color: var(--if-gold);
+  }
+
+  .voice__transcript summary::-webkit-details-marker {
+    display: none;
+  }
+
+  .voice__transcript p {
+    font-family: var(--if-font-display);
+    font-size: 19px;
+    font-style: italic;
+    line-height: 1.5;
+    color: var(--if-ivory);
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-voice-note]').forEach((root) => {
+    const audio = root.querySelector<HTMLAudioElement>('[data-voice-audio]');
+    const playBtn = root.querySelector<HTMLButtonElement>('[data-voice-play]');
+    const iconPlay = root.querySelector<HTMLElement>('[data-icon-play]');
+    const iconPause = root.querySelector<HTMLElement>('[data-icon-pause]');
+    const bars = Array.from(root.querySelectorAll<HTMLElement>('[data-voice-wave] span'));
+    const dot = root.querySelector<HTMLElement>('[data-voice-dot]');
+    const timeEl = root.querySelector<HTMLElement>('[data-voice-time]');
+    if (!audio || !playBtn) return;
+
+    const setPlaying = (playing: boolean) => {
+      if (iconPlay) iconPlay.hidden = playing;
+      if (iconPause) iconPause.hidden = !playing;
+      playBtn.setAttribute('aria-label', (playing ? root.dataset.pauseLabel : root.dataset.playLabel) || '');
+    };
+
+    playBtn.addEventListener('click', async () => {
+      if (audio.paused) {
+        try {
+          await audio.play();
+          setPlaying(true);
+          root.classList.add('is-listened');
+        } catch {
+          /* Platzhalter-Datei fehlt noch – UI bleibt nutzbar */
+        }
+      } else {
+        audio.pause();
+        setPlaying(false);
+      }
+    });
+
+    audio.addEventListener('timeupdate', () => {
+      const ratio = audio.duration ? audio.currentTime / audio.duration : 0;
+      const played = Math.floor(ratio * bars.length);
+      bars.forEach((bar, i) => bar.classList.toggle('is-played', i < played));
+      if (dot) dot.style.left = `${ratio * 100}%`;
+      if (timeEl && audio.duration) {
+        const s = Math.floor(audio.currentTime);
+        timeEl.textContent = `${Math.floor(s / 60)}:${String(s % 60).padStart(2, '0')}`;
+      }
+    });
+
+    audio.addEventListener('ended', () => {
+      setPlaying(false);
+      bars.forEach((bar) => bar.classList.remove('is-played'));
+      if (dot) dot.style.left = '0%';
+    });
+  });
+</script>

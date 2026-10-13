@@ -1,9 +1,12 @@
 ---
 import '../styles/global.css';
 import SilkBackground from '../components/ui/silk-background-animation.astro';
-import { webinar } from '../config/webinar';
+import { site } from '../config/site';
 import { resolveLocale, type Locale } from '../i18n/config';
-import { t } from '../i18n/ui';
+import { getHome } from '../i18n/home';
+import montserratUrl from '@fontsource-variable/montserrat/files/montserrat-latin-wght-normal.woff2?url';
+import cormorantUrl from '@fontsource/cormorant-garamond/files/cormorant-garamond-latin-500-normal.woff2?url';
+import playfairUrl from '@fontsource/playfair-display/files/playfair-display-latin-800-normal.woff2?url';
 
 interface Props {
   title?: string;
@@ -12,12 +15,12 @@ interface Props {
 }
 
 const locale = resolveLocale(Astro.props.locale ?? Astro.currentLocale);
-const title = Astro.props.title ?? t(locale, 'seoTitle');
-const description = Astro.props.description ?? t(locale, 'seoDescription');
+const home = getHome(locale);
+const title = Astro.props.title ?? home.seo.title;
+const description = Astro.props.description ?? home.seo.description;
 
-// canonical- und Open-Graph-URLs werden erzeugt, sobald `site` in astro.config.mjs gesetzt ist.
 const canonical = Astro.site ? new URL(Astro.url.pathname, Astro.site).href : undefined;
-const ogImage = Astro.site ? new URL(webinar.seo.ogImage, Astro.site).href : undefined;
+const ogImage = Astro.site ? new URL(site.seo.ogImage, Astro.site).href : undefined;
 const htmlLang = locale === 'en' ? 'en' : 'de';
 const ogLocale = locale === 'en' ? 'en_US' : 'de_DE';
 ---
@@ -29,7 +32,7 @@ const ogLocale = locale === 'en' ? 'en_US' : 'de_DE';
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>{title}</title>
     <meta name="description" content={description} />
-    <meta name="theme-color" content="#191307" />
+    <meta name="theme-color" content="#0d0a08" />
     {canonical && <link rel="canonical" href={canonical} />}
     <link rel="alternate" hreflang="de" href={Astro.site ? new URL('/', Astro.site).href : '/'} />
     <link rel="alternate" hreflang="en" href={Astro.site ? new URL('/en/', Astro.site).href : '/en/'} />
@@ -38,11 +41,13 @@ const ogLocale = locale === 'en' ? 'en_US' : 'de_DE';
     <link rel="icon" type="image/png" sizes="32x32" href="/favicon-32.png" />
     <link rel="apple-touch-icon" sizes="180x180" href="/apple-touch-icon.png" />
 
-    <link rel="preload" href="/fonts/archivo-normal-variable-latin.woff2" as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={montserratUrl} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={cormorantUrl} as="font" type="font/woff2" crossorigin />
+    <link rel="preload" href={playfairUrl} as="font" type="font/woff2" crossorigin />
 
     <meta property="og:type" content="website" />
     <meta property="og:locale" content={ogLocale} />
-    <meta property="og:site_name" content="BAYLAN.MED" />
+    <meta property="og:site_name" content="INFINITEFORCE" />
     <meta property="og:title" content={title} />
     <meta property="og:description" content={description} />
     {canonical && <meta property="og:url" content={canonical} />}

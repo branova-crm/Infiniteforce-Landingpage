@@ -1,0 +1,173 @@
+---
+import ChatMock from '../ui/ChatMock.astro';
+import { resolveLocale, type Locale } from '../../i18n/config';
+import { getHome } from '../../i18n/home';
+
+interface Props {
+  locale?: Locale;
+}
+
+const { problem, chatUi } = getHome(resolveLocale(Astro.props.locale));
+---
+
+<section id="problem" class="surface-cocoa grain section-pad" aria-labelledby="problem-title">
+  <div class="container-x">
+    <div class="mx-auto max-w-[52rem] text-center" data-reveal>
+      <p class="eyebrow eyebrow--center">{problem.eyebrow}</p>
+      <h2 id="problem-title" class="headline mt-6 text-[clamp(34px,5.4vw,72px)]">
+        {problem.title}
+        <em class="headline-italic gold-text mt-3 block pb-1">{problem.titleAccent}</em>
+      </h2>
+    </div>
+
+    <div class="problem-grid mt-14 md:mt-16" data-chat-group>
+      {
+        problem.chats.map((scene, i) => (
+          <article class="problem-card">
+            <ChatMock scene={scene} ui={chatUi} hideLabel composer={false} grouped />
+            <div class="problem-card__body">
+              <p class="problem-card__no">{String(i + 1).padStart(2, '0')}</p>
+              <h3>{problem.cards[i].title}</h3>
+              <p>{problem.cards[i].text}</p>
+            </div>
+          </article>
+        ))
+      }
+    </div>
+
+    <p class="headline-italic mx-auto mt-16 max-w-[38rem] text-center text-[clamp(22px,2.4vw,32px)] leading-snug text-gold-light" data-reveal>
+      {problem.closing}
+    </p>
+  </div>
+</section>
+
+<style>
+  .problem-grid {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(280px, 86%);
+    gap: 18px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    padding-bottom: 4px;
+  }
+
+  .problem-grid::-webkit-scrollbar {
+    display: none;
+  }
+
+  .problem-card {
+    display: flex;
+    flex-direction: column;
+    overflow: hidden;
+    scroll-snap-align: start;
+    border-radius: 20px;
+    background: var(--if-cream);
+  }
+
+  .problem-card :global(.chat) {
+    margin: 0;
+  }
+
+  .problem-card :global(.wa) {
+    border-radius: 20px 20px 0 0;
+    box-shadow: none;
+  }
+
+  .problem-card :global(.wa__body) {
+    min-height: 250px;
+  }
+
+  .problem-card__body {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    padding: 22px 22px 26px;
+    background: #fff;
+  }
+
+  .problem-card__no {
+    font-family: var(--if-font-headline);
+    font-size: 15px;
+    font-style: italic;
+    font-weight: 800;
+    color: var(--if-gold-ink);
+  }
+
+  .problem-card__no::after {
+    content: '';
+    display: inline-block;
+    width: 36px;
+    height: 1px;
+    margin-left: 10px;
+    vertical-align: middle;
+    background: var(--if-gold-deep);
+  }
+
+  .problem-card__body h3 {
+    margin-top: 10px;
+    font-family: var(--if-font-headline);
+    font-size: clamp(22px, 1.8vw, 26px);
+    font-weight: 800;
+    line-height: 1.2;
+    color: var(--if-ink);
+  }
+
+  .problem-card__body p:last-child {
+    margin-top: 10px;
+    font-size: 14.5px;
+    line-height: 1.65;
+    color: var(--if-ink-soft);
+  }
+
+  @media (min-width: 768px) and (max-width: 1023px) {
+    .problem-grid {
+      grid-auto-columns: minmax(300px, 46%);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .problem-grid {
+      grid-auto-flow: row;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 22px;
+      overflow: visible;
+    }
+  }
+</style>
+
+<script>
+  const section = document.querySelector<HTMLElement>('#problem');
+  const group = document.querySelector<HTMLElement>('[data-chat-group]');
+  if (section && group) {
+    const chats = Array.from(group.querySelectorAll<HTMLElement>('[data-chat-mock]'));
+    const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    const staggerMs = 1600;
+
+    const play = () => {
+      chats.forEach((chat, i) => {
+        window.setTimeout(() => chat.dispatchEvent(new Event('chat:play')), 50 + i * staggerMs);
+      });
+    };
+
+    if (reduce || !('IntersectionObserver' in window)) {
+      play();
+    } else {
+      const io = new IntersectionObserver(
+        (entries) => {
+          const hit = entries.some((e) => e.isIntersecting);
+          if (!hit) return;
+          io.disconnect();
+          play();
+        },
+        {
+          // Mobil/iPad: Titel im Blick reicht. Desktop: Abschnitt kommt von unten.
+          threshold: 0,
+          rootMargin: '0px 0px -28% 0px',
+        },
+      );
+      io.observe(section);
+    }
+  }
+</script>

@@ -1,0 +1,282 @@
+---
+import { resolveLocale, type Locale } from '../../i18n/config';
+import { getHome } from '../../i18n/home';
+
+interface Props {
+  locale?: Locale;
+}
+
+const { method } = getHome(resolveLocale(Astro.props.locale));
+
+const tones = [
+  'radial-gradient(circle at 50% 38%, rgba(226,201,156,0.32), transparent 58%), linear-gradient(170deg, #3a2b21, #17110d)',
+  'radial-gradient(circle at 50% 38%, rgba(226,201,156,0.3), transparent 58%), linear-gradient(170deg, #33202a, #17110d)',
+  'radial-gradient(circle at 50% 38%, rgba(226,201,156,0.34), transparent 58%), linear-gradient(170deg, #4a3826, #1d1611)',
+  'radial-gradient(circle at 50% 38%, rgba(226,201,156,0.42), transparent 60%), linear-gradient(170deg, #6b5235, #241a14)',
+  'radial-gradient(circle at 50% 38%, rgba(240,220,180,0.5), transparent 62%), linear-gradient(170deg, #8a6a3b, #2a201a)',
+];
+---
+
+<section id="method" class="surface-ivory grain section-pad on-light" aria-labelledby="method-title">
+  <div class="container-x">
+    <div class="mx-auto max-w-[56rem] text-center" data-reveal>
+      <p class="eyebrow eyebrow--center">{method.eyebrow}</p>
+      <h2 id="method-title" class="display mt-8 text-[clamp(30px,4.4vw,62px)] text-ink">{method.title}</h2>
+      <p class="lead mx-auto mt-6 max-w-[40rem]">{method.lead}</p>
+    </div>
+
+    <div class="method mt-16" data-method data-reveal style="--reveal-delay:100ms">
+      <div class="method__tabs" role="tablist" aria-label={method.eyebrow}>
+        {
+          method.steps.map((step, i) => (
+            <button
+              type="button"
+              role="tab"
+              id={`method-tab-${i}`}
+              aria-controls={`method-panel-${i}`}
+              aria-selected={i === 0 ? 'true' : 'false'}
+              tabindex={i === 0 ? 0 : -1}
+              class="method__card"
+              data-method-tab={i}
+            >
+              <span class="method__art" style={`background:${tones[i]}`}>
+                <span class="method__no">{step.no}</span>
+                <svg class="method__icon" viewBox="0 0 80 80" fill="none" stroke="currentColor" stroke-width="1" aria-hidden="true">
+                  {i === 0 && (
+                    <>
+                      <circle cx="40" cy="40" r="6" />
+                      <circle cx="40" cy="40" r="16" />
+                      <circle cx="40" cy="40" r="27" />
+                      <circle cx="40" cy="40" r="38" opacity=".5" />
+                    </>
+                  )}
+                  {i === 1 && (
+                    <>
+                      <circle cx="40" cy="26" r="11" />
+                      <path d="M18 70c2-16 11-24 22-24s20 8 22 24" />
+                      <path d="M40 2v8M40 72v6" opacity=".5" />
+                    </>
+                  )}
+                  {i === 2 && (
+                    <>
+                      <path d="M12 68L66 14" />
+                      <path d="M40 14h26v26" />
+                      <path d="M12 50l18 18" opacity=".5" />
+                    </>
+                  )}
+                  {i === 3 && (
+                    <>
+                      <ellipse cx="40" cy="22" rx="24" ry="8" />
+                      <path d="M16 22v12c0 4.4 10.7 8 24 8s24-3.6 24-8V22" />
+                      <path d="M16 34v12c0 4.4 10.7 8 24 8s24-3.6 24-8V34" />
+                      <path d="M16 46v12c0 4.4 10.7 8 24 8s24-3.6 24-8V46" opacity=".5" />
+                    </>
+                  )}
+                  {i === 4 && (
+                    <>
+                      <circle cx="40" cy="40" r="10" />
+                      <path d="M40 4v18M40 58v18M4 40h18M58 40h18M14.5 14.5l12.7 12.7M52.8 52.8l12.7 12.7M65.5 14.5L52.8 27.2M27.2 52.8L14.5 65.5" />
+                    </>
+                  )}
+                </svg>
+                <span class="method__word">{step.word}</span>
+              </span>
+              <span class="method__def">{step.definition}</span>
+            </button>
+          ))
+        }
+      </div>
+
+      <div class="method__panels">
+        {
+          method.steps.map((step, i) => (
+            <div
+              role="tabpanel"
+              id={`method-panel-${i}`}
+              aria-labelledby={`method-tab-${i}`}
+              class="method__panel"
+              data-method-panel={i}
+            >
+              <div class="grid gap-8 md:grid-cols-12 md:gap-12">
+                <div class="md:col-span-4">
+                  <p class="label-caps text-gold-ink">{step.no} — {method.eyebrow}</p>
+                  <p class="display mt-3 text-[clamp(44px,5vw,72px)] leading-none text-ink">{step.word}</p>
+                </div>
+                <div class="space-y-4 md:col-span-8">
+                  {step.paragraphs.map((p) => (
+                    <p class="body-copy text-[16px]">{p}</p>
+                  ))}
+                  {step.quote && (
+                    <p class="display-italic pt-2 text-[clamp(22px,2.4vw,30px)] leading-snug text-gold-ink">{step.quote}</p>
+                  )}
+                </div>
+              </div>
+            </div>
+          ))
+        }
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .method__tabs {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(220px, 64%);
+    gap: 14px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+    padding: 4px 2px 8px;
+  }
+
+  .method__tabs::-webkit-scrollbar {
+    display: none;
+  }
+
+  @media (min-width: 640px) {
+    .method__tabs {
+      grid-auto-columns: minmax(220px, 40%);
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .method__tabs {
+      grid-auto-flow: row;
+      grid-template-columns: repeat(5, minmax(0, 1fr));
+      gap: 18px;
+      overflow: visible;
+    }
+  }
+
+  .method__card {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    padding: 0 0 18px;
+    border: 0;
+    border-bottom: 1px solid rgba(29, 22, 17, 0.15);
+    background: transparent;
+    text-align: left;
+    cursor: pointer;
+    scroll-snap-align: start;
+  }
+
+  .method__art {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    aspect-ratio: 3 / 4;
+    padding: 18px 16px 22px;
+    overflow: hidden;
+    color: var(--if-gold-light);
+    outline: 1px solid transparent;
+    outline-offset: 5px;
+    transition:
+      outline-color 0.3s,
+      transform 0.5s var(--if-ease);
+  }
+
+  .method__card:hover .method__art {
+    transform: translateY(-4px);
+  }
+
+  .method__card[aria-selected='true'] .method__art {
+    outline-color: var(--if-gold-deep);
+  }
+
+  .method__card[aria-selected='true'] {
+    border-bottom-color: var(--if-gold-deep);
+  }
+
+  .method__no {
+    align-self: flex-start;
+    font-family: var(--if-font-display);
+    font-size: 20px;
+    font-style: italic;
+    color: rgba(240, 220, 180, 0.75);
+  }
+
+  .method__icon {
+    width: 46%;
+    height: auto;
+    opacity: 0.9;
+  }
+
+  .method__word {
+    font-family: var(--if-font-display);
+    font-size: clamp(24px, 2.2vw, 30px);
+    font-weight: 500;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--if-cream);
+  }
+
+  .method__def {
+    font-size: 13.5px;
+    line-height: 1.6;
+    color: var(--if-ink-soft);
+  }
+
+  .method__panels {
+    margin-top: 40px;
+  }
+
+  .method__panel {
+    padding: clamp(28px, 4vw, 48px);
+    border: 1px solid rgba(125, 95, 49, 0.2);
+    background: var(--if-cream);
+  }
+
+  .method__panel + .method__panel {
+    margin-top: 16px;
+  }
+
+  .method.is-enhanced .method__panel + .method__panel {
+    margin-top: 0;
+  }
+
+  .method.is-enhanced .method__panel {
+    animation: method-in 0.5s var(--if-ease);
+  }
+
+  @keyframes method-in {
+    from {
+      opacity: 0;
+      transform: translateY(10px);
+    }
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-method]').forEach((root) => {
+    const tabs = Array.from(root.querySelectorAll<HTMLButtonElement>('[data-method-tab]'));
+    const panels = Array.from(root.querySelectorAll<HTMLElement>('[data-method-panel]'));
+    root.classList.add('is-enhanced');
+
+    const select = (index: number, focus = false) => {
+      tabs.forEach((tab, i) => {
+        const active = i === index;
+        tab.setAttribute('aria-selected', String(active));
+        tab.tabIndex = active ? 0 : -1;
+        if (active && focus) tab.focus();
+      });
+      panels.forEach((panel, i) => (panel.hidden = i !== index));
+    };
+
+    tabs.forEach((tab, i) => {
+      tab.addEventListener('click', () => select(i));
+      tab.addEventListener('keydown', (event) => {
+        if (event.key !== 'ArrowRight' && event.key !== 'ArrowLeft') return;
+        event.preventDefault();
+        const dir = event.key === 'ArrowRight' ? 1 : -1;
+        select((i + dir + tabs.length) % tabs.length, true);
+      });
+    });
+
+    select(0);
+  });
+</script>

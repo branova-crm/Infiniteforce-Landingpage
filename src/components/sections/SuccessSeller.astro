@@ -1,0 +1,91 @@
+---
+import { resolveLocale, type Locale } from '../../i18n/config';
+import { getHome } from '../../i18n/home';
+
+interface Props {
+  locale?: Locale;
+}
+
+const { tss } = getHome(resolveLocale(Astro.props.locale));
+const offsets = ['', 'md:pl-[12%]', 'md:pl-[24%]'];
+---
+
+<section id="success-seller" class="section-pad relative overflow-hidden" aria-labelledby="tss-title">
+  <div class="tss__glow" aria-hidden="true"></div>
+  <div class="container-x relative">
+    <p class="eyebrow" data-reveal>{tss.eyebrow}</p>
+    <h2 id="tss-title" class="mt-8" data-reveal>
+      {
+        tss.headline.map((line, i) => (
+          <span
+            class:list={[
+              'block text-[clamp(52px,10vw,150px)] leading-[0.92]',
+              offsets[i],
+              i === 1 ? 'display-italic gold-text pb-2' : 'display text-ivory',
+            ]}
+          >
+            {line}
+          </span>
+        ))
+      }
+    </h2>
+
+    <div class="mt-20 grid gap-14 lg:grid-cols-12 lg:gap-16">
+      <p class="display-italic text-[clamp(22px,2.3vw,30px)] leading-snug text-cream lg:col-span-5" data-reveal>
+        {tss.intro}
+      </p>
+
+      <div class="lg:col-span-7" data-reveal style="--reveal-delay:100ms">
+        <p class="label-caps text-gold">{tss.struggleLead}</p>
+        <ol class="mt-4">
+          {
+            tss.struggles.map((line, i) => (
+              <li class="flex items-baseline gap-6 border-b border-gold/15 py-4">
+                <span class="w-6 shrink-0 text-[11px] font-semibold tracking-[0.2em] text-gold">{String(i + 1).padStart(2, '0')}</span>
+                <span class="text-[16px] leading-relaxed text-ivory">{line}</span>
+              </li>
+            ))
+          }
+        </ol>
+        <p class="body-copy mt-8 text-mist">{tss.loop}</p>
+        <p class="body-copy mt-3 text-cream">{tss.freedom}</p>
+        <p class="display mt-8 text-[clamp(24px,2.6vw,34px)] text-gold-light">{tss.pivot}</p>
+      </div>
+    </div>
+
+    <div class="tss__pressure card-dark mt-24 p-[clamp(28px,5vw,64px)]" data-reveal>
+      <div class="grid gap-12 lg:grid-cols-12">
+        <div class="lg:col-span-6">
+          <h3 class="display text-[clamp(28px,3.4vw,48px)] text-ivory">{tss.pressureTitle}</h3>
+          <ul class="mt-8 space-y-2">
+            {tss.pressureLines.map((line) => <li class="display-italic text-[clamp(20px,2vw,26px)] text-gold-light">{line}</li>)}
+          </ul>
+        </div>
+        <div class="lg:col-span-6 lg:border-l lg:border-gold/20 lg:pl-12">
+          <ul class="grid gap-px bg-gold/20 sm:grid-cols-3 lg:grid-cols-1">
+            {
+              tss.pressureWorlds.map((w) => (
+                <li class="bg-cocoa px-5 py-5 font-display text-[20px] text-cream">{w}</li>
+              ))
+            }
+          </ul>
+          <p class="body-copy mt-8 text-mist">{tss.pressureClosing}</p>
+          <p class="label-caps mt-8 text-gold">{tss.tagline}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .tss__glow {
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 120vw;
+    height: 80%;
+    background: radial-gradient(ellipse at center top, rgba(200, 164, 110, 0.14), transparent 60%);
+    transform: translateX(-50%);
+    pointer-events: none;
+  }
+</style>

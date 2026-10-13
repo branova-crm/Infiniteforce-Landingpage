@@ -1,25 +1,103 @@
 ---
-import CtaButton from './CtaButton.astro';
 import LanguageSwitcher from './LanguageSwitcher.astro';
+import Wordmark from './Wordmark.astro';
 import { resolveLocale, type Locale } from '../i18n/config';
-import { t } from '../i18n/ui';
+import { getHome } from '../i18n/home';
+import { site } from '../config/site';
 
 interface Props {
   locale?: Locale;
 }
 
 const locale = resolveLocale(Astro.props.locale ?? Astro.currentLocale);
+const copy = getHome(locale);
+const homePath = locale === 'en' ? '/en/' : '/';
 ---
 
-<header class="border-b border-primary/15 bg-black/55">
-  <div class="mx-auto flex max-w-page items-center justify-between gap-3 px-5 py-2.5">
-    <img src="/logos/baylan-logo-white.png" alt="BAYLAN Med. Devices" width="600" height="238" class="block h-9 w-auto" />
-    <span class="hidden text-[12px] font-semibold tracking-[0.08em] text-white/65 uppercase min-[760px]:inline">
-      {t(locale, 'headerTag')}
-    </span>
-    <div class="flex shrink-0 items-center gap-2.5 min-[480px]:gap-3">
+<header class="site-header">
+  <div class="container-x site-header__bar">
+    <a href={homePath} class="site-header__brand" aria-label={`${site.brand} – Home`}>
+      <Wordmark variant="white" />
+    </a>
+
+    <nav class="hidden items-center gap-8 lg:flex" aria-label={copy.nav.menu}>
+      {
+        copy.nav.links.map((link) => (
+          <a href={`${homePath}${link.href}`} class="site-header__link">
+            {link.label}
+          </a>
+        ))
+      }
+    </nav>
+
+    <div class="flex items-center gap-3">
       <LanguageSwitcher locale={locale} />
-      <CtaButton label={t(locale, 'headerCta')} class="btn-header inline-block shrink-0 rounded-input px-[18px] py-[11px] text-[13px]" />
+      <a href={site.shopUrl} class="btn btn-gold site-header__cta hidden sm:inline-flex">{copy.nav.cta}</a>
     </div>
   </div>
 </header>
+
+<style>
+  .site-header {
+    position: sticky;
+    top: 0;
+    z-index: 60;
+    border-bottom: 1px solid rgba(200, 164, 110, 0.16);
+    background: rgba(13, 10, 8, 0.82);
+    -webkit-backdrop-filter: blur(14px);
+    backdrop-filter: blur(14px);
+  }
+
+  .site-header__bar {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    min-height: 84px;
+    padding-block: 12px;
+  }
+
+  .site-header__brand {
+    display: flex;
+    flex: 0 0 auto;
+    align-items: center;
+    text-decoration: none;
+  }
+
+  .site-header__link {
+    position: relative;
+    font-size: 11px;
+    font-weight: 500;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--if-mist);
+    transition: color 0.2s;
+  }
+
+  .site-header__link::after {
+    content: '';
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: -6px;
+    height: 1px;
+    background: var(--if-gold);
+    transform: scaleX(0);
+    transform-origin: left;
+    transition: transform 0.3s var(--if-ease);
+  }
+
+  .site-header__link:hover {
+    color: var(--if-cream);
+  }
+
+  .site-header__link:hover::after {
+    transform: scaleX(1);
+  }
+
+  .site-header__cta {
+    min-height: 42px;
+    padding: 0 20px;
+    font-size: 11px;
+  }
+</style>

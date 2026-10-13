@@ -1,25 +1,10 @@
 # Tech Context
 
-- Astro `^7.3.5`, statisches Output (`dist`)
-- Node `>=22.12.0`
-- Paketmanager: npm
-- Scripts: `npm run dev`, `npm run build`, `npm run preview`, `npm run api`
-- `nodemailer` für SMTP-Anmeldung
-
-## Mail / API
-
-Muster wie Metads Event Landingpage:
-
-- `server/register-api.mjs` – `POST /api/register`, Honeypot `website`
-- Env: `SMTP_HOST`, `SMTP_PORT`, `SMTP_SECURE`, `SMTP_USER`, `SMTP_PASSWORD`, `SMTP_FROM`, `INQUIRY_TO`, `API_PORT`
-- Lokal: `.env` (gitignored), Vorlage `.env.example`
-- Dev-Proxy in `astro.config.mjs`: `/api` → `127.0.0.1:3001`
-
-## Deployment
-
-Dokploy, Dockerfile:
-
-- Build: Node 22 → `dist`
-- Runtime: Node 22 Alpine + Nginx, Startskript startet API + Nginx
-- Domain-Port `80`, Publish Directory leer
-- SMTP-Env nur zur Laufzeit (nicht im Image)
+- Astro 7, TypeScript, Tailwind CSS 4 (ohne Preflight)
+- Node ≥ 22.12
+- Design-Tokens: `--if-*` in `global.css` (Espresso/Gold/Elfenbein)
+- Schriften: Playfair Display 800 (Headlines), Cormorant Garamond (Editorial), Montserrat (UI)
+- i18n: Astro routing `de` (default) + `en` prefix
+- API: `server/register-api.mjs` (Nodemailer), Dev-Proxy `/api` → `:3001`
+- Media-Platzhalter: `public/media/{voice,trailer,testimonials}/`
+- Brand: `public/brand/infiniteforce-{gold,white,black}.png` via `site.logo` / `Wordmark`

@@ -1,0 +1,128 @@
+---
+import WhatsAppWindow from './WhatsAppWindow.astro';
+import WaTicks from './WaTicks.astro';
+import type { ChatScene, HomeCopy } from '../../i18n/home';
+
+interface Props {
+  scene: ChatScene;
+  ui: HomeCopy['chatUi'];
+  /** Goldener Rahmen für die „Nachher“-Variante */
+  highlight?: boolean;
+  hideLabel?: boolean;
+  composer?: boolean;
+  /** Startet nicht selbst – wartet auf Event `chat:play` (Problem-Staffel) */
+  grouped?: boolean;
+  class?: string;
+}
+
+const { scene, ui, highlight = false, hideLabel = false, composer = true, grouped = false, class: className } = Astro.props;
+---
+
+<figure
+  class:list={['chat', highlight && 'chat--highlight', className]}
+  data-chat-mock
+  data-typing={ui.typing}
+  data-chat-grouped={grouped ? '' : undefined}
+>
+  {!hideLabel && <figcaption class="chat__label">{scene.label}</figcaption>}
+  <WhatsAppWindow
+    contact={scene.contact}
+    status={scene.contactStatus}
+    today={ui.today}
+    placeholder={ui.placeholder}
+    composer={composer}
+  >
+    {
+      scene.messages.map((msg, i) => (
+        <div
+          class:list={[
+            'wa-bubble',
+            `wa-bubble--${msg.from}`,
+            (i === 0 || scene.messages[i - 1].from !== msg.from) && 'wa-bubble--tail',
+          ]}
+          data-chat-bubble
+        >
+          {msg.text}
+          <span class="wa-bubble__meta">
+            {msg.time}
+            {msg.from === 'you' && msg.status && <WaTicks status={msg.status} />}
+          </span>
+        </div>
+      ))
+    }
+    <div class="wa-typing" data-chat-typing hidden aria-hidden="true">
+      <span></span><span></span><span></span>
+    </div>
+  </WhatsAppWindow>
+</figure>
+
+<style>
+  .chat__label {
+    margin-bottom: 12px;
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.24em;
+    text-transform: uppercase;
+    color: var(--if-gold-ink);
+  }
+
+  .chat--highlight :global(.wa) {
+    box-shadow:
+      0 0 0 1px rgba(160, 124, 69, 0.9),
+      0 0 0 6px rgba(200, 164, 110, 0.2),
+      0 28px 60px -24px rgba(17, 12, 8, 0.6);
+  }
+</style>
+
+<script>
+  const roots = document.querySelectorAll<HTMLElement>('[data-chat-mock]');
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+  if (!reduce && 'IntersectionObserver' in window) {
+    roots.forEach((root) => {
+      const bubbles = Array.from(root.querySelectorAll<HTMLElement>('[data-chat-bubble]'));
+      const typing = root.querySelector<HTMLElement>('[data-chat-typing]');
+      const status = root.querySelector<HTMLElement>('[data-wa-status]');
+      const wait = (ms: number) => new Promise((r) => setTimeout(r, ms));
+
+      // Ohne JS bleiben alle Nachrichten sichtbar; erst hier wird für die Animation versteckt.
+      bubbles.forEach((b) => b.classList.add('is-pending'));
+
+      const run = async () => {
+        for (const bubble of bubbles) {
+          const fromThem = bubble.classList.contains('wa-bubble--them');
+          if (fromThem && typing) {
+            typing.style.top = `${bubble.offsetTop}px`;
+            typing.style.left = `${bubble.offsetLeft}px`;
+            typing.hidden = false;
+            if (status) status.textContent = root.dataset.typing || '';
+            await wait(900);
+            typing.hidden = true;
+            if (status) status.textContent = status.dataset.default || '';
+          } else {
+            await wait(500);
+          }
+          bubble.classList.remove('is-pending');
+          bubble.classList.add('is-in');
+          await wait(450);
+        }
+      };
+
+      if (root.hasAttribute('data-chat-grouped')) {
+        root.addEventListener('chat:play', () => void run(), { once: true });
+        return;
+      }
+
+      const io = new IntersectionObserver(
+        (entries) => {
+          if (entries.some((e) => e.isIntersecting)) {
+            io.disconnect();
+            void run();
+          }
+        },
+        { threshold: 0.35, rootMargin: '0px 0px -12% 0px' },
+      );
+      io.observe(root);
+    });
+  }
+</script>

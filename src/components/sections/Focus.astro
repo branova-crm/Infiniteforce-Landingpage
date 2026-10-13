@@ -1,0 +1,59 @@
+---
+import { resolveLocale, type Locale } from '../../i18n/config';
+import { getHome } from '../../i18n/home';
+
+interface Props {
+  locale?: Locale;
+}
+
+const { focus } = getHome(resolveLocale(Astro.props.locale));
+---
+
+<section class="surface-cocoa section-pad" aria-labelledby="focus-title">
+  <div class="container-x">
+    <div class="text-center" data-reveal>
+      <p class="eyebrow eyebrow--center">{focus.eyebrow}</p>
+      <h2 id="focus-title" class="display mt-8 text-[clamp(40px,6.4vw,96px)] leading-[0.98] text-ivory">
+        {focus.title}
+        <span class="display-italic gold-text block pb-2">{focus.titleAccent}</span>
+      </h2>
+    </div>
+
+    <div class="mt-16 grid gap-12 lg:grid-cols-12 lg:gap-16">
+      <div class="space-y-5 lg:col-span-5" data-reveal>
+        {focus.paragraphs.map((p, i) => <p class:list={['lead', i === 2 ? 'text-cream' : 'text-mist']}>{p}</p>)}
+      </div>
+      <div class="lg:col-span-7" data-reveal style="--reveal-delay:100ms">
+        <p class="label-caps text-gold">{focus.mirrorsTitle}</p>
+        <ol class="mt-4">
+          {
+            focus.mirrors.map((line, i) => (
+              <li class="flex items-baseline gap-6 border-b border-gold/15 py-4">
+                <span class="w-6 shrink-0 text-[11px] font-semibold tracking-[0.2em] text-gold">{String(i + 1).padStart(2, '0')}</span>
+                <span class="font-display text-[clamp(20px,2vw,26px)] leading-snug text-ivory">{line}</span>
+              </li>
+            ))
+          }
+        </ol>
+      </div>
+    </div>
+
+    <p class="display-italic mx-auto mt-20 max-w-[34ch] text-center text-[clamp(24px,2.8vw,36px)] leading-snug text-cream" data-reveal>
+      {focus.reality}
+    </p>
+
+    <div class="mt-14" data-reveal>
+      <p class="label-caps text-center text-gold">{focus.needTitle}</p>
+      <ul class="mx-auto mt-6 grid max-w-[64rem] gap-px bg-gold/25 md:grid-cols-3">
+        {
+          focus.needs.map((need) => (
+            <li class="bg-cocoa px-6 py-8 text-center">
+              <span class="display text-[clamp(20px,1.9vw,25px)] text-ivory">{need}</span>
+            </li>
+          ))
+        }
+      </ul>
+      <p class="display gold-text mt-12 text-center text-[clamp(24px,3vw,40px)]">{focus.closing}</p>
+    </div>
+  </div>
+</section>

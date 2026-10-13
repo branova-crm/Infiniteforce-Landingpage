@@ -1,0 +1,199 @@
+---
+import type { StoryCopy } from '../../i18n/home';
+import { site } from '../../config/site';
+
+interface Props {
+  items: StoryCopy[];
+  playLabel: string;
+  class?: string;
+}
+
+const { items, playLabel, class: className } = Astro.props;
+const mediaBySlug = Object.fromEntries(site.media.testimonials.map((t) => [t.slug, t]));
+---
+
+<div class:list={['vt-grid', className]}>
+  {
+    items.map((item, i) => {
+      const media = mediaBySlug[item.slug];
+      return (
+        <article class="vt-card" data-vt-card>
+          <button type="button" class="vt-card__media" data-vt-open aria-label={`${playLabel}: ${item.name}`}>
+            <video
+              data-vt-video
+              class="vt-card__video"
+              playsinline
+              preload="none"
+              poster={media?.poster}
+              src={media?.video}
+            />
+            <span class="vt-card__no" aria-hidden="true">
+              {String(i + 1).padStart(2, '0')}
+            </span>
+            <span class="vt-card__play" aria-hidden="true">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
+                <path d="M8 5v14l11-7z" />
+              </svg>
+            </span>
+            <span class="vt-card__chip">{item.result}</span>
+          </button>
+          <div class="vt-card__body">
+            <h3 class="font-display text-[22px] leading-tight font-medium text-cream">{item.name}</h3>
+            <p class="label-caps mt-2 text-gold">{item.role}</p>
+            <p class="display-italic mt-4 text-[18px] leading-snug text-mist">„{item.quote}“</p>
+          </div>
+        </article>
+      );
+    })
+  }
+</div>
+
+<style>
+  .vt-grid {
+    display: grid;
+    grid-auto-flow: column;
+    grid-auto-columns: minmax(250px, 76%);
+    gap: 18px;
+    overflow-x: auto;
+    scroll-snap-type: x mandatory;
+    scrollbar-width: none;
+  }
+
+  .vt-grid::-webkit-scrollbar {
+    display: none;
+  }
+
+  .vt-card {
+    scroll-snap-align: start;
+    border: 1px solid rgba(200, 164, 110, 0.2);
+    background: rgba(23, 17, 13, 0.85);
+  }
+
+  @media (min-width: 640px) {
+    .vt-grid {
+      grid-auto-flow: row;
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      overflow: visible;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .vt-grid {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 24px;
+    }
+  }
+
+  .vt-card__media {
+    position: relative;
+    display: block;
+    width: 100%;
+    aspect-ratio: 4 / 5;
+    padding: 0;
+    border: 0;
+    background: #1a130e;
+    cursor: pointer;
+  }
+
+  .vt-card__video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    background:
+      radial-gradient(circle at 70% 20%, rgba(200, 164, 110, 0.22), transparent 55%),
+      linear-gradient(160deg, #3a2b21, #120d0a 70%);
+  }
+
+  .vt-card__no {
+    position: absolute;
+    top: 18px;
+    left: 20px;
+    font-family: var(--if-font-display);
+    font-size: 64px;
+    font-style: italic;
+    line-height: 1;
+    color: rgba(226, 201, 156, 0.22);
+  }
+
+  .vt-card__play {
+    position: absolute;
+    left: 50%;
+    top: 50%;
+    display: grid;
+    place-items: center;
+    width: 64px;
+    height: 64px;
+    border: 1px solid rgba(226, 201, 156, 0.7);
+    border-radius: 999px;
+    background: rgba(13, 10, 8, 0.45);
+    color: var(--if-gold-light);
+    transform: translate(-50%, -50%);
+    transition:
+      background 0.25s,
+      transform 0.25s var(--if-ease);
+  }
+
+  .vt-card__media:hover .vt-card__play {
+    background: var(--if-gold);
+    color: var(--if-espresso);
+    transform: translate(-50%, -50%) scale(1.06);
+  }
+
+  .vt-card__chip {
+    position: absolute;
+    right: 14px;
+    bottom: 14px;
+    padding: 6px 10px;
+    border: 1px solid rgba(200, 164, 110, 0.5);
+    background: rgba(13, 10, 8, 0.6);
+    color: var(--if-gold-light);
+    font-size: 10px;
+    font-weight: 600;
+    letter-spacing: 0.18em;
+    text-transform: uppercase;
+  }
+
+  .vt-card__body {
+    padding: 22px 22px 26px;
+  }
+
+  .vt-card.is-playing .vt-card__play,
+  .vt-card.is-playing .vt-card__no {
+    display: none;
+  }
+</style>
+
+<script>
+  const cards = Array.from(document.querySelectorAll<HTMLElement>('[data-vt-card]'));
+  cards.forEach((card) => {
+    const btn = card.querySelector<HTMLButtonElement>('[data-vt-open]');
+    const video = card.querySelector<HTMLVideoElement>('[data-vt-video]');
+    if (!btn || !video) return;
+
+    btn.addEventListener('click', async () => {
+      cards.forEach((other) => {
+        if (other === card) return;
+        other.classList.remove('is-playing');
+        const v = other.querySelector<HTMLVideoElement>('[data-vt-video]');
+        if (v) {
+          v.pause();
+          v.controls = false;
+        }
+      });
+
+      card.classList.add('is-playing');
+      video.controls = true;
+      try {
+        video.muted = false;
+        await video.play();
+      } catch {
+        /* Platzhalter-Datei fehlt noch */
+      }
+    });
+
+    video.addEventListener('ended', () => {
+      card.classList.remove('is-playing');
+      video.controls = false;
+    });
+  });
+</script>

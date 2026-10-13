@@ -1,0 +1,94 @@
+---
+import type { FaqItem } from '../../i18n/home';
+
+interface Props {
+  items: FaqItem[];
+  class?: string;
+}
+
+const { items, class: className } = Astro.props;
+---
+
+<div class:list={['faq-list', className]}>
+  {
+    items.map((item, i) => (
+      <details class="faq-item" open={i === 0}>
+        <summary class="faq-item__q">
+          <span>{item.q}</span>
+          <span class="faq-item__icon" aria-hidden="true" />
+        </summary>
+        <p class="faq-item__a">{item.a}</p>
+      </details>
+    ))
+  }
+</div>
+
+<style>
+  .faq-list {
+    border-top: 1px solid rgba(200, 164, 110, 0.25);
+  }
+
+  .faq-item {
+    border-bottom: 1px solid rgba(200, 164, 110, 0.25);
+  }
+
+  .faq-item__q {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 24px;
+    min-height: 44px;
+    padding: 24px 0;
+    cursor: pointer;
+    list-style: none;
+    font-family: var(--if-font-display);
+    font-size: clamp(20px, 2vw, 25px);
+    font-weight: 500;
+    line-height: 1.25;
+    color: var(--if-cream);
+    transition: color 0.2s;
+  }
+
+  .faq-item__q:hover {
+    color: var(--if-gold-light);
+  }
+
+  .faq-item__q::-webkit-details-marker {
+    display: none;
+  }
+
+  .faq-item__icon {
+    position: relative;
+    flex: 0 0 auto;
+    width: 14px;
+    height: 14px;
+  }
+
+  .faq-item__icon::before,
+  .faq-item__icon::after {
+    content: '';
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 14px;
+    height: 1px;
+    background: var(--if-gold);
+    transition: transform 0.3s var(--if-ease);
+  }
+
+  .faq-item__icon::after {
+    transform: rotate(90deg);
+  }
+
+  .faq-item[open] .faq-item__icon::after {
+    transform: rotate(0deg);
+  }
+
+  .faq-item__a {
+    max-width: 62ch;
+    padding: 0 0 26px;
+    font-size: 15px;
+    line-height: 1.8;
+    color: var(--if-mist);
+  }
+</style>

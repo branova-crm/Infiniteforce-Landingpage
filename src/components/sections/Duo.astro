@@ -1,0 +1,94 @@
+---
+import { Image } from 'astro:assets';
+import patricia from '../../assets/images/patricia-baylan.jpg';
+import goekhan from '../../assets/images/goekhan-baylan.jpg';
+import { resolveLocale, type Locale } from '../../i18n/config';
+import { getHome } from '../../i18n/home';
+
+interface Props {
+  locale?: Locale;
+}
+
+const { duo } = getHome(resolveLocale(Astro.props.locale));
+const portraits = [patricia, goekhan];
+---
+
+<section class="surface-dark section-pad" aria-labelledby="duo-title">
+  <div class="container-x">
+    <div class="mx-auto max-w-[52rem] text-center" data-reveal>
+      <p class="eyebrow eyebrow--center">{duo.eyebrow}</p>
+      <h2 id="duo-title" class="display mt-8 text-[clamp(36px,5.4vw,76px)] text-ivory">{duo.title}</h2>
+      <div class="mx-auto mt-8 max-w-[40rem] space-y-4">
+        {duo.lead.map((p) => <p class="lead text-mist">{p}</p>)}
+      </div>
+    </div>
+
+    <div class="relative mt-20 grid gap-16 md:grid-cols-2 md:gap-10 lg:gap-20">
+      <span class="duo__x" aria-hidden="true">×</span>
+      {
+        duo.founders.map((founder, i) => (
+          <article data-reveal style={`--reveal-delay:${i * 120}ms`}>
+            <figure class="relative overflow-hidden">
+              <Image
+                src={portraits[i]}
+                alt={founder.imageAlt}
+                widths={[400, 800]}
+                sizes="(min-width: 768px) 45vw, 90vw"
+                class="aspect-[4/5] h-auto w-full object-cover object-[50%_18%] grayscale-[15%]"
+              />
+              <div class="photo-fade absolute inset-0" aria-hidden="true" />
+              <figcaption class="absolute right-0 bottom-0 left-0 p-6">
+                <p class="label-caps text-gold">{founder.focus}</p>
+                <h3 class="display mt-2 text-[clamp(26px,2.6vw,36px)] text-cream">{founder.name}</h3>
+              </figcaption>
+            </figure>
+            <div class="mt-8 space-y-4">
+              {founder.paragraphs.map((p) => (
+                <p class="body-copy text-mist">{p}</p>
+              ))}
+            </div>
+            {founder.list && (
+              <ul class="mt-6 flex flex-wrap gap-x-5 gap-y-2">
+                {founder.list.map((item) => (
+                  <li class="display-italic text-[22px] text-gold-light">{item}</li>
+                ))}
+              </ul>
+            )}
+            {founder.closing && <p class="body-copy mt-6 text-cream">{founder.closing}</p>}
+          </article>
+        ))
+      }
+    </div>
+
+    <p class="display-italic gold-text mt-24 pb-2 text-center text-[clamp(32px,5vw,68px)] leading-tight" data-reveal>
+      {duo.closing}
+    </p>
+  </div>
+</section>
+
+<style>
+  .duo__x {
+    display: none;
+  }
+
+  @media (min-width: 768px) {
+    .duo__x {
+      position: absolute;
+      top: 34%;
+      left: 50%;
+      z-index: 2;
+      display: grid;
+      place-items: center;
+      width: 64px;
+      height: 64px;
+      border: 1px solid rgba(200, 164, 110, 0.6);
+      border-radius: 999px;
+      background: var(--if-black);
+      color: var(--if-gold);
+      font-family: var(--if-font-display);
+      font-size: 30px;
+      line-height: 1;
+      transform: translate(-50%, -50%);
+    }
+  }
+</style>

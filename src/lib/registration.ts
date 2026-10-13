@@ -2,12 +2,14 @@ export interface RegistrationData {
   name: string;
   telefon: string;
   email: string;
+  message?: string;
+  type?: 'question' | 'register';
   /** Honeypot – muss leer bleiben */
   website?: string;
 }
 
 /**
- * Versendet die Webinar-Anmeldung an `/api/register` (Nodemailer hinter Nginx).
+ * Versendet Anfrage/Frage an `/api/register` (Nodemailer hinter Nginx).
  */
 export async function submitRegistration(endpoint: string, data: RegistrationData): Promise<void> {
   if (!endpoint) {
@@ -30,12 +32,12 @@ export async function submitRegistration(endpoint: string, data: RegistrationDat
     });
 
     if (!response.ok) {
-      throw new Error(`Anmeldung fehlgeschlagen (HTTP ${response.status})`);
+      throw new Error(`Anfrage fehlgeschlagen (HTTP ${response.status})`);
     }
 
     const payload = (await response.json().catch(() => null)) as { ok?: boolean } | null;
     if (payload && payload.ok === false) {
-      throw new Error('Anmeldung fehlgeschlagen');
+      throw new Error('Anfrage fehlgeschlagen');
     }
   } finally {
     window.clearTimeout(timeout);

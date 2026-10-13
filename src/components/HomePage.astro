@@ -1,43 +1,102 @@
 ---
 /**
- * Gemeinsame Landingpage für DE und EN.
+ * Infiniteforce Hauptseite – DE und EN.
  */
 import Layout from '../layouts/Layout.astro';
-import Header from '../components/Header.astro';
-import Hero from '../components/Hero.astro';
-import FirstMovers from '../components/FirstMovers.astro';
-import WebinarIntro from '../components/WebinarIntro.astro';
-import Benefits from '../components/Benefits.astro';
-import Speakers from '../components/Speakers.astro';
-import RegistrationForm from '../components/RegistrationForm.astro';
-import FinalCTA from '../components/FinalCTA.astro';
-import Footer from '../components/Footer.astro';
-import StickyCTA from '../components/StickyCTA.astro';
-import RegistrationModal from '../components/RegistrationModal.astro';
-import { webinar } from '../config/webinar';
+import AnnouncementBar from './AnnouncementBar.astro';
+import Header from './Header.astro';
+import Hero from './Hero.astro';
+import Product from './sections/Product.astro';
+import Welcome from './sections/Welcome.astro';
+import Problem from './sections/Problem.astro';
+import NotSmall from './sections/NotSmall.astro';
+import Focus from './sections/Focus.astro';
+import Method from './sections/Method.astro';
+import Duo from './sections/Duo.astro';
+import VoiceSection from './sections/VoiceSection.astro';
+import SuccessSeller from './sections/SuccessSeller.astro';
+import Question from './sections/Question.astro';
+import Pillars from './sections/Pillars.astro';
+import Follows from './sections/Follows.astro';
+import Different from './sections/Different.astro';
+import Transformation from './sections/Transformation.astro';
+import Program from './sections/Program.astro';
+import Fit from './sections/Fit.astro';
+import Trailer from './sections/Trailer.astro';
+import Stories from './sections/Stories.astro';
+import Offer from './sections/Offer.astro';
+import FaqSection from './sections/FaqSection.astro';
+import FutureSelf from './sections/FutureSelf.astro';
+import FinalCta from './sections/FinalCta.astro';
+import Questions from './sections/Questions.astro';
+import Footer from './Footer.astro';
+import StickyCTA from './StickyCTA.astro';
+import ScrollProgress from './ui/ScrollProgress.astro';
+import ExitIntent from './ui/ExitIntent.astro';
 import { resolveLocale, type Locale } from '../i18n/config';
-import { getUi } from '../i18n/ui';
 
 interface Props {
   locale?: Locale;
 }
 
 const locale = resolveLocale(Astro.props.locale);
-const copy = getUi(locale);
 ---
 
-<Layout locale={locale} title={copy.seoTitle} description={copy.seoDescription}>
+<Layout locale={locale}>
+  <ScrollProgress />
+  <AnnouncementBar locale={locale} />
   <Header locale={locale} />
   <main>
     <Hero locale={locale} />
-    <WebinarIntro locale={locale} />
-    <Benefits locale={locale} />
-    <Speakers locale={locale} />
-    <RegistrationForm locale={locale} />
-    <FinalCTA locale={locale} />
-    {webinar.offer.enabled && <FirstMovers locale={locale} />}
+    <Product locale={locale} />
+    <Welcome locale={locale} />
+    <Problem locale={locale} />
+    <NotSmall locale={locale} />
+    <Focus locale={locale} />
+    <Method locale={locale} />
+    <Duo locale={locale} />
+    <VoiceSection locale={locale} />
+    <SuccessSeller locale={locale} />
+    <Question locale={locale} />
+    <Pillars locale={locale} />
+    <Follows locale={locale} />
+    <Different locale={locale} />
+    <Transformation locale={locale} />
+    <Program locale={locale} />
+    <Fit locale={locale} />
+    <Trailer locale={locale} />
+    <Stories locale={locale} />
+    <Offer locale={locale} />
+    <FaqSection locale={locale} />
+    <FutureSelf locale={locale} />
+    <FinalCta locale={locale} />
+    <Questions locale={locale} />
   </main>
   <Footer locale={locale} />
   <StickyCTA locale={locale} />
-  <RegistrationModal locale={locale} />
+  <ExitIntent locale={locale} />
 </Layout>
+
+<script>
+  const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const targets = document.querySelectorAll<HTMLElement>('[data-reveal]');
+
+  if (!reduce && 'IntersectionObserver' in window && targets.length) {
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add('is-visible');
+          io.unobserve(entry.target);
+        });
+      },
+      { rootMargin: '0px 0px -8% 0px', threshold: 0.08 },
+    );
+
+    targets.forEach((el) => {
+      if (el.getBoundingClientRect().top < window.innerHeight) el.classList.add('is-visible');
+      io.observe(el);
+    });
+    document.documentElement.classList.add('reveal-ready');
+  }
+</script>

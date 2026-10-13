@@ -5,7 +5,7 @@ import { defineConfig } from 'astro/config';
 // https://astro.build/config
 export default defineConfig({
   // Live-Domain eintragen – dann werden canonical- und Open-Graph-URLs automatisch erzeugt:
-  // site: 'https://webinar.baylan-med.de',
+  // site: 'https://infiniteforce.ltd',
   output: 'static',
   i18n: {
     defaultLocale: 'de',

@@ -1,18 +1,42 @@
 ---
-/**
- * Goldener Primär-Button. Öffnet das Anmelde-Popup.
- * Größe und Position werden pro Einsatzort über `class` gesetzt.
- */
-import type { HTMLAttributes } from 'astro/types';
-import { cta } from '../config/webinar';
+import { site } from '../config/site';
 
-type Props = HTMLAttributes<'button'> & {
-  label?: string;
-  /** Dezenter Glanz-Effekt wie auf der Kongress-Seite */
-  shine?: boolean;
-};
+interface Props {
+  label: string;
+  /** Standard: Shop-Link */
+  href?: string;
+  variant?: 'gold' | 'ghost' | 'ink' | 'ghost-ink';
+  block?: boolean;
+  arrow?: boolean;
+  class?: string;
+  [key: string]: unknown;
+}
 
-const { label = cta.label, shine = false, class: className, type = 'button', ...rest } = Astro.props;
+const {
+  label,
+  href = site.shopUrl,
+  variant = 'gold',
+  block = false,
+  arrow = true,
+  class: className,
+  ...rest
+} = Astro.props;
+const external = href.startsWith('http');
 ---
 
-<button type={type} data-open-registration class:list={['btn-primary', { 'btn-shine': shine }, className]} {...rest}>{label}</button>
+<a
+  href={href}
+  class:list={['btn', `btn-${variant}`, block && 'btn-block', className]}
+  {...rest}
+  target={external ? '_blank' : undefined}
+  rel={external ? 'noopener noreferrer' : undefined}
+>
+  <span>{label}</span>
+  {
+    arrow && (
+      <svg width="18" height="10" viewBox="0 0 18 10" fill="none" aria-hidden="true">
+        <path d="M0 5h16.5M12.5 1l4 4-4 4" stroke="currentColor" stroke-width="1.2" />
+      </svg>
+    )
+  }
+</a>

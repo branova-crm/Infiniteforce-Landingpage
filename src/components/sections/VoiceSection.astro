@@ -1,0 +1,33 @@
+---
+import VoiceNote from '../ui/VoiceNote.astro';
+import { site } from '../../config/site';
+import { resolveLocale, type Locale } from '../../i18n/config';
+import { getHome } from '../../i18n/home';
+
+interface Props {
+  locale?: Locale;
+}
+
+const { voice, chatUi } = getHome(resolveLocale(Astro.props.locale));
+---
+
+<section class="surface-plum section-pad-sm" aria-labelledby="voice-title">
+  <div class="container-x grid items-center gap-12 lg:grid-cols-12 lg:gap-16">
+    <div class="lg:col-span-6" data-reveal>
+      <p class="eyebrow">{voice.eyebrow}</p>
+      <h2 id="voice-title" class="display-italic mt-6 text-[clamp(36px,4.4vw,60px)] leading-[1.05] text-ivory">
+        {voice.title}
+      </h2>
+      <p class="lead mt-6 max-w-[32rem] text-mist">{voice.text}</p>
+    </div>
+    <div class="lg:col-span-6" data-reveal style="--reveal-delay:100ms">
+      <VoiceNote
+        src={site.media.voice.src}
+        durationLabel={site.media.voice.durationLabel}
+        voice={voice}
+        ui={chatUi}
+        class="mx-auto max-w-[440px]"
+      />
+    </div>
+  </div>
+</section>

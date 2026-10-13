@@ -1,0 +1,40 @@
+---
+import { resolveLocale, type Locale } from '../../i18n/config';
+import { getHome } from '../../i18n/home';
+
+interface Props {
+  locale?: Locale;
+}
+
+const { welcome } = getHome(resolveLocale(Astro.props.locale));
+---
+
+<section class="section-pad relative text-center" aria-labelledby="welcome-title">
+  <div class="container-x">
+    <p class="eyebrow eyebrow--center" data-reveal>{welcome.eyebrow}</p>
+    <h2 id="welcome-title" class="display mt-8 text-[clamp(44px,9vw,132px)] leading-[0.95] text-ivory" data-reveal>
+      {welcome.titleTop}
+      <span class="display-italic gold-text block pb-3">{welcome.titleAccent}</span>
+    </h2>
+
+    <p class="display-italic mx-auto mt-10 max-w-[22ch] text-[clamp(26px,3vw,38px)] leading-tight text-cream" data-reveal>
+      {welcome.intro}
+    </p>
+    <div class="mx-auto mt-6 max-w-[40rem] space-y-2" data-reveal>
+      {welcome.lines.map((line) => <p class="lead text-mist">{line}</p>)}
+    </div>
+
+    <div class="mx-auto mt-20 max-w-[60rem]" data-reveal>
+      <div class="hairline"></div>
+      <p class="display mt-10 text-[clamp(24px,3vw,40px)] text-ivory">{welcome.followTitle}</p>
+      <ul class="mt-10 grid grid-cols-2 gap-px bg-gold/20 md:grid-cols-4">
+        {
+          welcome.followList.map((item) => (
+            <li class="bg-black-if/80 px-4 py-6 font-display text-[clamp(18px,1.8vw,22px)] text-cream italic">{item}</li>
+          ))
+        }
+      </ul>
+      <p class="label-caps mt-12 text-gold">{welcome.claim}</p>
+    </div>
+  </div>
+</section>

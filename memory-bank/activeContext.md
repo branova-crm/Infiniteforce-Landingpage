@@ -2,23 +2,24 @@
 
 ## Aktueller Fokus
 
-Rechtliche Unterseiten live im Build: `/impressum/`, `/datenschutz/`, `/cookie-richtlinien/` (+ EN-Pfade). Site setzt keine Cookies; Cookie-Seite erklärt TDDDG/kein Banner.
+Luxury-Editorial-Landingpage für den Verkauf von **The Success Seller**. Hero ist kompakt (Titel + Kauf-Button), Produktkarte eigener Abschnitt. Weißes Logo in Header/Footer. Problem-Titel in Playfair Display Extra-Bold (weiß + Gold-Italic). Chats starten gestaffelt, sobald der Abschnitt im Viewport ist.
 
-## Entscheidung
+## Entscheidungen
 
-Deployment-Ziel ist Dokploy. Hochladen erst, wenn das Projekt fertig ist.
+- Kauf direkt im Shop (`site.shopUrl`); Fragen-Formular am Ende
+- Keine Masterclass-CTAs, kein Countdown
+- Chat/Voice: WhatsApp-Look ohne Handyrahmen (Header, Sprechblasen, Häkchen, Voice-Bubble)
+- Problem-Abschnitt: Titel + 3 WhatsApp-Karten nebeneinander (wie Melis im Aufbau, eigene Texte)
+- Copy: `src/i18n/home.de.ts` / `home.en.ts`, Patricia-Texte, keine Melis-Inhalte
+- Logo: weißes Wortmarken-PNG in Header/Footer (`Wordmark variant="white"`)
+- Headlines: Playfair Display 800 (klar, dick, Satzschrift) – nicht Melis-Copy
+- Problem-Chats: `data-chat-group`, Start erst im Viewport, 1,6s Staffel 1→2→3
+
+## Offen von Kunden
+
+- Konkreter Shop-Produktlink
+- Kundenvideos, Trailer, Sprachnachricht unter `public/media/`
 
 ## Dokploy
 
-Dockerfile wie bei Metads Event: Node baut die Site, Runtime = Nginx + Register-API (`nodemailer`).
-
-In Dokploy einstellen:
-
-- Build Type: Dockerfile
-- Dockerfile Path: `Dockerfile`
-- Context: `.`
-- Publish Directory: leer
-- Domain-Port: `80`
-- Runtime Env: `SMTP_*`, `INQUIRY_TO`, `API_PORT=3001` (bereits hinterlegt)
-
-Spam-Schutz: unsichtbares Honeypot-Feld `website` (wie Metads). `.env` nie committen.
+Unverändert: Dockerfile, Port 80, SMTP-Env, Honeypot.

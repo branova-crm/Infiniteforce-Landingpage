@@ -1,0 +1,98 @@
+---
+interface Props {
+  src: string;
+  poster: string;
+  playLabel: string;
+  class?: string;
+}
+
+const { src, poster, playLabel, class: className } = Astro.props;
+---
+
+<div class:list={['trailer', className]} data-trailer>
+  <video data-trailer-video class="trailer__video" playsinline preload="none" poster={poster} src={src}></video>
+  <button type="button" class="trailer__overlay" data-trailer-play aria-label={playLabel}>
+    <span class="trailer__ring" aria-hidden="true">
+      <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor">
+        <path d="M8 5v14l11-7z"></path>
+      </svg>
+    </span>
+    <span class="label-caps text-gold-light">{playLabel}</span>
+  </button>
+</div>
+
+<style>
+  .trailer {
+    position: relative;
+    overflow: hidden;
+    aspect-ratio: 16 / 9;
+    border: 1px solid rgba(200, 164, 110, 0.3);
+    background: #120d0a;
+  }
+
+  .trailer__video {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    background:
+      radial-gradient(ellipse at 30% 30%, rgba(200, 164, 110, 0.2), transparent 60%),
+      linear-gradient(135deg, #2a2018, #0d0a08 70%);
+  }
+
+  .trailer__overlay {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 18px;
+    width: 100%;
+    border: 0;
+    background: linear-gradient(180deg, rgba(13, 10, 8, 0.15), rgba(13, 10, 8, 0.6));
+    cursor: pointer;
+  }
+
+  .trailer__overlay.is-hidden {
+    display: none;
+  }
+
+  .trailer__ring {
+    display: grid;
+    place-items: center;
+    width: 84px;
+    height: 84px;
+    border: 1px solid rgba(226, 201, 156, 0.8);
+    border-radius: 999px;
+    color: var(--if-gold-light);
+    transition:
+      background 0.25s,
+      color 0.25s,
+      transform 0.3s var(--if-ease);
+  }
+
+  .trailer__overlay:hover .trailer__ring {
+    background: var(--if-gold);
+    color: var(--if-espresso);
+    transform: scale(1.06);
+  }
+</style>
+
+<script>
+  document.querySelectorAll<HTMLElement>('[data-trailer]').forEach((root) => {
+    const video = root.querySelector<HTMLVideoElement>('[data-trailer-video]');
+    const btn = root.querySelector<HTMLButtonElement>('[data-trailer-play]');
+    if (!video || !btn) return;
+
+    btn.addEventListener('click', async () => {
+      btn.classList.add('is-hidden');
+      video.controls = true;
+      try {
+        video.muted = false;
+        await video.play();
+      } catch {
+        /* Platzhalter-Datei fehlt noch */
+      }
+    });
+  });
+</script>

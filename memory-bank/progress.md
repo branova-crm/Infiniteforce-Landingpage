@@ -2,12 +2,17 @@
 
 ## Fertig
 
-- Astro `basics` im Projektordner, Abhängigkeiten installiert, Git initialisiert
-- Dokploy als Deploy-Ziel festgelegt, Deployment per Dockerfile (Nginx, Port 80)
-- Rechtliche Unterseiten: Impressum, Datenschutz (Inhalt von baycomed-academy.de), Cookie-Richtlinien (keine Cookies → kein Banner nach TDDDG)
-- Footer/Modal verlinken lokal statt extern
+- Infiniteforce-Relaunch: voller Funnel (Hero → Questions), DE + EN
+- Hero zentriert: deutscher Titel, Shop-CTA, Success-Seller-Produktkarte (kein Countdown)
+- WhatsApp-Chats und WhatsApp-Sprachnachricht ohne Handyrahmen
+- Weißes Logo in Header/Footer, Hero kompakt, Produkt eigener Abschnitt
+- Problem-Titel Playfair Extra-Bold, Chat-Animationen gestaffelt im Viewport
+- Shop-CTAs + Sticky/Float-CTA, Fragen-Formular (`type: question`)
+- GitHub: https://github.com/branova-crm/Infiniteforce-Landingpage
+- `astro build` erfolgreich
 
 ## Offen
 
-- Webinar-Inhalt und Features
-- Deploy auf Dokploy, sobald die Site fertig ist
+- Media-Assets und finalen Shop-Produktlink einpflegen
+- Deploy auf Dokploy
+- Funnel ggf. kürzen nach Review

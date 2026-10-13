@@ -1,0 +1,53 @@
+---
+import { resolveLocale, type Locale } from '../../i18n/config';
+import { getHome } from '../../i18n/home';
+
+interface Props {
+  locale?: Locale;
+}
+
+const { future } = getHome(resolveLocale(Astro.props.locale));
+---
+
+<section class="section-pad relative text-center" aria-labelledby="future-title">
+  <div class="container-x">
+    <div data-reveal>
+      <p class="eyebrow eyebrow--center">{future.eyebrow}</p>
+      <h2 id="future-title" class="display-italic mx-auto mt-8 max-w-[18ch] text-[clamp(38px,5.6vw,80px)] leading-[1.04] text-ivory">
+        {future.title}
+      </h2>
+      <p class="lead mx-auto mt-6 max-w-[36rem] text-mist">{future.intro}</p>
+    </div>
+
+    <ul class="mx-auto mt-14 max-w-[44rem]" data-reveal style="--reveal-delay:100ms">
+      {
+        future.questions.map((q, i) => (
+          <li
+            class="display py-2 text-[clamp(24px,3.2vw,44px)] leading-tight"
+            style={`color: rgba(244, 238, 228, ${0.35 + (i / (future.questions.length - 1)) * 0.65})`}
+          >
+            {q}
+          </li>
+        ))
+      }
+    </ul>
+
+    <div class="mx-auto mt-14 max-w-[40rem]" data-reveal>
+      <p class="lead text-cream">{future.closing[0]}</p>
+      <p class="display-italic gold-text mt-3 pb-1 text-[clamp(26px,3vw,40px)] leading-tight">{future.closing[1]}</p>
+    </div>
+
+    <div class="mx-auto mt-28 max-w-[52rem]" data-reveal>
+      <div class="hairline"></div>
+      <p class="eyebrow eyebrow--center mt-16">{future.bestEyebrow}</p>
+      <h3 class="display mt-8 text-[clamp(40px,6vw,92px)] leading-[0.95] text-ivory">{future.bestTitle}</h3>
+      <p class="lead mx-auto mt-8 max-w-[34rem] text-mist">{future.bestLead}</p>
+      <ul class="mt-8 flex flex-wrap justify-center gap-x-6 gap-y-2">
+        {future.bestList.map((item) => <li class="display-italic text-[clamp(20px,2vw,26px)] text-ivory/45 line-through decoration-1">{item}</li>)}
+      </ul>
+      <div class="mt-10 space-y-2">
+        {future.bestClosing.map((line, i) => <p class:list={[i === 1 ? 'display-italic text-[clamp(24px,2.6vw,34px)] text-gold-light' : 'lead text-cream']}>{line}</p>)}
+      </div>
+    </div>
+  </div>
+</section>

@@ -1,0 +1,48 @@
+---
+import { site } from '../config/site';
+
+interface Props {
+  /** white auf dunkel, black auf hell, gold als Alternative */
+  variant?: 'gold' | 'white' | 'black';
+  size?: 'sm' | 'lg';
+}
+
+const { variant = 'white', size = 'sm' } = Astro.props;
+
+const dimensions = {
+  gold: { width: 990, height: 278 },
+  white: { width: 1001, height: 320 },
+  black: { width: 995, height: 325 },
+} as const;
+
+const { width, height } = dimensions[variant];
+---
+
+<img
+  src={site.logo[variant]}
+  alt={site.brand}
+  width={width}
+  height={height}
+  decoding="async"
+  class:list={['wordmark', size === 'lg' && 'wordmark--lg']}
+/>
+
+<style>
+  .wordmark {
+    display: block;
+    height: 56px;
+    width: auto;
+    transform: translateY(2px);
+  }
+
+  .wordmark--lg {
+    height: 68px;
+    transform: none;
+  }
+
+  @media (max-width: 480px) {
+    .wordmark {
+      height: 46px;
+    }
+  }
+</style>

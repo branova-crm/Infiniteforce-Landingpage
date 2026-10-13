@@ -1,0 +1,38 @@
+---
+import CtaButton from '../CtaButton.astro';
+import { resolveLocale, type Locale } from '../../i18n/config';
+import { getHome } from '../../i18n/home';
+
+interface Props {
+  locale?: Locale;
+}
+
+const { final } = getHome(resolveLocale(Astro.props.locale));
+---
+
+<section class="surface-plum section-pad relative overflow-hidden text-center" aria-labelledby="final-title">
+  <div class="container-x relative">
+    <p class="eyebrow eyebrow--center" data-reveal>{final.eyebrow}</p>
+    <h2 id="final-title" class="mt-10" data-reveal>
+      <span class="display block text-[clamp(56px,11vw,168px)] leading-[0.88] text-ivory">{final.title}</span>
+      <span class="display-italic gold-text block pb-3 text-[clamp(56px,11vw,168px)] leading-[0.95]">{final.titleAccent}</span>
+    </h2>
+
+    <div class="mx-auto mt-12 max-w-[40rem] space-y-4" data-reveal>
+      <p class="display-italic text-[clamp(24px,2.6vw,32px)] text-cream">{final.lines[0]}</p>
+      <p class="lead text-mist">{final.lines[1]}</p>
+    </div>
+
+    <div class="mx-auto mt-12 max-w-[40rem]" data-reveal>
+      <div class="hairline"></div>
+      <p class="display mt-10 text-[clamp(20px,2.2vw,28px)] text-ivory/60">{final.statement[0]}</p>
+      <p class="display mt-2 text-[clamp(26px,3vw,40px)] text-ivory">{final.statement[1]}</p>
+    </div>
+
+    <div class="mt-12 flex flex-col items-center gap-5" data-reveal>
+      <CtaButton label={final.cta} />
+      <p class="text-[12px] tracking-[0.08em] text-mist">{final.note}</p>
+      <p class="label-caps mt-6 text-gold">{final.tagline}</p>
+    </div>
+  </div>
+</section>

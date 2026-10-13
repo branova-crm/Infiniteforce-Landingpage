@@ -1,17 +1,45 @@
 ---
-import { webinar } from '../config/webinar';
+import { resolveLocale, type Locale } from '../i18n/config';
+import { getHome } from '../i18n/home';
 
-const { offer } = webinar;
+interface Props {
+  locale?: Locale;
+}
+
+const copy = getHome(resolveLocale(Astro.props.locale));
 ---
 
-<a
-  href="#first-movers"
-  class="block border-b border-primary/25 bg-background-deep text-white transition-[background] duration-150 ease-[ease] hover:bg-[#17110a] hover:text-white"
->
-  <span class="mx-auto flex max-w-page flex-wrap items-center justify-center gap-2.5 px-5 py-[9px] text-center text-[12px] leading-[1.4] font-bold">
-    <span class="gold-fill gold-text-shadow hidden rounded-full px-2.5 py-1 text-[10px] font-black tracking-[0.14em] uppercase min-[760px]:inline-block">Private Release</span>
-    <span class="hidden min-[760px]:inline">First Movers: <span class="text-primary">{offer.advantage}</span> auf den {offer.name}</span>
-    <span class="min-[760px]:hidden">First Movers: <span class="text-primary">{offer.advantage}</span></span>
-    <span aria-hidden="true" class="text-primary">→</span>
-  </span>
+<a href="#offer" class="announce">
+  <span class="hidden md:inline">{copy.announce.desktop}</span>
+  <span class="md:hidden">{copy.announce.mobile}</span>
+  <span class="announce__cta">{copy.announce.cta} →</span>
 </a>
+
+<style>
+  .announce {
+    position: relative;
+    z-index: 61;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 6px 18px;
+    padding: 9px 20px;
+    background: linear-gradient(90deg, #b8935b, #d9bc8a 50%, #b8935b);
+    color: var(--if-espresso);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    line-height: 1.4;
+    text-align: center;
+    text-transform: uppercase;
+  }
+
+  .announce:hover {
+    color: var(--if-black);
+  }
+
+  .announce__cta {
+    border-bottom: 1px solid currentColor;
+  }
+</style>

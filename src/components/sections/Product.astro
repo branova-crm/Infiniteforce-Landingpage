@@ -1,0 +1,157 @@
+---
+import { Image } from 'astro:assets';
+import duo from '../../assets/images/baylan-duo.jpg';
+import { site } from '../../config/site';
+import { resolveLocale, type Locale } from '../../i18n/config';
+import { getHome } from '../../i18n/home';
+
+interface Props {
+  locale?: Locale;
+}
+
+const copy = getHome(resolveLocale(Astro.props.locale));
+const { product } = copy.hero;
+const { proof } = copy;
+---
+
+<section id="product" class="product-section relative" aria-label={product.name}>
+  <div class="container-x pt-[clamp(12px,2.4vw,32px)] pb-[clamp(48px,7vw,88px)]">
+    <article class="product mx-auto max-w-[880px]" data-reveal>
+      <div class="product__card grid md:grid-cols-[0.9fr_1.2fr]">
+        <figure class="relative min-h-[240px] overflow-hidden md:min-h-[280px]">
+          <Image
+            src={duo}
+            alt={product.imageAlt}
+            widths={[420, 640, 920]}
+            sizes="(min-width: 768px) 400px, 100vw"
+            loading="eager"
+            fetchpriority="high"
+            class="absolute inset-0 h-full w-full object-cover object-[50%_12%]"
+          />
+          <div class="product__shade absolute inset-0" aria-hidden="true"></div>
+          <span class="product__badge absolute top-5 left-5">{product.badge}</span>
+        </figure>
+
+        <div class="flex flex-col p-[clamp(22px,3.4vw,40px)]">
+          <p class="label-caps text-gold">{product.label}</p>
+          <h2 class="headline mt-2 text-[clamp(32px,3.8vw,48px)] leading-[0.98] text-ivory">{product.name}</h2>
+          <p class="headline-italic mt-2 text-[clamp(17px,1.6vw,21px)] text-gold-light">{product.claim}</p>
+
+          <ul class="mt-5 space-y-2.5">
+            {
+              product.features.map((f) => (
+                <li class="flex gap-3 text-[14px] leading-snug text-ivory">
+                  <svg class="mt-1 shrink-0 text-gold" width="14" height="12" viewBox="0 0 14 12" aria-hidden="true">
+                    <path d="M1 6.5l4 4L13 1.5" fill="none" stroke="currentColor" stroke-width="1.3" />
+                  </svg>
+                  {f}
+                </li>
+              ))
+            }
+          </ul>
+
+          <p class="mt-5 mb-6 text-[12px] text-mist">{product.by}</p>
+
+          <div class="hairline mt-auto"></div>
+          <p class="mt-5 flex flex-wrap items-baseline gap-x-3 gap-y-1">
+            <span class="headline gold-text text-[clamp(36px,3.6vw,48px)] leading-none">{site.offer.firstMoverPrice}</span>
+            <span class="text-[13px] text-mist">
+              {product.regularLabel} <s class="text-ivory/60">{site.offer.regularPrice}</s>
+            </span>
+          </p>
+          <p class="mt-2 text-[12.5px] text-mist">
+            {product.startLabel}: <span class="text-cream">{product.start}</span>
+          </p>
+        </div>
+      </div>
+    </article>
+  </div>
+
+  <div class="surface-ivory grain relative border-y border-gold/30">
+    <div class="container-x flex flex-col items-center gap-5 py-7 lg:flex-row lg:justify-between lg:gap-10">
+      <p class="label-caps shrink-0 text-gold-ink">{proof.label}</p>
+      <ul class="proof-list">
+        {proof.items.map((item) => <li>{item}</li>)}
+      </ul>
+    </div>
+  </div>
+</section>
+
+<style>
+  .product {
+    position: relative;
+  }
+
+  .product::before {
+    content: '';
+    position: absolute;
+    inset: 12px -12px -12px 12px;
+    border: 1px solid rgba(200, 164, 110, 0.45);
+    pointer-events: none;
+  }
+
+  .product__card {
+    position: relative;
+    overflow: hidden;
+    border: 1px solid rgba(200, 164, 110, 0.4);
+    background:
+      radial-gradient(ellipse 80% 70% at 100% 0%, rgba(200, 164, 110, 0.18), transparent 60%),
+      var(--if-espresso);
+    box-shadow: 0 50px 100px -40px rgba(0, 0, 0, 0.8);
+  }
+
+  .product__shade {
+    background: linear-gradient(180deg, transparent 55%, rgba(23, 17, 13, 0.7));
+  }
+
+  @media (min-width: 768px) {
+    .product__shade {
+      background: linear-gradient(90deg, transparent 60%, rgba(23, 17, 13, 0.85));
+    }
+  }
+
+  .product__badge {
+    padding: 6px 12px;
+    background: linear-gradient(135deg, #e0c592, #a98551);
+    color: var(--if-espresso);
+    font-size: 10px;
+    font-weight: 700;
+    letter-spacing: 0.22em;
+    text-transform: uppercase;
+  }
+
+  .proof-list {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 14px 24px;
+    text-align: center;
+  }
+
+  .proof-list li {
+    font-family: var(--if-font-headline);
+    font-size: clamp(16px, 1.6vw, 21px);
+    font-weight: 800;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--if-ink);
+  }
+
+  @media (min-width: 768px) {
+    .proof-list {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: center;
+      align-items: center;
+      gap: 12px 0;
+    }
+
+    .proof-list li + li::before {
+      content: '◆';
+      display: inline-block;
+      margin: 0 22px;
+      font-size: 7px;
+      vertical-align: middle;
+      color: var(--if-gold-deep);
+    }
+  }
+</style>

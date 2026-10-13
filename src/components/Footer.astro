@@ -1,24 +1,85 @@
 ---
-import { webinar } from '../config/webinar';
+import Wordmark from './Wordmark.astro';
+import { site } from '../config/site';
 import { resolveLocale, type Locale } from '../i18n/config';
 import { t } from '../i18n/ui';
+import { getHome } from '../i18n/home';
 
 interface Props {
   locale?: Locale;
 }
 
 const locale = resolveLocale(Astro.props.locale ?? Astro.currentLocale);
+const copy = getHome(locale);
+const homePath = locale === 'en' ? '/en/' : '/';
 const year = new Date().getFullYear();
+const legal = [
+  { href: locale === 'en' ? site.legal.imprintEn : site.legal.imprint, label: t(locale, 'imprint') },
+  { href: locale === 'en' ? site.legal.privacyEn : site.legal.privacy, label: t(locale, 'privacy') },
+  { href: locale === 'en' ? site.legal.cookiesEn : site.legal.cookies, label: t(locale, 'cookies') },
+];
 ---
 
-<footer class="relative bg-black/65 px-5 pt-9 pb-10">
-  <div class="mx-auto flex max-w-page flex-col items-center gap-[18px] text-center">
-    <img src="/logos/baylan-logo-white.png" alt="BAYLAN Med. Devices" width="600" height="238" loading="lazy" class="block h-[30px] w-auto opacity-80" />
-    <nav aria-label={t(locale, 'legalNav')} class="flex flex-wrap justify-center gap-x-[22px] gap-y-4 text-[12px]">
-      <a href={locale === 'en' ? webinar.legal.imprintEn : webinar.legal.imprint} class="text-white/55 hover:text-white">{t(locale, 'imprint')}</a>
-      <a href={locale === 'en' ? webinar.legal.privacyEn : webinar.legal.privacy} class="text-white/55 hover:text-white">{t(locale, 'privacy')}</a>
-      <a href={locale === 'en' ? webinar.legal.cookiesEn : webinar.legal.cookies} class="text-white/55 hover:text-white">{t(locale, 'cookies')}</a>
+<footer class="site-footer relative">
+  <div class="container-x grid gap-12 pt-20 pb-12 md:grid-cols-12">
+    <div class="md:col-span-5">
+      <a href={homePath} class="inline-block" aria-label={`${site.brand} – Home`}>
+        <Wordmark variant="white" size="lg" />
+      </a>
+      <p class="display-italic mt-8 text-[26px] leading-tight text-gold-light">{copy.footer.claim}</p>
+    </div>
+
+    <nav class="md:col-span-4" aria-label={copy.footer.nav}>
+      <p class="label-caps mb-5 text-gold">{copy.footer.nav}</p>
+      <ul class="grid gap-3">
+        {
+          copy.nav.links.map((link) => (
+            <li>
+              <a href={`${homePath}${link.href}`} class="site-footer__link">
+                {link.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
     </nav>
-    <p class="m-0 text-[11px] text-white/35">© {year} BAYLAN MED</p>
+
+    <nav class="md:col-span-3" aria-label={t(locale, 'legalNav')}>
+      <p class="label-caps mb-5 text-gold">{copy.footer.legal}</p>
+      <ul class="grid gap-3">
+        {
+          legal.map((item) => (
+            <li>
+              <a href={item.href} class="site-footer__link">
+                {item.label}
+              </a>
+            </li>
+          ))
+        }
+      </ul>
+    </nav>
+  </div>
+
+  <div class="container-x">
+    <div class="hairline"></div>
+    <p class="py-8 text-center text-[11px] tracking-[0.18em] text-ivory/45 uppercase">
+      © {year} {site.brand} · {copy.footer.rights}
+    </p>
   </div>
 </footer>
+
+<style>
+  .site-footer {
+    background: var(--if-black);
+  }
+
+  .site-footer__link {
+    font-size: 14px;
+    color: rgba(244, 238, 228, 0.66);
+    transition: color 0.2s;
+  }
+
+  .site-footer__link:hover {
+    color: var(--if-gold-light);
+  }
+</style>

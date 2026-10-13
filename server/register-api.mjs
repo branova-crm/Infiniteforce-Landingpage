@@ -14,10 +14,7 @@ const SMTP_SECURE =
     ? process.env.SMTP_SECURE === 'true' || process.env.SMTP_SECURE === '1'
     : SMTP_PORT === 465;
 
-const WEBINAR_DATE = process.env.WEBINAR_DATE || '15.10.2026';
-const WEBINAR_TIME = process.env.WEBINAR_TIME || '20:00 Uhr';
-const SITE_URL = (process.env.SITE_URL || 'https://webinar.baylan-med.de').replace(/\/$/, '');
-const CALENDAR_ICS_URL = `${SITE_URL}/the-success-seller-15-10-2026.ics`;
+const SITE_NAME = process.env.SITE_NAME || 'INFINITEFORCE';
 
 function readBody(req) {
   return new Promise((resolve, reject) => {
@@ -37,7 +34,7 @@ function readBody(req) {
   });
 }
 
-function validate(data) {
+function validate(data, isQuestion) {
   const errors = [];
   if (!data.name?.trim() || data.name.trim().length < 2) errors.push('name');
   if (!data.email?.trim() || !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(data.email.trim())) {
@@ -46,6 +43,10 @@ function validate(data) {
   const phone = String(data.telefon ?? data.phone ?? '').trim();
   const digits = phone.replace(/\D/g, '');
   if (!phone || digits.length < 6) errors.push('telefon');
+  if (isQuestion) {
+    const message = String(data.message ?? '').trim();
+    if (!message || message.length < 5) errors.push('message');
+  }
   return errors;
 }
 
@@ -63,32 +64,33 @@ function escapeHtml(value) {
     .replaceAll("'", '&#39;');
 }
 
-function buildOfficeEmail({ name, email, telefon }) {
+function buildOfficeEmail({ name, email, telefon, message, isQuestion }) {
   const rows = [
     ['Name', name],
     ['E-Mail', email],
     ['Telefon', telefon],
-    ['Webinar', `${WEBINAR_DATE} · ${WEBINAR_TIME}`],
   ];
+  if (isQuestion && message) rows.push(['Frage', message]);
 
   const rowHtml = rows
     .map(
       ([label, value], i) => `
       <tr>
         <td style="padding:12px 16px;font-family:Arial,Helvetica,sans-serif;font-size:13px;font-weight:700;color:#A87921;width:38%;border-top:${i === 0 ? '0' : '1px solid #EDE4D4'};vertical-align:top">${escapeHtml(label)}</td>
-        <td style="padding:12px 16px;font-family:Arial,Helvetica,sans-serif;font-size:14px;color:#251D0D;border-top:${i === 0 ? '0' : '1px solid #EDE4D4'};vertical-align:top">${escapeHtml(value)}</td>
+        <td style="padding:12px 16px;font-family:Arial,Helvetica,sans-serif;font-size:14px;color:#251D0D;border-top:${i === 0 ? '0' : '1px solid #EDE4D4'};vertical-align:top;white-space:pre-wrap">${escapeHtml(value)}</td>
       </tr>`,
     )
     .join('');
 
-  const text = [
-    'Neue Webinar-Anmeldung – BAYLAN.MED Business Webinar',
+  const title = isQuestion ? 'Neue Website-Frage' : 'Neue Anfrage';
+  const textLines = [
+    `${title} – ${SITE_NAME}`,
     '',
     `Name: ${name}`,
     `E-Mail: ${email}`,
     `Telefon: ${telefon}`,
-    `Webinar: ${WEBINAR_DATE} · ${WEBINAR_TIME}`,
-  ].join('\n');
+  ];
+  if (isQuestion && message) textLines.push(`Frage: ${message}`);
 
   const html = `<!DOCTYPE html>
 <html lang="de">
@@ -100,8 +102,8 @@ function buildOfficeEmail({ name, email, telefon }) {
         <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;background:#FFFFFF;border-radius:16px;overflow:hidden;border:1px solid #E6D7BC">
           <tr>
             <td style="background:#191307;padding:28px 24px;text-align:center">
-              <p style="margin:0 0 8px;font-family:Arial,Helvetica,sans-serif;font-size:11px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:#E0B76B">BAYLAN.MED Business Webinar</p>
-              <h1 style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:22px;line-height:1.3;color:#FFFFFF">Neue Webinar-Anmeldung</h1>
+              <p style="margin:0 0 8px;font-family:Arial,Helvetica,sans-serif;font-size:11px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:#E0B76B">${escapeHtml(SITE_NAME)}</p>
+              <h1 style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:22px;line-height:1.3;color:#FFFFFF">${escapeHtml(title)}</h1>
             </td>
           </tr>
           <tr>
@@ -109,7 +111,7 @@ function buildOfficeEmail({ name, email, telefon }) {
               <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="background:#FAF6EF;border-radius:12px;margin:12px 0">
                 ${rowHtml}
               </table>
-              <p style="margin:8px 0 0;font-family:Arial,Helvetica,sans-serif;font-size:12px;line-height:1.5;color:#7A7266">Antworten Sie direkt auf diese E-Mail – Reply-To ist auf die Teilnehmeradresse gesetzt.</p>
+              <p style="margin:8px 0 0;font-family:Arial,Helvetica,sans-serif;font-size:12px;line-height:1.5;color:#7A7266">Antworten Sie direkt auf diese E-Mail – Reply-To ist auf die Absenderadresse gesetzt.</p>
             </td>
           </tr>
         </table>
@@ -119,24 +121,22 @@ function buildOfficeEmail({ name, email, telefon }) {
 </body>
 </html>`;
 
-  return { text, html };
+  return { text: textLines.join('\n'), html };
 }
 
-function buildParticipantEmail({ name }) {
+function buildParticipantEmail({ name, isQuestion }) {
   const firstName = name.split(/\s+/)[0] || name;
+  const body = isQuestion
+    ? 'vielen Dank für deine Nachricht. Wir melden uns in Kürze bei dir.'
+    : 'vielen Dank für deine Anfrage. Wir melden uns in Kürze bei dir.';
+
   const text = [
     `Hallo ${firstName},`,
     '',
-    'vielen Dank für deine Anmeldung zum BAYLAN.MED Business Webinar.',
-    '',
-    `Termin: ${WEBINAR_DATE} · ${WEBINAR_TIME}`,
-    '',
-    `Zum Kalender hinzufügen: ${CALENDAR_ICS_URL}`,
-    '',
-    'Alle weiteren Informationen zum Webinar erhältst du in Kürze per E-Mail.',
+    body,
     '',
     'Herzliche Grüße',
-    'BAYLAN.MED',
+    SITE_NAME,
   ].join('\n');
 
   const html = `<!DOCTYPE html>
@@ -149,20 +149,15 @@ function buildParticipantEmail({ name }) {
         <table role="presentation" width="100%" cellpadding="0" cellspacing="0" style="max-width:560px;background:#FFFFFF;border-radius:16px;overflow:hidden;border:1px solid #E6D7BC">
           <tr>
             <td style="background:#191307;padding:28px 24px;text-align:center">
-              <p style="margin:0 0 8px;font-family:Arial,Helvetica,sans-serif;font-size:11px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:#E0B76B">BAYLAN.MED Business Webinar</p>
-              <h1 style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:22px;line-height:1.3;color:#FFFFFF">Du bist dabei</h1>
+              <p style="margin:0 0 8px;font-family:Arial,Helvetica,sans-serif;font-size:11px;font-weight:700;letter-spacing:0.16em;text-transform:uppercase;color:#E0B76B">${escapeHtml(SITE_NAME)}</p>
+              <h1 style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:22px;line-height:1.3;color:#FFFFFF">Danke für deine Nachricht</h1>
             </td>
           </tr>
           <tr>
             <td style="padding:28px 24px">
               <p style="margin:0 0 14px;font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:1.6;color:#251D0D">Hallo ${escapeHtml(firstName)},</p>
-              <p style="margin:0 0 14px;font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:1.6;color:#251D0D">vielen Dank für deine Anmeldung zum BAYLAN.MED Business Webinar.</p>
-              <p style="margin:0 0 18px;font-family:Arial,Helvetica,sans-serif;font-size:14px;font-weight:700;color:#A87921">${escapeHtml(WEBINAR_DATE)} · ${escapeHtml(WEBINAR_TIME)}</p>
-              <p style="margin:0 0 18px;font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:1.6;color:#251D0D">
-                <a href="${escapeHtml(CALENDAR_ICS_URL)}" style="color:#A87921;font-weight:700;text-decoration:underline">Termin im Kalender speichern</a>
-              </p>
-              <p style="margin:0 0 18px;font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:1.6;color:#251D0D">Alle weiteren Informationen zum Webinar erhältst du in Kürze per E-Mail.</p>
-              <p style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:1.6;color:#251D0D">Herzliche Grüße<br>BAYLAN.MED</p>
+              <p style="margin:0 0 18px;font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:1.6;color:#251D0D">${escapeHtml(body)}</p>
+              <p style="margin:0;font-family:Arial,Helvetica,sans-serif;font-size:15px;line-height:1.6;color:#251D0D">Herzliche Grüße<br>${escapeHtml(SITE_NAME)}</p>
             </td>
           </tr>
         </table>
@@ -228,7 +223,8 @@ const server = http.createServer(async (req, res) => {
       return;
     }
 
-    const errors = validate(data);
+    const isQuestion = data.type === 'question';
+    const errors = validate(data, isQuestion);
     if (errors.length) {
       json(res, 400, { ok: false, error: 'Validation failed', fields: errors });
       return;
@@ -237,25 +233,26 @@ const server = http.createServer(async (req, res) => {
     const name = data.name.trim();
     const email = data.email.trim();
     const telefon = String(data.telefon ?? data.phone ?? '').trim();
-    const office = buildOfficeEmail({ name, email, telefon });
-    const participant = buildParticipantEmail({ name });
+    const message = String(data.message ?? '').trim();
+    const office = buildOfficeEmail({ name, email, telefon, message, isQuestion });
+    const participant = buildParticipantEmail({ name, isQuestion });
 
     console.log(`[register-api] sending via ${SMTP_HOST}:${SMTP_PORT} (secure=${SMTP_SECURE}) → ${MAIL_TO}`);
     const transporter = createTransporter();
 
     await transporter.sendMail({
-      from: `"BAYLAN Webinar" <${MAIL_FROM}>`,
+      from: `"${SITE_NAME}" <${MAIL_FROM}>`,
       to: MAIL_TO,
       replyTo: email,
-      subject: `[Webinar-Anmeldung] ${name}`,
+      subject: isQuestion ? `[Website-Frage] ${name}` : `[Anfrage] ${name}`,
       text: office.text,
       html: office.html,
     });
 
     await transporter.sendMail({
-      from: `"BAYLAN.MED" <${MAIL_FROM}>`,
+      from: `"${SITE_NAME}" <${MAIL_FROM}>`,
       to: email,
-      subject: 'Deine Anmeldung zum BAYLAN.MED Business Webinar',
+      subject: isQuestion ? `Deine Frage an ${SITE_NAME}` : `Deine Anfrage an ${SITE_NAME}`,
       text: participant.text,
       html: participant.html,
     });

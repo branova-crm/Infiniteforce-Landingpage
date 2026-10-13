@@ -1,0 +1,27 @@
+---
+import TrailerVideo from '../ui/TrailerVideo.astro';
+import { site } from '../../config/site';
+import { resolveLocale, type Locale } from '../../i18n/config';
+import { getHome } from '../../i18n/home';
+
+interface Props {
+  locale?: Locale;
+}
+
+const { trailer } = getHome(resolveLocale(Astro.props.locale));
+---
+
+<section class="surface-dark section-pad-sm" aria-labelledby="trailer-title">
+  <div class="container-x grid items-center gap-12 lg:grid-cols-12 lg:gap-14">
+    <div class="lg:col-span-4" data-reveal>
+      <p class="eyebrow">{trailer.eyebrow}</p>
+      <h2 id="trailer-title" class="display-italic mt-6 text-[clamp(36px,4.4vw,58px)] leading-[1.04] text-ivory">
+        {trailer.title}
+      </h2>
+      <p class="body-copy mt-6 text-mist">{trailer.text}</p>
+    </div>
+    <div class="lg:col-span-8" data-reveal style="--reveal-delay:100ms">
+      <TrailerVideo src={site.media.trailer.src} poster={site.media.trailer.poster} playLabel={trailer.play} />
+    </div>
+  </div>
+</section>

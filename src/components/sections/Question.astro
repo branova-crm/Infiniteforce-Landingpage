@@ -1,0 +1,73 @@
+---
+import { resolveLocale, type Locale } from '../../i18n/config';
+import { getHome } from '../../i18n/home';
+
+interface Props {
+  locale?: Locale;
+}
+
+const { question } = getHome(resolveLocale(Astro.props.locale));
+---
+
+<section class="surface-ivory grain section-pad on-light" aria-labelledby="question-title">
+  <div class="container-x">
+    <div class="mx-auto max-w-[60rem] text-center" data-reveal>
+      <p class="eyebrow eyebrow--center">{question.eyebrow}</p>
+      <h2 id="question-title" class="display-italic mt-8 text-[clamp(36px,5.2vw,74px)] leading-[1.04] text-ink">
+        {question.title}
+      </h2>
+    </div>
+
+    <div class="mt-20 grid gap-14 lg:grid-cols-12 lg:gap-16">
+      <div class="lg:col-span-6" data-reveal>
+        <div class="space-y-4">
+          {question.story.map((p) => <p class="lead">{p}</p>)}
+        </div>
+        <ul class="mt-8 space-y-3 border-l border-gold-deep/50 pl-6">
+          {question.storyList.map((line) => <li class="font-display text-[22px] leading-snug text-ink">{line}</li>)}
+        </ul>
+        <div class="mt-8 space-y-4">
+          {question.storyEnd.map((p) => <p class="body-copy">{p}</p>)}
+        </div>
+        <ul class="mt-10 grid gap-px bg-ink/10">
+          {
+            question.loopList.map((line) => (
+              <li class="bg-ivory py-4 font-display text-[clamp(20px,2vw,24px)] text-ink/55 line-through decoration-gold-deep/60 decoration-1">
+                {line}
+              </li>
+            ))
+          }
+        </ul>
+      </div>
+
+      <div class="lg:col-span-6" data-reveal style="--reveal-delay:120ms">
+        <div class="question__card p-[clamp(28px,4vw,52px)]">
+          <p class="body-copy text-mist">{question.notQuestion}</p>
+          <p class="label-caps mt-8 text-gold">{question.realQuestionLead}</p>
+          <p class="display gold-text mt-4 text-[clamp(30px,3.6vw,50px)] leading-[1.02]">{question.realQuestion}</p>
+          <div class="hairline mt-10"></div>
+          <p class="body-copy mt-8 text-mist">{question.shiftLead}</p>
+          <ul class="mt-6 grid gap-x-8 gap-y-3 sm:grid-cols-2">
+            {
+              question.shifts.map((s) => (
+                <li class="flex items-baseline gap-3 text-[15px] text-ivory">
+                  <span class="text-[9px] text-gold" aria-hidden="true">◆</span>
+                  {s}
+                </li>
+              ))
+            }
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<style>
+  .question__card {
+    background:
+      radial-gradient(ellipse 80% 60% at 100% 0%, rgba(200, 164, 110, 0.16), transparent 60%),
+      var(--if-espresso);
+    color: var(--if-ivory);
+  }
+</style>
