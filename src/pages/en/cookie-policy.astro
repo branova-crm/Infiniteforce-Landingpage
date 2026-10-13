@@ -1,0 +1,15 @@
+---
+import LegalPage from '../../components/LegalPage.astro';
+import cookiesHtml from '../../content/legal/cookies.html?raw';
+
+const contentHtml = cookiesHtml.replaceAll('href="/datenschutz/"', 'href="/en/privacy/"');
+---
+
+<LegalPage
+  locale="en"
+  title="Cookie Policy | BAYLAN.MED"
+  description="Cookie policy: This website does not use cookies and does not require a cookie banner."
+  heading="Cookie Policy"
+  contentHtml={contentHtml}
+  backHref="/en/"
+/>

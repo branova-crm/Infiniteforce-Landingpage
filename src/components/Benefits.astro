@@ -1,0 +1,39 @@
+---
+import CtaButton from './CtaButton.astro';
+import { resolveLocale, type Locale } from '../i18n/config';
+import { getUi } from '../i18n/ui';
+
+interface Props {
+  locale?: Locale;
+}
+
+const locale = resolveLocale(Astro.props.locale);
+const copy = getUi(locale);
+---
+
+<section aria-labelledby="inhalte-title" class="bg-light px-5 py-[clamp(52px,7vw,104px)] text-ink-soft">
+  <div class="mx-auto max-w-page">
+    <div class="relative overflow-hidden rounded-panel border border-primary-deep/25 bg-white px-[clamp(20px,4.5vw,56px)] py-[clamp(28px,4.5vw,56px)]">
+      <h2 id="inhalte-title" class="relative m-0 mb-2.5 text-center text-[length:clamp(26px,3.2vw,40px)] leading-[1.1] font-black tracking-[-0.015em] text-balance text-ink uppercase">
+        {copy.benefitsTitleBefore}{' '}
+        <span class="text-primary-text">{copy.benefitsTitleAccent}</span>
+      </h2>
+      <p class="relative mx-auto mt-0 mb-[clamp(28px,4vw,44px)] max-w-[560px] text-center text-[15px] leading-[1.6] text-body">{copy.benefitsLead}</p>
+      <div class="relative grid grid-cols-[repeat(auto-fit,minmax(240px,1fr))] gap-[clamp(24px,3vw,32px)]">
+        {
+          copy.benefits.map((benefit) => (
+            <div class="flex flex-col items-center px-1.5 py-1 text-center">
+              <span class="gold-fill gold-text-shadow mb-4 inline-block rounded-badge px-3.5 py-[7px] text-[12px] font-black tracking-[0.14em] uppercase">{benefit.tag}</span>
+              <h3 class="m-0 mb-2.5 text-[18px] leading-[1.3] font-extrabold tracking-[0.02em] text-balance text-ink uppercase">{benefit.title}</h3>
+              <p class="m-0 max-w-[300px] text-[15px] leading-[1.6] text-body">{benefit.text}</p>
+            </div>
+          ))
+        }
+      </div>
+      <p class="relative mx-auto mt-[clamp(32px,4vw,44px)] mb-0 max-w-[620px] border-t border-primary/25 pt-[26px] text-center text-[17px] leading-[1.45] font-extrabold text-balance text-primary-text">{copy.benefitsFooter}</p>
+    </div>
+    <div class="mt-8 text-center">
+      <CtaButton label={copy.ctaLabel} class="inline-block px-[38px] py-[17px] text-[15px]" />
+    </div>
+  </div>
+</section>

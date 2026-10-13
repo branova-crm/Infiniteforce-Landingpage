@@ -1,0 +1,25 @@
+---
+import CtaButton from './CtaButton.astro';
+import LanguageSwitcher from './LanguageSwitcher.astro';
+import { resolveLocale, type Locale } from '../i18n/config';
+import { t } from '../i18n/ui';
+
+interface Props {
+  locale?: Locale;
+}
+
+const locale = resolveLocale(Astro.props.locale ?? Astro.currentLocale);
+---
+
+<header class="border-b border-primary/15 bg-black/55">
+  <div class="mx-auto flex max-w-page items-center justify-between gap-3 px-5 py-2.5">
+    <img src="/logos/baylan-logo-white.png" alt="BAYLAN Med. Devices" width="600" height="238" class="block h-9 w-auto" />
+    <span class="hidden text-[12px] font-semibold tracking-[0.08em] text-white/65 uppercase min-[760px]:inline">
+      {t(locale, 'headerTag')}
+    </span>
+    <div class="flex shrink-0 items-center gap-2.5 min-[480px]:gap-3">
+      <LanguageSwitcher locale={locale} />
+      <CtaButton label={t(locale, 'headerCta')} class="btn-header inline-block shrink-0 rounded-input px-[18px] py-[11px] text-[13px]" />
+    </div>
+  </div>
+</header>

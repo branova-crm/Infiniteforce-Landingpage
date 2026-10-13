@@ -1,0 +1,192 @@
+---
+/**
+ * Feine Partikel (aus Torsten/fx-sparkles), Standardfarbe BAYLAN-Gold.
+ */
+type Props = {
+  particleColor?: string;
+  minSize?: string;
+  maxSize?: string;
+  density?: string;
+  speed?: string;
+  maxParticles?: string;
+  mask?: string;
+  class?: string;
+};
+
+const {
+  particleColor = '#E0B76B',
+  minSize = '0.6',
+  maxSize = '2',
+  density = '0.00055',
+  speed = '1',
+  maxParticles = '700',
+  mask = 'radial-gradient(ellipse 40% 100% at 50% 0%, #000 0%, rgba(0,0,0,0.8) 42%, transparent 100%)',
+  class: className,
+} = Astro.props;
+---
+
+<fx-sparkles
+  class:list={['fx-sparkles', className]}
+  particle-color={particleColor}
+  min-size={minSize}
+  max-size={maxSize}
+  density={density}
+  speed={speed}
+  max-particles={maxParticles}
+  mask={mask}
+  aria-hidden="true"
+></fx-sparkles>
+
+<script>
+  (() => {
+    if (customElements.get('fx-sparkles')) return;
+
+    class FxSparkles extends HTMLElement {
+      connectedCallback() {
+        if ((this as FxSparkles & { _init?: boolean })._init) return;
+        (this as FxSparkles & { _init?: boolean })._init = true;
+
+        this.style.position = this.style.position || 'absolute';
+        this.style.display = 'block';
+        this.style.overflow = 'hidden';
+        this.style.pointerEvents = 'none';
+
+        const mask =
+          this.getAttribute('mask') ||
+          'radial-gradient(ellipse 40% 100% at 50% 0%, #000 0%, rgba(0,0,0,0.8) 42%, transparent 100%)';
+        this.style.webkitMaskImage = mask;
+        this.style.maskImage = mask;
+
+        const canvas = document.createElement('canvas');
+        canvas.style.display = 'block';
+        this.appendChild(canvas);
+        const ctx = canvas.getContext('2d');
+        if (!ctx) return;
+
+        const motion = window.matchMedia('(prefers-reduced-motion: reduce)');
+        const color = this.getAttribute('particle-color') || '#E0B76B';
+        const minSize = parseFloat(this.getAttribute('min-size') || '0.6');
+        const maxSize = parseFloat(this.getAttribute('max-size') || '2');
+        const density = parseFloat(this.getAttribute('density') || '0.00055');
+        const speed = parseFloat(this.getAttribute('speed') || '1');
+        const maxParticles = parseInt(this.getAttribute('max-particles') || '700', 10);
+
+        const n = parseInt(color.slice(1), 16);
+        const R = (n >> 16) & 255;
+        const G = (n >> 8) & 255;
+        const B = n & 255;
+
+        const host = this;
+        let W = 1;
+        let H = 1;
+        let dpr = 1;
+        let frame = 0;
+        let visible = true;
+        let last = performance.now();
+        let parts: { x: number; y: number; r: number; vx: number; vy: number; a: number; da: number }[] = [];
+
+        const spawn = () => {
+          const ang = Math.random() * Math.PI * 2;
+          const v = (0.1 + Math.random() * 0.9) * 6 * speed;
+          return {
+            x: Math.random() * W,
+            y: Math.random() * H,
+            r: minSize + Math.random() * (maxSize - minSize),
+            vx: Math.cos(ang) * v,
+            vy: Math.sin(ang) * v,
+            a: 0.25 + Math.random() * 0.75,
+            da: (0.25 + Math.random() * 0.45) * (Math.random() < 0.5 ? -1 : 1),
+          };
+        };
+
+        const populate = () => {
+          const target = Math.min(maxParticles, Math.round(W * H * density));
+          while (parts.length < target) parts.push(spawn());
+          parts.length = target;
+        };
+
+        const draw = (dt: number) => {
+          ctx.clearRect(0, 0, W, H);
+          for (let i = 0; i < parts.length; i++) {
+            const p = parts[i];
+            if (dt) {
+              p.x += p.vx * dt;
+              p.y += p.vy * dt;
+              if (p.x < -2) p.x = W + 2;
+              else if (p.x > W + 2) p.x = -2;
+              if (p.y < -2) p.y = H + 2;
+              else if (p.y > H + 2) p.y = -2;
+              p.a += p.da * dt;
+              if (p.a > 1) {
+                p.a = 1;
+                p.da = -Math.abs(p.da);
+              } else if (p.a < 0.15) {
+                p.a = 0.15;
+                p.da = Math.abs(p.da);
+              }
+            }
+            ctx.fillStyle = `rgba(${R},${G},${B},${p.a})`;
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+            ctx.fill();
+          }
+        };
+
+        const resize = () => {
+          const b = host.getBoundingClientRect();
+          dpr = Math.min(2, window.devicePixelRatio || 1);
+          W = Math.max(1, b.width);
+          H = Math.max(1, b.height);
+          canvas.width = Math.round(W * dpr);
+          canvas.height = Math.round(H * dpr);
+          canvas.style.width = `${W}px`;
+          canvas.style.height = `${H}px`;
+          ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+          parts = parts.filter((p) => p.x <= W && p.y <= H);
+          populate();
+          draw(0);
+        };
+
+        const tick = (t: number) => {
+          const dt = Math.min(0.05, (t - last) / 1000);
+          last = t;
+          draw(dt);
+          frame = visible && !document.hidden && !motion.matches ? requestAnimationFrame(tick) : 0;
+        };
+
+        new ResizeObserver(resize).observe(this);
+        new IntersectionObserver((e) => {
+          visible = e[0] ? e[0].isIntersecting : true;
+          if (visible && !frame) {
+            last = performance.now();
+            frame = requestAnimationFrame(tick);
+          }
+          if (!visible && frame) {
+            cancelAnimationFrame(frame);
+            frame = 0;
+          }
+        }).observe(this);
+        document.addEventListener('visibilitychange', () => {
+          if (!document.hidden && visible && !frame) {
+            last = performance.now();
+            frame = requestAnimationFrame(tick);
+          }
+        });
+        resize();
+        frame = requestAnimationFrame(tick);
+      }
+    }
+
+    customElements.define('fx-sparkles', FxSparkles);
+  })();
+</script>
+
+<style>
+  .fx-sparkles {
+    position: absolute;
+    inset: 0;
+    display: block;
+    overflow: hidden;
+    pointer-events: none;
+  }
+</style>

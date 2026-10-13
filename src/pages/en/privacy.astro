@@ -1,0 +1,15 @@
+---
+import LegalPage from '../../components/LegalPage.astro';
+import datenschutzHtml from '../../content/legal/datenschutz.html?raw';
+
+const contentHtml = datenschutzHtml.replaceAll('href="/cookie-richtlinien/"', 'href="/en/cookie-policy/"');
+---
+
+<LegalPage
+  locale="en"
+  title="Privacy Policy | BAYLAN.MED"
+  description="Privacy policy for the BAYLAN.MED webinar website."
+  heading="Privacy Policy"
+  contentHtml={contentHtml}
+  backHref="/en/"
+/>

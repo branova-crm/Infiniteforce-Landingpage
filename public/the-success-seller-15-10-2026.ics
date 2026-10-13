@@ -1,0 +1,36 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//BAYLAN MED//THE SUCCESS SELLER Webinar//DE
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:THE SUCCESS SELLER
+BEGIN:VEVENT
+UID:the-success-seller-20261015T200000@webinar.baylan-med.de
+DTSTAMP:20261012T181328Z
+DTSTART:20261015T180000Z
+DTEND:20261015T190000Z
+SUMMARY:THE SUCCESS SELLER | Kostenloses BAYLAN MED Webinar
+DESCRIPTION:Kostenloses Webinar THE SUCCESS SELLER mit Gökhan Baylan und P
+ atricia Baylan-Paulus. Themen: Mindset\, Sales\, Umsatz und Wachstum.\n\nZ
+ oom-Zugang: https://us06web.zoom.us/j/86326839472?pwd=9ClvaCtA47wwOy3QhBHe
+ ecL6bbhi91.1\n\nStart: 20:00 Uhr (Deutschland). Hinweis: Die tatsächliche
+  Endzeit ist nicht bekannt\; im Kalender wurde vorläufig 21:00 Uhr einget
+ ragen.
+LOCATION:https://us06web.zoom.us/j/86326839472?pwd=9ClvaCtA47wwOy3QhBHeecL6
+ bbhi91.1
+URL:https://us06web.zoom.us/j/86326839472?pwd=9ClvaCtA47wwOy3QhBHeecL6bbhi9
+ 1.1
+STATUS:CONFIRMED
+TRANSP:OPAQUE
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Erinnerung: THE SUCCESS SELLER startet morgen um 20:00 Uhr.
+TRIGGER:-P1D
+END:VALARM
+BEGIN:VALARM
+ACTION:DISPLAY
+DESCRIPTION:Erinnerung: THE SUCCESS SELLER startet in 2 Stunden.
+TRIGGER:-PT2H
+END:VALARM
+END:VEVENT
+END:VCALENDAR

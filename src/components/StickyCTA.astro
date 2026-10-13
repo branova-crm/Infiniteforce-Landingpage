@@ -1,0 +1,60 @@
+---
+import CtaButton from './CtaButton.astro';
+import { webinar } from '../config/webinar';
+import { resolveLocale, type Locale } from '../i18n/config';
+import { getUi } from '../i18n/ui';
+
+interface Props {
+  locale?: Locale;
+}
+
+const locale = resolveLocale(Astro.props.locale);
+const copy = getUi(locale);
+---
+
+<div data-sticky-cta class="sticky-bar fixed right-0 bottom-0 left-0 z-70 border-t border-primary/30 px-3.5 pt-2.5 pb-[calc(10px_+_env(safe-area-inset-bottom))]" hidden>
+  <div class="mx-auto flex max-w-[560px] items-center gap-3">
+    <div class="flex min-w-0 flex-[0_1_auto] flex-col gap-0.5 text-[11px] leading-[1.3] text-white/70">
+      <span class="font-extrabold text-white [overflow-wrap:anywhere]">{webinar.date}</span>
+      <span class="[overflow-wrap:anywhere]">{webinar.time}</span>
+    </div>
+    <CtaButton shine label={copy.ctaLabel} class="btn-sticky block flex-[1_0_auto] px-3.5 py-[15px] text-center text-[14px]" />
+  </div>
+</div>
+
+<script>
+  const bar = document.querySelector<HTMLElement>('[data-sticky-cta]');
+  const heroCta = document.querySelector<HTMLElement>('[data-hero-cta]');
+
+  if (bar && heroCta) {
+    let registered = false;
+    let modalOpen = false;
+    let frame = 0;
+
+    const update = () => {
+      frame = 0;
+      const show =
+        window.innerWidth < 760 &&
+        !registered &&
+        !modalOpen &&
+        heroCta.getBoundingClientRect().bottom < 0;
+      bar.hidden = !show;
+    };
+
+    const schedule = () => {
+      if (!frame) frame = requestAnimationFrame(update);
+    };
+
+    window.addEventListener('scroll', schedule, { passive: true });
+    window.addEventListener('resize', schedule);
+    document.addEventListener('webinar:registered', () => {
+      registered = true;
+      update();
+    });
+    document.addEventListener('webinar:modal', ((event: CustomEvent<{ open: boolean }>) => {
+      modalOpen = event.detail.open;
+      update();
+    }) as EventListener);
+    update();
+  }
+</script>

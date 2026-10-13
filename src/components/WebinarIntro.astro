@@ -1,0 +1,176 @@
+---
+import FxSparkles from './ui/fx-sparkles.astro';
+import { resolveLocale, type Locale } from '../i18n/config';
+import { getUi } from '../i18n/ui';
+
+interface Props {
+  locale?: Locale;
+}
+
+const locale = resolveLocale(Astro.props.locale);
+const copy = getUi(locale);
+---
+
+<section aria-labelledby="tiefer-title" class="intro-section relative overflow-hidden bg-light px-5 py-[clamp(52px,7vw,104px)] text-ink-soft">
+  <div class="intro-glow" aria-hidden="true">
+    <div class="intro-glow__line intro-glow__line--soft"></div>
+    <div class="intro-glow__line intro-glow__line--core"></div>
+    <div class="intro-glow__line intro-glow__line--accent"></div>
+    <div class="intro-glow__haze"></div>
+    <div class="intro-glow__sparkles">
+      <FxSparkles particleColor="#E0B76B" density="0.0007" minSize="0.7" maxSize="2.2" />
+    </div>
+  </div>
+
+  <div class="relative mx-auto grid max-w-[1040px] grid-cols-1 items-end gap-[clamp(24px,3vw,56px)] min-[780px]:grid-cols-2">
+    <div class="min-w-0">
+      <p class="m-0 mb-4 text-[12px] font-extrabold tracking-[0.18em] text-primary-text uppercase">{copy.introEyebrow}</p>
+      <h2
+        id="tiefer-title"
+        data-reveal
+        class="m-0 text-[length:clamp(30px,3.8vw,48px)] leading-[1.08] font-black tracking-[-0.02em] text-ink uppercase"
+      >
+        <span class="intro-title-stack">
+          <span class="intro-title-stack__lead">{copy.introLead}</span>
+          <span class="max-hit text-shine-gold" data-shine={copy.introMaximum}><span class="text-shine-gold__label">{copy.introMaximum}</span></span>
+          <span class="intro-title-stack__tail">{copy.introTail}</span>
+        </span>
+      </h2>
+    </div>
+    <div data-reveal data-reveal-delay class="flex min-w-0 flex-col gap-4">
+      <p class="m-0 font-serif text-[length:clamp(24px,2.5vw,31px)] leading-[1.22] text-pretty text-primary-text italic">{copy.introItalic}</p>
+      <p class="m-0 max-w-[460px] text-[16px] leading-[1.65] text-pretty text-body">{copy.introBody1}</p>
+      <p class="m-0 max-w-[460px] text-[16px] leading-[1.65] text-pretty text-body">{copy.introBody2}</p>
+    </div>
+  </div>
+</section>
+
+<script>
+  const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  const nodes = document.querySelectorAll<HTMLElement>('[data-reveal]');
+  if (reduced) {
+    nodes.forEach((el) => el.classList.add('is-in'));
+  } else {
+    const io = new IntersectionObserver(
+      (entries) => {
+        entries.forEach((entry) => {
+          if (!entry.isIntersecting) return;
+          entry.target.classList.add('is-in');
+          io.unobserve(entry.target);
+        });
+      },
+      { threshold: 0.2, rootMargin: '0px 0px -8% 0px' },
+    );
+    nodes.forEach((el) => io.observe(el));
+  }
+</script>
+
+<style>
+  .intro-glow {
+    position: absolute;
+    inset: 0 0 auto;
+    height: clamp(160px, 22vw, 280px);
+    pointer-events: none;
+  }
+
+  .intro-glow__sparkles {
+    position: absolute;
+    inset: 0;
+  }
+
+  .intro-glow__line {
+    position: absolute;
+    top: 0;
+    left: 12%;
+    right: 12%;
+  }
+
+  .intro-glow__line--soft {
+    height: 3px;
+    filter: blur(3px);
+    background: linear-gradient(90deg, rgba(224, 183, 107, 0), #e0b76b 50%, rgba(224, 183, 107, 0));
+  }
+
+  .intro-glow__line--core {
+    height: 1px;
+    background: linear-gradient(90deg, rgba(240, 197, 122, 0), #f0c57a 50%, rgba(240, 197, 122, 0));
+  }
+
+  .intro-glow__line--accent {
+    left: 32%;
+    right: 32%;
+    height: 6px;
+    filter: blur(4px);
+    background: linear-gradient(90deg, rgba(240, 197, 122, 0), #f5d78a 50%, rgba(240, 197, 122, 0));
+  }
+
+  .intro-glow__haze {
+    position: absolute;
+    left: 18%;
+    right: 18%;
+    top: -40px;
+    height: 120px;
+    filter: blur(12px);
+    background: radial-gradient(ellipse at 50% 50%, rgba(224, 183, 107, 0.38), rgba(201, 149, 69, 0) 72%);
+  }
+
+  @media (prefers-reduced-motion: no-preference) {
+    .intro-glow__line--accent,
+    .intro-glow__haze {
+      animation: intro-glow-pulse 4.5s ease-in-out infinite;
+    }
+  }
+
+  @keyframes intro-glow-pulse {
+    0%,
+    100% {
+      opacity: 0.6;
+    }
+    50% {
+      opacity: 1;
+    }
+  }
+
+  [data-reveal] {
+    opacity: 0;
+    transform: translateY(32px);
+    transition:
+      opacity 1s cubic-bezier(0.2, 0.7, 0.2, 1),
+      transform 1s cubic-bezier(0.2, 0.7, 0.2, 1);
+  }
+
+  [data-reveal][data-reveal-delay] {
+    transition-delay: 0.12s;
+  }
+
+  [data-reveal].is-in {
+    opacity: 1;
+    transform: none;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    [data-reveal] {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+
+  .intro-title-stack {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 0.02em;
+  }
+
+  .intro-title-stack__lead,
+  .intro-title-stack__tail {
+    display: block;
+  }
+
+  .max-hit {
+    font-size: 1.45em;
+    line-height: 0.95;
+    color: var(--bm-ink);
+  }
+</style>

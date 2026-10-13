@@ -1,0 +1,17 @@
+---
+import { webinar } from '../config/webinar';
+
+const { offer } = webinar;
+---
+
+<a
+  href="#first-movers"
+  class="block border-b border-primary/25 bg-background-deep text-white transition-[background] duration-150 ease-[ease] hover:bg-[#17110a] hover:text-white"
+>
+  <span class="mx-auto flex max-w-page flex-wrap items-center justify-center gap-2.5 px-5 py-[9px] text-center text-[12px] leading-[1.4] font-bold">
+    <span class="gold-fill gold-text-shadow hidden rounded-full px-2.5 py-1 text-[10px] font-black tracking-[0.14em] uppercase min-[760px]:inline-block">Private Release</span>
+    <span class="hidden min-[760px]:inline">First Movers: <span class="text-primary">{offer.advantage}</span> auf den {offer.name}</span>
+    <span class="min-[760px]:hidden">First Movers: <span class="text-primary">{offer.advantage}</span></span>
+    <span aria-hidden="true" class="text-primary">→</span>
+  </span>
+</a>

@@ -1,0 +1,43 @@
+---
+/**
+ * Gemeinsame Landingpage für DE und EN.
+ */
+import Layout from '../layouts/Layout.astro';
+import Header from '../components/Header.astro';
+import Hero from '../components/Hero.astro';
+import FirstMovers from '../components/FirstMovers.astro';
+import WebinarIntro from '../components/WebinarIntro.astro';
+import Benefits from '../components/Benefits.astro';
+import Speakers from '../components/Speakers.astro';
+import RegistrationForm from '../components/RegistrationForm.astro';
+import FinalCTA from '../components/FinalCTA.astro';
+import Footer from '../components/Footer.astro';
+import StickyCTA from '../components/StickyCTA.astro';
+import RegistrationModal from '../components/RegistrationModal.astro';
+import { webinar } from '../config/webinar';
+import { resolveLocale, type Locale } from '../i18n/config';
+import { getUi } from '../i18n/ui';
+
+interface Props {
+  locale?: Locale;
+}
+
+const locale = resolveLocale(Astro.props.locale);
+const copy = getUi(locale);
+---
+
+<Layout locale={locale} title={copy.seoTitle} description={copy.seoDescription}>
+  <Header locale={locale} />
+  <main>
+    <Hero locale={locale} />
+    <WebinarIntro locale={locale} />
+    <Benefits locale={locale} />
+    <Speakers locale={locale} />
+    <RegistrationForm locale={locale} />
+    <FinalCTA locale={locale} />
+    {webinar.offer.enabled && <FirstMovers locale={locale} />}
+  </main>
+  <Footer locale={locale} />
+  <StickyCTA locale={locale} />
+  <RegistrationModal locale={locale} />
+</Layout>

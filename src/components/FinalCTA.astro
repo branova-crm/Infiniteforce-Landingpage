@@ -1,0 +1,31 @@
+---
+import CtaButton from './CtaButton.astro';
+import { webinar } from '../config/webinar';
+import { resolveLocale, type Locale } from '../i18n/config';
+import { getUi } from '../i18n/ui';
+
+interface Props {
+  locale?: Locale;
+}
+
+const locale = resolveLocale(Astro.props.locale);
+const copy = getUi(locale);
+---
+
+<section aria-labelledby="abschluss-title" class="final-bg relative border-t border-primary/15 px-5 py-[clamp(60px,8vw,120px)] text-center">
+  <div class="mx-auto max-w-[840px]">
+    <h2 id="abschluss-title" class="m-0 mb-[26px] text-[length:clamp(28px,4vw,50px)] leading-[1.08] font-black tracking-[-0.02em] text-balance uppercase">
+      <span class="block">{copy.finalLine1}</span>
+      <span class="block text-primary-text">{copy.finalLine2}</span>
+    </h2>
+    <p aria-label={`Mindset, Sales, ${copy.marqueeRevenue}`} class="m-0 mb-[34px] flex flex-wrap justify-center gap-x-[22px] gap-y-2 text-[12px] font-extrabold tracking-[0.14em] text-primary-text uppercase">
+      <span>Mindset</span>
+      <span aria-hidden="true" class="text-primary-deep/50">✦</span>
+      <span>Sales</span>
+      <span aria-hidden="true" class="text-primary-deep/50">✦</span>
+      <span>{copy.marqueeRevenue}</span>
+    </p>
+    <CtaButton label={copy.ctaLabel} class="inline-block px-11 py-[19px] text-[16px]" />
+    <p class="m-0 mt-4 text-[13px] leading-[1.5] text-body">{webinar.date} · {webinar.time}</p>
+  </div>
+</section>

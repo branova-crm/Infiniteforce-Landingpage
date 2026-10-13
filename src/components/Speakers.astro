@@ -1,0 +1,51 @@
+---
+import { Image } from 'astro:assets';
+import { webinar } from '../config/webinar';
+import { resolveLocale, type Locale } from '../i18n/config';
+import { getUi } from '../i18n/ui';
+import goekhanImg from '../assets/images/goekhan-baylan.jpg';
+import patriciaImg from '../assets/images/patricia-baylan.jpg';
+
+interface Props {
+  locale?: Locale;
+}
+
+const locale = resolveLocale(Astro.props.locale);
+const copy = getUi(locale);
+const { goekhan, patricia } = webinar.speakers;
+
+const speakers = [
+  { ...goekhan, bio: copy.goekhanBio, image: goekhanImg, frameClass: 'bg-light-photo', imageClass: 'object-[center_25%]', textClass: '' },
+  { ...patricia, bio: copy.patriciaBio, image: patriciaImg, frameClass: 'bg-light-photo', imageClass: 'object-[center_20%]', textClass: 'italic' },
+];
+---
+
+<section aria-labelledby="speaker-title" class="bg-light px-5 py-[clamp(52px,7vw,104px)] text-ink-soft">
+  <div class="mx-auto max-w-[920px]">
+    <h2 id="speaker-title" class="m-0 mb-2.5 text-center text-[length:clamp(26px,3.2vw,40px)] leading-[1.1] font-black tracking-[-0.015em] text-balance text-ink uppercase">
+      {copy.speakersTitleBefore}{' '}
+      <span class="text-primary-text">{copy.speakersTitleAccent}</span>
+    </h2>
+    <p class="mx-auto mt-0 mb-[clamp(28px,4vw,44px)] max-w-[560px] text-center text-[15px] leading-[1.6] text-body">{copy.speakersLead}</p>
+    <div class="grid grid-cols-2 gap-[clamp(14px,3.5vw,40px)]">
+      {
+        speakers.map((speaker) => (
+          <article class="min-w-0">
+            <div class:list={['aspect-square overflow-hidden rounded-card border border-primary-deep/28 shadow-[0_8px_28px_rgba(0,0,0,0.08)]', speaker.frameClass]}>
+              <Image
+                src={speaker.image}
+                alt={speaker.name}
+                widths={[320, 480, 640, 800]}
+                sizes="(min-width: 960px) 440px, calc(50vw - 27px)"
+                class={`block h-full w-full object-cover ${speaker.imageClass}`}
+              />
+            </div>
+            <p class="mx-0 mt-[clamp(14px,2vw,20px)] mb-1.5 text-[length:clamp(10px,1.2vw,12px)] font-extrabold tracking-[0.12em] text-primary-text uppercase">{speaker.focus}</p>
+            <h3 class="m-0 mb-2 text-[length:clamp(18px,2.4vw,26px)] leading-[1.15] font-extrabold text-ink">{speaker.name}</h3>
+            <p class:list={['m-0 text-[length:clamp(13px,1.5vw,15px)] leading-[1.6] text-pretty text-body', speaker.textClass]}>{speaker.bio}</p>
+          </article>
+        ))
+      }
+    </div>
+  </div>
+</section>

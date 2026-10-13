@@ -1,0 +1,18 @@
+---
+/**
+ * Goldener Primär-Button. Öffnet das Anmelde-Popup.
+ * Größe und Position werden pro Einsatzort über `class` gesetzt.
+ */
+import type { HTMLAttributes } from 'astro/types';
+import { cta } from '../config/webinar';
+
+type Props = HTMLAttributes<'button'> & {
+  label?: string;
+  /** Dezenter Glanz-Effekt wie auf der Kongress-Seite */
+  shine?: boolean;
+};
+
+const { label = cta.label, shine = false, class: className, type = 'button', ...rest } = Astro.props;
+---
+
+<button type={type} data-open-registration class:list={['btn-primary', { 'btn-shine': shine }, className]} {...rest}>{label}</button>

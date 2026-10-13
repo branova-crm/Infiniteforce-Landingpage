@@ -1,0 +1,13 @@
+---
+import LegalPage from '../../components/LegalPage.astro';
+import impressumHtml from '../../content/legal/impressum.html?raw';
+---
+
+<LegalPage
+  locale="en"
+  title="Imprint | BAYLAN.MED"
+  description="Legal imprint and provider information for Baylan Med / BAYLAN.MED."
+  heading="Imprint"
+  contentHtml={impressumHtml}
+  backHref="/en/"
+/>
