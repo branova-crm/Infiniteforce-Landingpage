@@ -11,14 +11,14 @@ interface Props {
 const { voice, chatUi } = getHome(resolveLocale(Astro.props.locale));
 ---
 
-<section class="surface-plum section-pad-sm" aria-labelledby="voice-title">
+<section class="surface-cream grain section-pad-sm on-light" aria-labelledby="voice-title">
   <div class="container-x grid items-center gap-12 lg:grid-cols-12 lg:gap-16">
     <div class="lg:col-span-6" data-reveal>
       <p class="eyebrow">{voice.eyebrow}</p>
-      <h2 id="voice-title" class="display-italic mt-6 text-[clamp(36px,4.4vw,60px)] leading-[1.05] text-ivory">
+      <h2 id="voice-title" class="headline-italic mt-6 text-[clamp(36px,4.4vw,60px)] leading-[1.05] text-ink">
         {voice.title}
       </h2>
-      <p class="lead mt-6 max-w-[32rem] text-mist">{voice.text}</p>
+      <p class="lead mt-6 max-w-[32rem] text-ink-soft">{voice.text}</p>
     </div>
     <div class="lg:col-span-6" data-reveal style="--reveal-delay:100ms">
       <VoiceNote
