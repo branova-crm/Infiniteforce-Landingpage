@@ -91,13 +91,20 @@ export interface HomeCopy {
       claim: string;
       features: string[];
       by: string;
-      startLabel: string;
-      start: string;
       regularLabel: string;
+      cta: string;
       imageAlt: string;
     };
   };
   proof: { label: string; items: string[] };
+  principles: {
+    eyebrow: string;
+    title: string;
+    titleAccent: string;
+    items: { title: string; text: string }[];
+    ctaCard: { title: string; text: string; cta: string };
+    closing?: Array<string | { strong: string }>;
+  };
   welcome: {
     eyebrow: string;
     titleTop: string;
@@ -114,7 +121,7 @@ export interface HomeCopy {
     titleAccent: string;
     cards: { title: string; text: string }[];
     chats: ChatScene[];
-    closing: string;
+    closing: Array<string | { strong: string }>;
   };
   notSmall: {
     eyebrow: string;
@@ -336,28 +343,8 @@ export interface HomeCopy {
     eyebrow: string;
     title: string;
     lead: string;
-    name: string;
-    namePh: string;
-    phone: string;
-    phonePh: string;
-    email: string;
-    emailPh: string;
-    message: string;
-    messagePh: string;
-    submit: string;
-    submitting: string;
-    consentBefore: string;
-    consentLink: string;
-    consentAfter: string;
-    successTitle: string;
-    successBody: string;
-    errName: string;
-    errPhone: string;
-    errPhoneInvalid: string;
-    errEmail: string;
-    errEmailInvalid: string;
-    errMessage: string;
-    errNetwork: string;
+    phoneLabel: string;
+    whatsappCta: string;
   };
   exit: {
     eyebrow: string;

@@ -10,24 +10,24 @@ interface Props {
 const { stories } = getHome(resolveLocale(Astro.props.locale));
 ---
 
-<section id="stories" class="surface-cocoa section-pad" aria-labelledby="stories-title">
+<section id="stories" class="stories-section grain section-pad on-light" aria-labelledby="stories-title">
   <div class="container-x">
-    <div class="flex flex-col gap-6 lg:flex-row lg:items-end lg:justify-between" data-reveal>
-      <div class="max-w-[40rem]">
-        <p class="eyebrow">{stories.eyebrow}</p>
-        <h2 id="stories-title" class="display mt-8 text-[clamp(34px,4.6vw,64px)] text-ivory">{stories.title}</h2>
-      </div>
-      <p class="body-copy max-w-[26rem] text-mist">{stories.lead}</p>
+    <div class="mx-auto max-w-[40rem] text-center" data-reveal>
+      <p class="eyebrow eyebrow--center">{stories.eyebrow}</p>
+      <h2 id="stories-title" class="headline mt-6 text-[clamp(34px,4.6vw,58px)] text-ink">
+        {stories.title}
+      </h2>
+      <p class="lead mx-auto mt-5 max-w-[32rem] text-ink-soft">{stories.lead}</p>
     </div>
 
-    <VideoTestimonials items={stories.items} playLabel={stories.play} class="mt-14" />
-
-    <figure class="mx-auto mt-24 max-w-[52rem] text-center" data-reveal>
-      <span class="font-display text-[80px] leading-[0.5] text-gold" aria-hidden="true">“</span>
-      <blockquote class="display-italic mt-4 text-[clamp(26px,3.2vw,42px)] leading-snug text-cream">
-        {stories.quote}
-      </blockquote>
-      <figcaption class="label-caps mt-8 text-gold">— {stories.quoteBy}</figcaption>
-    </figure>
+    <div class="mt-14" data-reveal style="--reveal-delay:80ms">
+      <VideoTestimonials items={stories.items} playLabel={stories.play} />
+    </div>
   </div>
 </section>
+
+<style>
+  .stories-section {
+    background: #ffffff;
+  }
+</style>

@@ -1,32 +1,19 @@
 ---
 /**
- * Infiniteforce Hauptseite – DE und EN.
+ * Infiniteforce Hauptseite – kompakter Funnel DE/EN.
  */
 import Layout from '../layouts/Layout.astro';
 import AnnouncementBar from './AnnouncementBar.astro';
 import Header from './Header.astro';
 import Hero from './Hero.astro';
 import Product from './sections/Product.astro';
-import Welcome from './sections/Welcome.astro';
+import Principles from './sections/Principles.astro';
 import Problem from './sections/Problem.astro';
-import NotSmall from './sections/NotSmall.astro';
-import Focus from './sections/Focus.astro';
-import Method from './sections/Method.astro';
-import Duo from './sections/Duo.astro';
 import VoiceSection from './sections/VoiceSection.astro';
-import SuccessSeller from './sections/SuccessSeller.astro';
-import Question from './sections/Question.astro';
-import Pillars from './sections/Pillars.astro';
-import Follows from './sections/Follows.astro';
-import Different from './sections/Different.astro';
-import Transformation from './sections/Transformation.astro';
-import Program from './sections/Program.astro';
-import Fit from './sections/Fit.astro';
-import Trailer from './sections/Trailer.astro';
 import Stories from './sections/Stories.astro';
+import Quote from './sections/Quote.astro';
 import Offer from './sections/Offer.astro';
 import FaqSection from './sections/FaqSection.astro';
-import FutureSelf from './sections/FutureSelf.astro';
 import FinalCta from './sections/FinalCta.astro';
 import Questions from './sections/Questions.astro';
 import Footer from './Footer.astro';
@@ -49,26 +36,13 @@ const locale = resolveLocale(Astro.props.locale);
   <main>
     <Hero locale={locale} />
     <Product locale={locale} />
-    <Welcome locale={locale} />
+    <Principles locale={locale} />
     <Problem locale={locale} />
-    <NotSmall locale={locale} />
-    <Focus locale={locale} />
-    <Method locale={locale} />
-    <Duo locale={locale} />
-    <VoiceSection locale={locale} />
-    <SuccessSeller locale={locale} />
-    <Question locale={locale} />
-    <Pillars locale={locale} />
-    <Follows locale={locale} />
-    <Different locale={locale} />
-    <Transformation locale={locale} />
-    <Program locale={locale} />
-    <Fit locale={locale} />
-    <Trailer locale={locale} />
     <Stories locale={locale} />
+    <Quote locale={locale} />
+    <VoiceSection locale={locale} />
     <Offer locale={locale} />
     <FaqSection locale={locale} />
-    <FutureSelf locale={locale} />
     <FinalCta locale={locale} />
     <Questions locale={locale} />
   </main>

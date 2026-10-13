@@ -13,10 +13,9 @@ export const homeEn: HomeCopy = {
   nav: {
     tagline: 'Where energy becomes reality',
     links: [
-      { href: '#method', label: 'Method' },
-      { href: '#success-seller', label: 'The Success Seller' },
-      { href: '#program', label: 'Program' },
-      { href: '#stories', label: 'Stories' },
+      { href: '#truth', label: 'Truth' },
+      { href: '#problem', label: 'Problem' },
+      { href: '#offer', label: 'Offer' },
       { href: '#faq', label: 'FAQ' },
     ],
     cta: 'Secure now',
@@ -24,23 +23,23 @@ export const homeEn: HomeCopy = {
   },
 
   announce: {
-    desktop: `Private Release · ${offer.name}: ${offer.firstMoverPrice} instead of ${offer.regularPrice} – starts ${offer.programStartEn}`,
+    desktop: `Private Release · ${offer.name}: ${offer.firstMoverPrice} instead of ${offer.regularPrice} – START NOVEMBER 2026`,
     mobile: `First Movers: ${offer.firstMoverPrice} instead of ${offer.regularPrice}`,
-    cta: 'See the offer',
+    cta: 'Secure now',
   },
 
   chatUi: { today: 'Today', typing: 'typing…', placeholder: 'Message' },
 
   hero: {
     eyebrow: 'INFINITEFORCE · The Success Seller',
-    titleTop: 'Your outer success can never outgrow your',
-    titleAccent: 'inner identity.',
+    titleTop: 'Your business never outgrows',
+    titleAccent: 'your identity.',
     lead: [
-      'Your next revenue level doesn’t begin with more work.',
-      'It begins with the identity you think, decide and sell from.',
+      'Don’t sell harder. Don’t get louder.',
+      'Think bigger, lead clearer, and sell better.',
     ],
     chain: ['Energy', 'Identity', 'Action', 'Money', 'Impact'],
-    ctaPrimary: `Secure The Success Seller now · ${offer.firstMoverPrice}`,
+    ctaPrimary: 'Secure now',
     ctaSecondary: 'Learn more',
     priceLine: `Private Release for First Movers: ${offer.firstMoverPrice} instead of ${offer.regularPrice}`,
     signatureName: founders.patricia.name,
@@ -56,9 +55,8 @@ export const homeEn: HomeCopy = {
         'Customer value, conversion and a repeatable sales process',
       ],
       by: `With ${founders.patricia.name} & ${founders.goekhan.name}`,
-      startLabel: 'Program start',
-      start: offer.programStartEn,
       regularLabel: 'instead of',
+      cta: 'Secure now',
       imageAlt: 'Patricia Baylan-Paulus and Gökhan Baylan',
     },
   },
@@ -66,6 +64,56 @@ export const homeEn: HomeCopy = {
   proof: {
     label: 'Welcome to INFINITEFORCE',
     items: ['Money Maker Mindset', 'Sales Mastery', 'Consciousness', 'Limitless Success'],
+  },
+
+  principles: {
+    eyebrow: 'The truth behind revenue',
+    title: 'It’s not only what you say.',
+    titleAccent: 'It’s who you are when you say it.',
+    items: [
+      {
+        title: 'The invisible limit',
+        text: 'Your business never outgrows your identity.',
+      },
+      {
+        title: 'Who you are when you speak',
+        text: 'It’s not only what you say. It’s who you are when you say it.',
+      },
+      {
+        title: 'Sales is identity',
+        text: 'Sales is not a technique. Sales is identity, skill and execution.',
+      },
+      {
+        title: 'Not harder. Clearer.',
+        text: 'Don’t sell harder. Don’t get louder. Think bigger, lead clearer, and sell better.',
+      },
+      {
+        title: 'A new version of you',
+        text: 'Your next revenue level needs a new version of you.',
+      },
+      {
+        title: 'What you allow yourself',
+        text: 'You can only lead the business you allow yourself to carry.',
+      },
+      {
+        title: 'Awareness + execution',
+        text: 'Awareness without execution doesn’t change revenue. Strategy without the right identity eventually becomes exhausting.',
+      },
+    ],
+    ctaCard: {
+      title: 'Your next step',
+      text: 'Secure your spot in The Success Seller now.',
+      cta: 'Secure now',
+    },
+    closing: [
+      'Your next ',
+      { strong: 'level' },
+      ' begins with the ',
+      { strong: 'person' },
+      ' you become – not with more ',
+      { strong: 'work' },
+      '.',
+    ],
   },
 
   welcome: {
@@ -86,7 +134,7 @@ export const homeEn: HomeCopy = {
   problem: {
     eyebrow: 'The invisible limit',
     title: 'You are not here because you lack strategy.',
-    titleAccent: 'Your revenue never outgrows your identity.',
+    titleAccent: 'Your business never outgrows your identity.',
     cards: [
       {
         title: 'You explain your price.',
@@ -141,8 +189,17 @@ export const homeEn: HomeCopy = {
         ],
       },
     ],
-    closing:
-      'You are trying to create a result on the outside that you haven’t yet become the person for on the inside.',
+    closing: [
+      'You are trying to create a ',
+      { strong: 'result' },
+      ' on the ',
+      { strong: 'outside' },
+      ' that you haven’t yet become the ',
+      { strong: 'person' },
+      ' for on the ',
+      { strong: 'inside' },
+      '.',
+    ],
   },
 
   notSmall: {
@@ -391,7 +448,7 @@ export const homeEn: HomeCopy = {
     ],
     cross: ['Mindset × Sales', 'Identity × Strategy', 'Energy × Execution', 'Money × Freedom'],
     crossText: ['That is The Success Seller.'],
-    cta: `Secure The Success Seller · ${offer.firstMoverPrice}`,
+    cta: 'Secure now',
   },
 
   follows: {
@@ -600,17 +657,17 @@ export const homeEn: HomeCopy = {
   },
 
   stories: {
-    eyebrow: 'Client stories',
-    title: 'What happens when you decide.',
-    lead: 'Real voices from the congress – the videos will be added here once they are approved.',
+    eyebrow: 'Reportages',
+    title: 'Real voices. Real decisions.',
+    lead: 'Six reportages – moments where clarity lands and a new level begins.',
     play: 'Play video',
     items: [
-      { slug: 'story-01', name: 'Client story 01', role: 'Congress 2026', result: 'Video follows', quote: 'Quote follows after approval.' },
-      { slug: 'story-02', name: 'Client story 02', role: 'Congress 2026', result: 'Video follows', quote: 'Quote follows after approval.' },
-      { slug: 'story-03', name: 'Client story 03', role: 'Congress 2026', result: 'Video follows', quote: 'Quote follows after approval.' },
-      { slug: 'story-04', name: 'Client story 04', role: 'Congress 2026', result: 'Video follows', quote: 'Quote follows after approval.' },
-      { slug: 'story-05', name: 'Client story 05', role: 'Congress 2026', result: 'Video follows', quote: 'Quote follows after approval.' },
-      { slug: 'story-06', name: 'Client story 06', role: 'Congress 2026', result: 'Video follows', quote: 'Quote follows after approval.' },
+      { slug: 'story-01', name: 'Reportage 01', role: 'INFINITEFORCE', result: 'Reportage', quote: 'A moment that stays.' },
+      { slug: 'story-02', name: 'Reportage 02', role: 'INFINITEFORCE', result: 'Reportage', quote: 'Clarity over excuses.' },
+      { slug: 'story-03', name: 'Reportage 03', role: 'INFINITEFORCE', result: 'Reportage', quote: 'When identity meets revenue.' },
+      { slug: 'story-04', name: 'Reportage 04', role: 'INFINITEFORCE', result: 'Reportage', quote: 'Decide instead of delay.' },
+      { slug: 'story-05', name: 'Reportage 05', role: 'INFINITEFORCE', result: 'Reportage', quote: 'New level, new standards.' },
+      { slug: 'story-06', name: 'Reportage 06', role: 'INFINITEFORCE', result: 'Reportage', quote: 'Inspiration becomes action.' },
     ],
     quote: 'You no longer work harder for your next level. You become the person for whom this level is natural.',
     quoteBy: founders.patricia.name,
@@ -646,7 +703,7 @@ export const homeEn: HomeCopy = {
       regularLabel: 'Regular',
       priceLabel: 'First Mover investment',
       advantage: offer.advantage,
-      cta: 'Secure it in the shop',
+      cta: 'Secure now',
       trust: ['Purchase directly in the INFINITEFORCE shop', 'Invoice for your business'],
       conditions: offer.conditionsEn,
     },
@@ -662,7 +719,7 @@ export const homeEn: HomeCopy = {
       },
       {
         q: 'When does the program start?',
-        a: `The program starts on ${offer.programStartEn}. You will receive all details about the process after your purchase.`,
+        a: 'The program starts in November 2026. You will receive all details about the process after your purchase.',
       },
       {
         q: 'How is The Success Seller different from a sales training?',
@@ -715,44 +772,24 @@ export const homeEn: HomeCopy = {
       'You are here to find out what becomes possible when you stop letting your past decide how big your future may be.',
     ],
     statement: ['You don’t need more hours.', 'You need a new level of you.'],
-    cta: `Begin your shift · ${offer.firstMoverPrice}`,
-    note: `${offer.name} · starts ${offer.programStartEn} · regular ${offer.regularPrice}`,
+    cta: 'Secure now',
+    note: `${offer.name} · START NOVEMBER 2026 · regular ${offer.regularPrice}`,
     tagline: 'Think bigger. Sell better. Grow faster.',
   },
 
   questions: {
     eyebrow: 'Questions?',
-    title: 'Write to us before you decide.',
-    lead: 'If you would like to clarify something before buying, leave us your message here. We will get back to you personally.',
-    name: 'Full name *',
-    namePh: 'First and last name',
-    phone: 'Phone number *',
-    phonePh: 'e.g. +49 170 1234567',
-    email: 'Email address *',
-    emailPh: 'name@business.com',
-    message: 'Your question *',
-    messagePh: 'What would you like to know?',
-    submit: 'Send question',
-    submitting: 'Sending …',
-    consentBefore: 'By submitting you agree to the',
-    consentLink: 'privacy policy',
-    consentAfter: '.',
-    successTitle: 'Thank you – your question has arrived.',
-    successBody: 'We will get back to you personally shortly.',
-    errName: 'Please enter your full name.',
-    errPhone: 'Please enter your phone number.',
-    errPhoneInvalid: 'Please check your phone number.',
-    errEmail: 'Please enter your email address.',
-    errEmailInvalid: 'Please check your email address.',
-    errMessage: 'Please briefly describe your question.',
-    errNetwork: 'Your message could not be sent right now. Please try again.',
+    title: 'Still have questions before you decide?',
+    lead: 'If something is unclear, reach out personally. We’ll take the time – clear, calm, and without pressure.',
+    phoneLabel: 'Phone',
+    whatsappCta: 'Message us on WhatsApp',
   },
 
   exit: {
     eyebrow: 'Private Release',
     title: 'Before you go …',
     text: `The First Mover price of ${offer.firstMoverPrice} instead of ${offer.regularPrice} is only available for a limited number of seats. Your next level begins with a decision.`,
-    cta: `Secure The Success Seller · ${offer.firstMoverPrice}`,
+    cta: 'Secure now',
     secondary: 'I still have a question',
     close: 'Close',
   },
@@ -760,8 +797,8 @@ export const homeEn: HomeCopy = {
   sticky: {
     label: 'The Success Seller',
     meta: `${offer.firstMoverPrice} instead of ${offer.regularPrice}`,
-    cta: 'Secure',
-    float: `Secure now · ${offer.firstMoverPrice}`,
+    cta: 'Secure now',
+    float: 'Secure now',
   },
 
   footer: {

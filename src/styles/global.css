@@ -13,6 +13,12 @@
 @import "@fontsource/playfair-display/800-italic.css";
 @import "@fontsource-variable/montserrat/index.css";
 
+@property --btn-angle {
+  syntax: '<angle>';
+  inherits: false;
+  initial-value: 0deg;
+}
+
 :root {
   --if-black: #0d0a08;
   --if-espresso: #17110d;
@@ -102,9 +108,13 @@
     overflow-x: hidden;
   }
 
+  html {
+    background: transparent;
+  }
+
   body {
     margin: 0;
-    background: var(--if-black);
+    background: transparent;
     color: var(--if-ivory);
     font-family: var(--if-font-sans);
     font-size: 16px;
@@ -317,18 +327,23 @@
   }
 
   .lead {
+    font-family: var(--if-font-sans);
     font-size: clamp(16px, 1.25vw, 18px);
+    font-weight: 400;
     line-height: 1.75;
     text-wrap: pretty;
   }
 
   .body-copy {
+    font-family: var(--if-font-sans);
     font-size: 15px;
+    font-weight: 400;
     line-height: 1.8;
     text-wrap: pretty;
   }
 
   .label-caps {
+    font-family: var(--if-font-sans);
     font-size: 11px;
     font-weight: 600;
     letter-spacing: 0.22em;
@@ -390,6 +405,95 @@
     background: linear-gradient(135deg, #ecd6ab 0%, #d4b37f 45%, #b8935b 100%);
     color: var(--if-black);
     box-shadow: 0 16px 40px -14px rgba(200, 164, 110, 0.7);
+  }
+
+  /* Hero-CTA: Shimmer + laufender Goldrand */
+  .btn-shine {
+    --btn-angle: 0deg;
+    position: relative;
+    overflow: hidden;
+    isolation: isolate;
+    border-color: rgba(200, 164, 110, 0.35);
+  }
+
+  .btn-shine > * {
+    position: relative;
+    z-index: 2;
+  }
+
+  .btn-shine::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1.5px;
+    background: conic-gradient(
+      from var(--btn-angle),
+      transparent 0%,
+      transparent 52%,
+      rgba(255, 248, 230, 0.2) 58%,
+      #fff6df 66%,
+      var(--if-gold-light) 72%,
+      var(--if-gold) 78%,
+      transparent 88%
+    );
+    -webkit-mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    animation: btnBorderSpin 2.4s linear infinite;
+    pointer-events: none;
+    z-index: 3;
+  }
+
+  .btn-shine::after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 45%;
+    height: 100%;
+    background: linear-gradient(
+      105deg,
+      transparent 0%,
+      rgba(255, 255, 255, 0.05) 35%,
+      rgba(255, 255, 255, 0.55) 50%,
+      rgba(255, 255, 255, 0.05) 65%,
+      transparent 100%
+    );
+    transform: translateX(-160%) skewX(-16deg);
+    animation: btnShine 3.2s ease-in-out infinite;
+    pointer-events: none;
+    z-index: 1;
+  }
+
+  @keyframes btnBorderSpin {
+    to {
+      --btn-angle: 360deg;
+    }
+  }
+
+  @keyframes btnShine {
+    0%,
+    58% {
+      transform: translateX(-160%) skewX(-16deg);
+    }
+    78%,
+    100% {
+      transform: translateX(320%) skewX(-16deg);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .btn-shine::before,
+    .btn-shine::after {
+      animation: none;
+    }
+
+    .btn-shine::after {
+      opacity: 0;
+    }
   }
 
   .btn-ghost {

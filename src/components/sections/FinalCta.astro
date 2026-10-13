@@ -8,31 +8,96 @@ interface Props {
 }
 
 const { final } = getHome(resolveLocale(Astro.props.locale));
+const chain = final.eyebrow.split(/\s*→\s*/).map((s) => s.trim()).filter(Boolean);
 ---
 
-<section class="surface-plum section-pad relative overflow-hidden text-center" aria-labelledby="final-title">
-  <div class="container-x relative">
-    <p class="eyebrow eyebrow--center" data-reveal>{final.eyebrow}</p>
-    <h2 id="final-title" class="mt-10" data-reveal>
-      <span class="display block text-[clamp(56px,11vw,168px)] leading-[0.88] text-ivory">{final.title}</span>
-      <span class="display-italic gold-text block pb-3 text-[clamp(56px,11vw,168px)] leading-[0.95]">{final.titleAccent}</span>
-    </h2>
+<section class="final-cta grain section-pad" aria-labelledby="final-title">
+  <div class="container-x">
+    <div class="final-cta__inner mx-auto max-w-[44rem] text-center">
+      <ol class="final-cta__chain" aria-label={final.eyebrow} data-reveal>
+        {
+          chain.map((step, i) => (
+            <li>
+              {i > 0 && <span class="final-cta__arrow" aria-hidden="true">→</span>}
+              <span>{step}</span>
+            </li>
+          ))
+        }
+      </ol>
 
-    <div class="mx-auto mt-12 max-w-[40rem] space-y-4" data-reveal>
-      <p class="display-italic text-[clamp(24px,2.6vw,32px)] text-cream">{final.lines[0]}</p>
-      <p class="lead text-mist">{final.lines[1]}</p>
-    </div>
+      <h2 id="final-title" class="mt-8" data-reveal>
+        <span class="headline block text-[clamp(42px,6.5vw,72px)] leading-[0.98] text-ivory">{final.title}</span>
+        <em class="headline-italic gold-text mt-2 block pb-1 text-[clamp(42px,6.5vw,72px)] leading-[1.02]">
+          {final.titleAccent}
+        </em>
+      </h2>
 
-    <div class="mx-auto mt-12 max-w-[40rem]" data-reveal>
-      <div class="hairline"></div>
-      <p class="display mt-10 text-[clamp(20px,2.2vw,28px)] text-ivory/60">{final.statement[0]}</p>
-      <p class="display mt-2 text-[clamp(26px,3vw,40px)] text-ivory">{final.statement[1]}</p>
-    </div>
+      <div class="mx-auto mt-8 max-w-[36rem] space-y-4" data-reveal style="--reveal-delay:60ms">
+        <p class="headline-italic text-[clamp(20px,2.2vw,26px)] leading-snug text-gold-light">{final.lines[0]}</p>
+        <p class="lead text-mist">{final.lines[1]}</p>
+      </div>
 
-    <div class="mt-12 flex flex-col items-center gap-5" data-reveal>
-      <CtaButton label={final.cta} />
-      <p class="text-[12px] tracking-[0.08em] text-mist">{final.note}</p>
-      <p class="label-caps mt-6 text-gold">{final.tagline}</p>
+      <div class="final-cta__statement mx-auto mt-12 max-w-[34rem]" data-reveal style="--reveal-delay:100ms">
+        <p class="text-[15px] leading-relaxed text-mist">{final.statement[0]}</p>
+        <p class="headline mt-3 text-[clamp(22px,2.4vw,30px)] leading-snug text-ivory">{final.statement[1]}</p>
+      </div>
+
+      <div class="mt-10 flex flex-col items-center gap-4" data-reveal style="--reveal-delay:140ms">
+        <CtaButton label={final.cta} class="btn-shine" />
+        <p class="final-cta__note">{final.note}</p>
+        <p class="label-caps mt-4 text-gold">{final.tagline}</p>
+      </div>
     </div>
   </div>
 </section>
+
+<style>
+  .final-cta {
+    background:
+      radial-gradient(ellipse 70% 55% at 50% 0%, rgba(200, 164, 110, 0.14), transparent 58%),
+      linear-gradient(180deg, #17110d 0%, #100c0a 100%);
+    color: var(--if-ivory);
+  }
+
+  .final-cta__chain {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: center;
+    gap: 6px 0;
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    font-family: var(--if-font-sans);
+    font-size: 11px;
+    font-weight: 600;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--if-gold);
+  }
+
+  .final-cta__chain li {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+  }
+
+  .final-cta__arrow {
+    margin-inline: 8px;
+    color: rgba(200, 164, 110, 0.55);
+  }
+
+  .final-cta__statement {
+    padding-top: 28px;
+    border-top: 1px solid rgba(200, 164, 110, 0.28);
+  }
+
+  .final-cta__note {
+    margin: 0;
+    max-width: 28rem;
+    font-size: 12px;
+    line-height: 1.5;
+    letter-spacing: 0.04em;
+    color: rgba(245, 236, 220, 0.55);
+  }
+</style>

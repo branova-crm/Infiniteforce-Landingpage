@@ -12,7 +12,7 @@ const copy = getHome(resolveLocale(Astro.props.locale));
 <a href="#offer" class="announce">
   <span class="hidden md:inline">{copy.announce.desktop}</span>
   <span class="md:hidden">{copy.announce.mobile}</span>
-  <span class="announce__cta">{copy.announce.cta} →</span>
+  <span class="announce__cta">{copy.announce.cta}</span>
 </a>
 
 <style>
@@ -24,22 +24,24 @@ const copy = getHome(resolveLocale(Astro.props.locale));
     align-items: center;
     justify-content: center;
     gap: 6px 18px;
-    padding: 9px 20px;
-    background: linear-gradient(90deg, #b8935b, #d9bc8a 50%, #b8935b);
-    color: var(--if-espresso);
+    padding: 10px 20px;
+    background: #ffffff;
+    color: #111111;
     font-size: 11px;
     font-weight: 600;
     letter-spacing: 0.14em;
     line-height: 1.4;
     text-align: center;
     text-transform: uppercase;
+    border-bottom: 1px solid rgba(17, 17, 17, 0.08);
   }
 
   .announce:hover {
-    color: var(--if-black);
+    color: #000000;
   }
 
   .announce__cta {
     border-bottom: 1px solid currentColor;
+    font-weight: 700;
   }
 </style>

@@ -13,10 +13,9 @@ export const homeDe: HomeCopy = {
   nav: {
     tagline: 'Where energy becomes reality',
     links: [
-      { href: '#method', label: 'Methode' },
-      { href: '#success-seller', label: 'The Success Seller' },
-      { href: '#program', label: 'Programm' },
-      { href: '#stories', label: 'Stimmen' },
+      { href: '#truth', label: 'Wahrheit' },
+      { href: '#problem', label: 'Problem' },
+      { href: '#offer', label: 'Angebot' },
       { href: '#faq', label: 'FAQ' },
     ],
     cta: 'Jetzt sichern',
@@ -24,23 +23,23 @@ export const homeDe: HomeCopy = {
   },
 
   announce: {
-    desktop: `Private Release · ${offer.name}: ${offer.firstMoverPrice} statt ${offer.regularPrice} – Start ${offer.programStart}`,
+    desktop: `Private Release · ${offer.name}: ${offer.firstMoverPrice} statt ${offer.regularPrice} – START NOVEMBER 2026`,
     mobile: `First Movers: ${offer.firstMoverPrice} statt ${offer.regularPrice}`,
-    cta: 'Zum Angebot',
+    cta: 'Jetzt sichern',
   },
 
   chatUi: { today: 'Heute', typing: 'schreibt …', placeholder: 'Nachricht' },
 
   hero: {
     eyebrow: 'INFINITEFORCE · The Success Seller',
-    titleTop: 'Dein äußerer Erfolg wächst nie über deine',
-    titleAccent: 'innere Identität hinaus.',
+    titleTop: 'Dein Business wächst nie',
+    titleAccent: 'über deine Identität hinaus.',
     lead: [
-      'Dein nächstes Umsatzlevel beginnt nicht mit mehr Arbeit.',
-      'Es beginnt mit der Identität, aus der du denkst, entscheidest und verkaufst.',
+      'Nicht härter verkaufen. Nicht lauter werden.',
+      'Sondern größer denken, klarer führen und besser verkaufen.',
     ],
     chain: ['Energy', 'Identity', 'Action', 'Money', 'Impact'],
-    ctaPrimary: `The Success Seller jetzt sichern · ${offer.firstMoverPrice}`,
+    ctaPrimary: 'Jetzt sichern',
     ctaSecondary: 'Mehr erfahren',
     priceLine: `Private Release für First Movers: ${offer.firstMoverPrice} statt ${offer.regularPrice}`,
     signatureName: founders.patricia.name,
@@ -56,9 +55,8 @@ export const homeDe: HomeCopy = {
         'Kundenwert, Conversion und ein wiederholbarer Sales-Prozess',
       ],
       by: `Mit ${founders.patricia.name} & ${founders.goekhan.name}`,
-      startLabel: 'Programmstart',
-      start: offer.programStart,
       regularLabel: 'statt',
+      cta: 'Jetzt sichern',
       imageAlt: 'Patricia Baylan-Paulus und Gökhan Baylan',
     },
   },
@@ -66,6 +64,56 @@ export const homeDe: HomeCopy = {
   proof: {
     label: 'Welcome to INFINITEFORCE',
     items: ['Money Maker Mindset', 'Sales Mastery', 'Consciousness', 'Limitless Success'],
+  },
+
+  principles: {
+    eyebrow: 'Die Wahrheit hinter dem Umsatz',
+    title: 'Es geht nicht nur darum, was du sagst.',
+    titleAccent: 'Es geht darum, wer du bist, wenn du es sagst.',
+    items: [
+      {
+        title: 'Die unsichtbare Grenze',
+        text: 'Dein Business wächst nie über deine Identität hinaus.',
+      },
+      {
+        title: 'Wer du bist, wenn du sprichst',
+        text: 'Es geht nicht nur darum, was du sagst. Es geht darum, wer du bist, wenn du es sagst.',
+      },
+      {
+        title: 'Verkauf ist Identität',
+        text: 'Verkauf ist keine Technik. Verkauf ist Identität, Fähigkeit und Umsetzung.',
+      },
+      {
+        title: 'Nicht härter. Klarer.',
+        text: 'Nicht härter verkaufen. Nicht lauter werden. Sondern größer denken, klarer führen und besser verkaufen.',
+      },
+      {
+        title: 'Eine neue Version von dir',
+        text: 'Dein nächstes Umsatzlevel braucht eine neue Version von dir.',
+      },
+      {
+        title: 'Was du dir erlaubst',
+        text: 'Du kannst nur das Business führen, das du dir selbst erlaubst zu tragen.',
+      },
+      {
+        title: 'Bewusstsein + Umsetzung',
+        text: 'Bewusstsein ohne Umsetzung verändert keinen Umsatz. Strategie ohne die richtige Identität wird irgendwann anstrengend.',
+      },
+    ],
+    ctaCard: {
+      title: 'Dein nächster Schritt',
+      text: 'Jetzt beim The Success Seller Platz sichern.',
+      cta: 'Jetzt sichern',
+    },
+    closing: [
+      'Dein nächstes ',
+      { strong: 'Level' },
+      ' beginnt mit der ',
+      { strong: 'Person' },
+      ', die du wirst – nicht mit mehr ',
+      { strong: 'Arbeit' },
+      '.',
+    ],
   },
 
   welcome: {
@@ -86,7 +134,7 @@ export const homeDe: HomeCopy = {
   problem: {
     eyebrow: 'Die unsichtbare Grenze',
     title: 'Du bist nicht hier, weil dir Strategie fehlt.',
-    titleAccent: 'Dein Umsatz wächst nicht über deine Identität hinaus.',
+    titleAccent: 'Dein Business wächst nie über deine Identität hinaus.',
     cards: [
       {
         title: 'Du erklärst deinen Preis.',
@@ -141,8 +189,17 @@ export const homeDe: HomeCopy = {
         ],
       },
     ],
-    closing:
-      'Du versuchst im Außen ein Ergebnis zu erschaffen, für das du im Inneren noch nicht zur Person geworden bist.',
+    closing: [
+      'Du versuchst im ',
+      { strong: 'Außen' },
+      ' ein ',
+      { strong: 'Ergebnis' },
+      ' zu erschaffen, für das du im ',
+      { strong: 'Inneren' },
+      ' noch nicht zur ',
+      { strong: 'Person' },
+      ' geworden bist.',
+    ],
   },
 
   notSmall: {
@@ -402,7 +459,7 @@ export const homeDe: HomeCopy = {
     ],
     cross: ['Mindset × Sales', 'Identity × Strategy', 'Energy × Execution', 'Money × Freedom'],
     crossText: ['Das ist The Success Seller.'],
-    cta: `The Success Seller sichern · ${offer.firstMoverPrice}`,
+    cta: 'Jetzt sichern',
   },
 
   follows: {
@@ -623,17 +680,17 @@ export const homeDe: HomeCopy = {
   },
 
   stories: {
-    eyebrow: 'Kundenstimmen',
-    title: 'Was passiert, wenn du dich entscheidest.',
-    lead: 'Echte Stimmen vom Kongress – die Videos werden hier eingesetzt, sobald sie freigegeben sind.',
+    eyebrow: 'Reportagen',
+    title: 'Echte Stimmen. Echte Entscheidungen.',
+    lead: 'Sechs Reportagen – Momente, in denen Klarheit entsteht und ein neues Level beginnt.',
     play: 'Video abspielen',
     items: [
-      { slug: 'story-01', name: 'Kundenstimme 01', role: 'Kongress 2026', result: 'Video folgt', quote: 'Zitat folgt nach Freigabe.' },
-      { slug: 'story-02', name: 'Kundenstimme 02', role: 'Kongress 2026', result: 'Video folgt', quote: 'Zitat folgt nach Freigabe.' },
-      { slug: 'story-03', name: 'Kundenstimme 03', role: 'Kongress 2026', result: 'Video folgt', quote: 'Zitat folgt nach Freigabe.' },
-      { slug: 'story-04', name: 'Kundenstimme 04', role: 'Kongress 2026', result: 'Video folgt', quote: 'Zitat folgt nach Freigabe.' },
-      { slug: 'story-05', name: 'Kundenstimme 05', role: 'Kongress 2026', result: 'Video folgt', quote: 'Zitat folgt nach Freigabe.' },
-      { slug: 'story-06', name: 'Kundenstimme 06', role: 'Kongress 2026', result: 'Video folgt', quote: 'Zitat folgt nach Freigabe.' },
+      { slug: 'story-01', name: 'Reportage 01', role: 'INFINITEFORCE', result: 'Reportage', quote: 'Ein Moment, der bleibt.' },
+      { slug: 'story-02', name: 'Reportage 02', role: 'INFINITEFORCE', result: 'Reportage', quote: 'Klarheit statt Ausreden.' },
+      { slug: 'story-03', name: 'Reportage 03', role: 'INFINITEFORCE', result: 'Reportage', quote: 'Wenn Identität auf Umsatz trifft.' },
+      { slug: 'story-04', name: 'Reportage 04', role: 'INFINITEFORCE', result: 'Reportage', quote: 'Entscheiden statt zögern.' },
+      { slug: 'story-05', name: 'Reportage 05', role: 'INFINITEFORCE', result: 'Reportage', quote: 'Neues Level, neue Standards.' },
+      { slug: 'story-06', name: 'Reportage 06', role: 'INFINITEFORCE', result: 'Reportage', quote: 'Aus Inspiration wird Handlung.' },
     ],
     quote: 'Du arbeitest nicht länger härter für dein nächstes Level. Du wirst zu der Person, für die dieses Level selbstverständlich wird.',
     quoteBy: founders.patricia.name,
@@ -669,7 +726,7 @@ export const homeDe: HomeCopy = {
       regularLabel: 'Regulär',
       priceLabel: 'First-Movers-Investment',
       advantage: offer.advantage,
-      cta: 'Jetzt im Shop sichern',
+      cta: 'Jetzt sichern',
       trust: ['Kauf direkt im INFINITEFORCE Shop', 'Rechnung für dein Business'],
       conditions: offer.conditions,
     },
@@ -685,7 +742,7 @@ export const homeDe: HomeCopy = {
       },
       {
         q: 'Wann startet das Programm?',
-        a: `Programmstart ist am ${offer.programStart}. Alle Details zum Ablauf erhältst du nach dem Kauf.`,
+        a: 'Start ist im November 2026. Alle Details zum Ablauf erhältst du nach dem Kauf.',
       },
       {
         q: 'Was unterscheidet The Success Seller von einem Sales-Training?',
@@ -741,44 +798,24 @@ export const homeDe: HomeCopy = {
       'Du bist hier, um herauszufinden, was möglich wird, wenn du aufhörst, deine Vergangenheit entscheiden zu lassen, wie groß deine Zukunft sein darf.',
     ],
     statement: ['Du brauchst nicht mehr Stunden.', 'Du brauchst ein neues Level von dir.'],
-    cta: `Begin your shift · ${offer.firstMoverPrice}`,
-    note: `${offer.name} · Start ${offer.programStart} · regulär ${offer.regularPrice}`,
+    cta: 'Jetzt sichern',
+    note: `${offer.name} · START NOVEMBER 2026 · regulär ${offer.regularPrice}`,
     tagline: 'Think bigger. Sell better. Grow faster.',
   },
 
   questions: {
     eyebrow: 'Noch Fragen?',
-    title: 'Schreib uns, bevor du entscheidest.',
-    lead: 'Wenn du vor dem Kauf etwas klären möchtest, hinterlasse uns hier deine Nachricht. Wir melden uns persönlich bei dir.',
-    name: 'Vollständiger Name *',
-    namePh: 'Vor- und Nachname',
-    phone: 'Telefonnummer *',
-    phonePh: 'z. B. 0170 1234567',
-    email: 'E-Mail-Adresse *',
-    emailPh: 'name@business.de',
-    message: 'Deine Frage *',
-    messagePh: 'Was möchtest du noch wissen?',
-    submit: 'Frage absenden',
-    submitting: 'Wird gesendet …',
-    consentBefore: 'Mit dem Absenden stimmst du der',
-    consentLink: 'Datenschutzerklärung',
-    consentAfter: 'zu.',
-    successTitle: 'Danke – deine Frage ist angekommen.',
-    successBody: 'Wir melden uns in Kürze persönlich bei dir.',
-    errName: 'Bitte gib deinen vollständigen Namen ein.',
-    errPhone: 'Bitte gib deine Telefonnummer ein.',
-    errPhoneInvalid: 'Bitte prüfe deine Telefonnummer.',
-    errEmail: 'Bitte gib deine E-Mail-Adresse ein.',
-    errEmailInvalid: 'Bitte prüfe deine E-Mail-Adresse.',
-    errMessage: 'Bitte schildere kurz deine Frage.',
-    errNetwork: 'Die Nachricht konnte gerade nicht gesendet werden. Bitte versuche es erneut.',
+    title: 'Noch Fragen vor deiner Entscheidung?',
+    lead: 'Wenn etwas ungeklärt ist, melde dich persönlich. Wir nehmen uns die Zeit – klar, ruhig und ohne Druck.',
+    phoneLabel: 'Telefon',
+    whatsappCta: 'Jetzt WhatsApp schreiben',
   },
 
   exit: {
     eyebrow: 'Private Release',
     title: 'Bevor du gehst …',
     text: `Der First-Movers-Preis von ${offer.firstMoverPrice} statt ${offer.regularPrice} gilt nur für begrenzte Plätze. Dein nächstes Level beginnt mit einer Entscheidung.`,
-    cta: `The Success Seller sichern · ${offer.firstMoverPrice}`,
+    cta: 'Jetzt sichern',
     secondary: 'Ich habe noch eine Frage',
     close: 'Schließen',
   },
@@ -786,8 +823,8 @@ export const homeDe: HomeCopy = {
   sticky: {
     label: 'The Success Seller',
     meta: `${offer.firstMoverPrice} statt ${offer.regularPrice}`,
-    cta: 'Sichern',
-    float: `Jetzt sichern · ${offer.firstMoverPrice}`,
+    cta: 'Jetzt sichern',
+    float: 'Jetzt sichern',
   },
 
   footer: {

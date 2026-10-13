@@ -12,34 +12,22 @@ const { offer } = getHome(resolveLocale(Astro.props.locale));
 const { card } = offer;
 ---
 
-<section id="offer" class="surface-ivory grain section-pad on-light" aria-labelledby="offer-title">
+<section id="offer" class="surface-cocoa grain section-pad" aria-labelledby="offer-title">
   <div class="container-x grid gap-14 lg:grid-cols-12 lg:gap-16">
     <div class="lg:col-span-7" data-reveal>
       <p class="eyebrow">{offer.eyebrow}</p>
-      <h2 id="offer-title" class="display mt-8 text-[clamp(42px,6vw,88px)] leading-[0.95] text-ink">{offer.title}</h2>
-      <p class="display-italic mt-6 max-w-[30ch] text-[clamp(22px,2.3vw,30px)] leading-snug text-gold-ink">{offer.lead}</p>
+      <h2 id="offer-title" class="headline mt-8 text-[clamp(42px,6vw,80px)] leading-[0.95] text-ivory">{offer.title}</h2>
+      <p class="headline-italic mt-6 max-w-[30ch] text-[clamp(22px,2.3vw,30px)] leading-snug text-gold-light">{offer.lead}</p>
 
-      <p class="label-caps mt-14 text-ink">{offer.includedTitle}</p>
+      <p class="label-caps mt-14 text-gold">{offer.includedTitle}</p>
       <ul class="mt-6 grid gap-x-10 sm:grid-cols-2">
         {
           offer.included.map((item) => (
-            <li class="flex gap-4 border-b border-ink/12 py-4 text-[15px] leading-snug text-ink">
-              <svg class="mt-1 shrink-0 text-gold-deep" width="14" height="12" viewBox="0 0 14 12" aria-hidden="true">
+            <li class="flex gap-4 border-b border-gold/15 py-4 text-[15px] leading-snug text-ivory">
+              <svg class="mt-1 shrink-0 text-gold" width="14" height="12" viewBox="0 0 14 12" aria-hidden="true">
                 <path d="M1 6.5l4 4L13 1.5" fill="none" stroke="currentColor" stroke-width="1.3" />
               </svg>
               {item}
-            </li>
-          ))
-        }
-      </ul>
-
-      <p class="label-caps mt-14 text-ink">{offer.trioTitle}</p>
-      <ul class="mt-6 grid gap-px bg-ink/12 md:grid-cols-3">
-        {
-          offer.trio.map((item) => (
-            <li class="bg-cream p-6">
-              <p class="display-italic text-[28px] leading-none text-gold-ink">{item.word}</p>
-              <p class="mt-3 text-[14px] leading-relaxed text-ink">{item.text}</p>
             </li>
           ))
         }
@@ -48,22 +36,28 @@ const { card } = offer;
 
     <aside class="lg:col-span-5" data-reveal style="--reveal-delay:120ms" aria-label={card.name}>
       <div class="offer-card lg:sticky lg:top-28">
-        <div class="flex items-center justify-between gap-4">
-          <span class="offer-card__badge">{card.badge}</span>
-          <span class="label-caps text-[10px] text-mist">{card.product}</span>
+        <div class="offer-card__product" aria-hidden="true">
+          <img
+            src="/brand/success-seller-product.png"
+            alt=""
+            width="614"
+            height="819"
+            loading="lazy"
+            decoding="async"
+            class="offer-card__product-img"
+          />
         </div>
 
-        <p class="display mt-8 text-[clamp(34px,3.4vw,46px)] leading-none text-ivory">{card.name}</p>
-        <p class="mt-4 text-[13px] text-mist">
-          {card.startLabel}: <span class="text-cream">{card.start}</span>
-        </p>
+        <div class="flex items-center justify-between gap-4">
+          <span class="offer-card__badge">{card.badge}</span>
+        </div>
 
-        <div class="hairline my-8"></div>
+        <div class="hairline my-6"></div>
 
         <div class="flex items-end justify-between gap-6">
           <div>
             <p class="label-caps text-[10px] text-mist">{card.priceLabel}</p>
-            <p class="display gold-text mt-2 text-[clamp(52px,5vw,68px)] leading-none">{site.offer.firstMoverPrice}</p>
+            <p class="headline gold-text mt-2 text-[clamp(52px,5vw,68px)] leading-none">{site.offer.firstMoverPrice}</p>
           </div>
           <div class="text-right">
             <p class="label-caps text-[10px] text-mist">{card.regularLabel}</p>
@@ -89,17 +83,62 @@ const { card } = offer;
       </div>
     </aside>
   </div>
+
+  <div class="offer-trio-band mt-16 md:mt-20" data-reveal>
+    <div class="container-x">
+      <p class="label-caps text-gold">{offer.trioTitle}</p>
+      <ul class="offer-trio">
+        {
+          offer.trio.map((item, i) => (
+            <li class="offer-trio__item" style={`--shine-delay:${i * 0.7}s`}>
+              <span class="offer-trio__shine" aria-hidden="true" />
+              <span class="offer-trio__no" aria-hidden="true">{String(i + 1).padStart(2, '0')}</span>
+              <p class="offer-trio__word">{item.word}</p>
+              <p class="offer-trio__text">{item.text}</p>
+            </li>
+          ))
+        }
+      </ul>
+    </div>
+  </div>
 </section>
 
 <style>
   .offer-card {
+    position: relative;
+    overflow: visible;
     padding: clamp(26px, 3.4vw, 44px);
-    border: 1px solid rgba(200, 164, 110, 0.4);
+    border: 1px solid rgba(200, 164, 110, 0.45);
     background:
-      radial-gradient(ellipse 90% 60% at 100% 0%, rgba(200, 164, 110, 0.2), transparent 60%),
-      var(--if-espresso);
+      radial-gradient(ellipse 90% 60% at 100% 0%, rgba(200, 164, 110, 0.22), transparent 60%),
+      var(--if-black);
     color: var(--if-ivory);
-    box-shadow: 0 40px 80px -40px rgba(29, 22, 17, 0.7);
+    box-shadow: 0 40px 80px -40px rgba(0, 0, 0, 0.75);
+  }
+
+  .offer-card__product {
+    display: flex;
+    justify-content: center;
+    margin: -8px 0 8px;
+    pointer-events: none;
+  }
+
+  .offer-card__product-img {
+    display: block;
+    width: min(58%, 220px);
+    height: auto;
+    object-fit: contain;
+    filter: drop-shadow(0 22px 36px rgba(0, 0, 0, 0.55));
+  }
+
+  @media (min-width: 1024px) {
+    .offer-card__product {
+      margin: -28px 0 4px;
+    }
+
+    .offer-card__product-img {
+      width: min(64%, 240px);
+    }
   }
 
   .offer-card__badge {
@@ -121,5 +160,168 @@ const { card } = offer;
     letter-spacing: 0.14em;
     text-align: center;
     text-transform: uppercase;
+  }
+
+  .offer-trio-band {
+    padding-block: clamp(8px, 1.2vw, 16px) 4px;
+  }
+
+  .offer-trio {
+    display: grid;
+    gap: 16px;
+    width: 100%;
+    margin: 22px 0 0;
+    padding: 0;
+    list-style: none;
+  }
+
+  @media (min-width: 768px) {
+    .offer-trio {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 18px;
+    }
+  }
+
+  .offer-trio__item {
+    --shine-delay: 0s;
+    position: relative;
+    isolation: isolate;
+    overflow: hidden;
+    padding: clamp(26px, 3.2vw, 36px) clamp(22px, 2.6vw, 30px);
+    border: 1px solid rgba(200, 164, 110, 0.55);
+    background:
+      linear-gradient(165deg, #ffffff 0%, #f7f1e6 55%, #efe4d2 100%);
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.7) inset,
+      0 18px 40px -28px rgba(0, 0, 0, 0.45);
+    transition:
+      transform 0.35s var(--if-ease),
+      box-shadow 0.35s var(--if-ease),
+      border-color 0.35s;
+  }
+
+  .offer-trio__item:hover {
+    transform: translateY(-3px);
+    border-color: rgba(200, 164, 110, 0.9);
+    box-shadow:
+      0 1px 0 rgba(255, 255, 255, 0.85) inset,
+      0 24px 48px -26px rgba(160, 124, 69, 0.45);
+  }
+
+  .offer-trio__item::before {
+    content: '';
+    position: absolute;
+    inset: 0;
+    border-radius: inherit;
+    padding: 1.5px;
+    background: conic-gradient(
+      from var(--trio-angle, 0deg),
+      transparent 0%,
+      transparent 48%,
+      rgba(255, 248, 230, 0.15) 56%,
+      #fff6df 64%,
+      var(--if-gold-light) 72%,
+      var(--if-gold) 80%,
+      transparent 90%
+    );
+    -webkit-mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    animation: offerTrioBorder 3.2s linear infinite;
+    animation-delay: var(--shine-delay);
+    pointer-events: none;
+    z-index: 2;
+  }
+
+  .offer-trio__shine {
+    position: absolute;
+    inset: 0;
+    z-index: 1;
+    pointer-events: none;
+    background: linear-gradient(
+      115deg,
+      transparent 0%,
+      transparent 40%,
+      rgba(255, 255, 255, 0.55) 50%,
+      rgba(224, 197, 146, 0.35) 54%,
+      transparent 62%,
+      transparent 100%
+    );
+    transform: translateX(-140%) skewX(-16deg);
+    animation: offerTrioShine 3.6s ease-in-out infinite;
+    animation-delay: var(--shine-delay);
+  }
+
+  .offer-trio__no,
+  .offer-trio__word,
+  .offer-trio__text {
+    position: relative;
+    z-index: 3;
+  }
+
+  .offer-trio__no {
+    display: block;
+    font-family: var(--if-font-sans);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    color: var(--if-gold-ink);
+  }
+
+  .offer-trio__word {
+    margin: 14px 0 0;
+    font-family: var(--if-font-headline);
+    font-size: clamp(28px, 2.8vw, 36px);
+    font-weight: 800;
+    font-style: italic;
+    line-height: 1.05;
+    color: var(--if-ink);
+  }
+
+  .offer-trio__text {
+    margin: 14px 0 0;
+    font-size: 15px;
+    line-height: 1.5;
+    color: var(--if-ink-soft);
+  }
+
+  @property --trio-angle {
+    syntax: '<angle>';
+    inherits: false;
+    initial-value: 0deg;
+  }
+
+  @keyframes offerTrioBorder {
+    to {
+      --trio-angle: 360deg;
+    }
+  }
+
+  @keyframes offerTrioShine {
+    0%,
+    55% {
+      transform: translateX(-140%) skewX(-16deg);
+    }
+    78%,
+    100% {
+      transform: translateX(140%) skewX(-16deg);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .offer-trio__item::before,
+    .offer-trio__shine {
+      animation: none;
+    }
+
+    .offer-trio__shine {
+      opacity: 0;
+    }
+
+    .offer-trio__item:hover {
+      transform: none;
+    }
   }
 </style>

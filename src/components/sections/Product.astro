@@ -1,7 +1,7 @@
 ---
-import { Image } from 'astro:assets';
-import duo from '../../assets/images/baylan-duo.jpg';
-import { site } from '../../config/site';
+import fs from 'node:fs';
+import path from 'node:path';
+import CtaButton from '../CtaButton.astro';
 import { resolveLocale, type Locale } from '../../i18n/config';
 import { getHome } from '../../i18n/home';
 
@@ -12,146 +12,322 @@ interface Props {
 const copy = getHome(resolveLocale(Astro.props.locale));
 const { product } = copy.hero;
 const { proof } = copy;
+
+const pngPath = path.join(process.cwd(), 'public/brand/success-seller-product.png');
+const jpgPath = path.join(process.cwd(), 'public/brand/success-seller-product.jpg');
+const productImagePath = fs.existsSync(pngPath)
+  ? '/brand/success-seller-product.png'
+  : '/brand/success-seller-product.jpg';
+const hasProductImage = fs.existsSync(pngPath) || fs.existsSync(jpgPath);
+
+const marqueeItems = [proof.label, ...proof.items];
 ---
 
-<section id="product" class="product-section relative" aria-label={product.name}>
-  <div class="container-x pt-[clamp(12px,2.4vw,32px)] pb-[clamp(48px,7vw,88px)]">
-    <article class="product mx-auto max-w-[880px]" data-reveal>
-      <div class="product__card grid md:grid-cols-[0.9fr_1.2fr]">
-        <figure class="relative min-h-[240px] overflow-hidden md:min-h-[280px]">
-          <Image
-            src={duo}
-            alt={product.imageAlt}
-            widths={[420, 640, 920]}
-            sizes="(min-width: 768px) 400px, 100vw"
-            loading="eager"
-            fetchpriority="high"
-            class="absolute inset-0 h-full w-full object-cover object-[50%_12%]"
-          />
-          <div class="product__shade absolute inset-0" aria-hidden="true"></div>
-          <span class="product__badge absolute top-5 left-5">{product.badge}</span>
-        </figure>
+<section id="product" class="product-section" aria-label={product.name}>
+  <div class="container-x product-section__inner">
+    <article class:list={['product-item', !hasProductImage && 'product-item--solo']} data-reveal>
+      {
+        hasProductImage ? (
+          <div class="product-item__media">
+            <img
+              src={productImagePath}
+              alt={`${product.name} – Private Release Box`}
+              width="614"
+              height="819"
+              loading="eager"
+              decoding="async"
+              class="product-item__img"
+            />
+          </div>
+        ) : null
+      }
 
-        <div class="flex flex-col p-[clamp(22px,3.4vw,40px)]">
+      <div class="product-item__body">
+        <div class="product-item__meta">
+          <span class="product-item__badge">{product.badge}</span>
           <p class="label-caps text-gold">{product.label}</p>
-          <h2 class="headline mt-2 text-[clamp(32px,3.8vw,48px)] leading-[0.98] text-ivory">{product.name}</h2>
-          <p class="headline-italic mt-2 text-[clamp(17px,1.6vw,21px)] text-gold-light">{product.claim}</p>
-
-          <ul class="mt-5 space-y-2.5">
-            {
-              product.features.map((f) => (
-                <li class="flex gap-3 text-[14px] leading-snug text-ivory">
-                  <svg class="mt-1 shrink-0 text-gold" width="14" height="12" viewBox="0 0 14 12" aria-hidden="true">
-                    <path d="M1 6.5l4 4L13 1.5" fill="none" stroke="currentColor" stroke-width="1.3" />
-                  </svg>
-                  {f}
-                </li>
-              ))
-            }
-          </ul>
-
-          <p class="mt-5 mb-6 text-[12px] text-mist">{product.by}</p>
-
-          <div class="hairline mt-auto"></div>
-          <p class="mt-5 flex flex-wrap items-baseline gap-x-3 gap-y-1">
-            <span class="headline gold-text text-[clamp(36px,3.6vw,48px)] leading-none">{site.offer.firstMoverPrice}</span>
-            <span class="text-[13px] text-mist">
-              {product.regularLabel} <s class="text-ivory/60">{site.offer.regularPrice}</s>
-            </span>
-          </p>
-          <p class="mt-2 text-[12.5px] text-mist">
-            {product.startLabel}: <span class="text-cream">{product.start}</span>
-          </p>
         </div>
+
+        <h2 class="headline mt-6 text-[clamp(32px,3.6vw,48px)] leading-[0.98] text-ivory">{product.name}</h2>
+        <p class="headline-italic mt-3 text-[clamp(17px,1.6vw,22px)] text-gold-light">{product.claim}</p>
+
+        <ul class="mt-7 space-y-3">
+          {
+            product.features.map((f) => (
+              <li class="flex gap-3 text-[14.5px] leading-snug text-ivory/90">
+                <svg class="mt-1 shrink-0 text-gold" width="14" height="12" viewBox="0 0 14 12" aria-hidden="true">
+                  <path d="M1 6.5l4 4L13 1.5" fill="none" stroke="currentColor" stroke-width="1.3" />
+                </svg>
+                {f}
+              </li>
+            ))
+          }
+        </ul>
+
+        <div class="product-item__rule"></div>
+        <CtaButton label={product.cta} class="btn-shine" />
       </div>
     </article>
   </div>
 
-  <div class="surface-ivory grain relative border-y border-gold/30">
-    <div class="container-x flex flex-col items-center gap-5 py-7 lg:flex-row lg:justify-between lg:gap-10">
-      <p class="label-caps shrink-0 text-gold-ink">{proof.label}</p>
-      <ul class="proof-list">
-        {proof.items.map((item) => <li>{item}</li>)}
-      </ul>
+  <div class="product-marquee" aria-label={proof.label}>
+    <div class="product-marquee__track" aria-hidden="true">
+      {
+        [0, 1].map(() => (
+          <p class="product-marquee__group">
+            {marqueeItems.map((item) => (
+              <span class="product-marquee__item">
+                {item}
+                <span class="product-marquee__dot" aria-hidden="true">
+                  ·
+                </span>
+              </span>
+            ))}
+          </p>
+        ))
+      }
     </div>
+    <p class="product-marquee__sr">{marqueeItems.join(', ')}</p>
   </div>
 </section>
 
 <style>
-  .product {
+  .product-section {
     position: relative;
+    z-index: 1;
+    background: #ffffff;
   }
 
-  .product::before {
-    content: '';
-    position: absolute;
-    inset: 12px -12px -12px 12px;
-    border: 1px solid rgba(200, 164, 110, 0.45);
-    pointer-events: none;
+  .product-section__inner {
+    padding-block: clamp(56px, 8vw, 110px);
+    overflow: visible;
   }
 
-  .product__card {
+  .product-item {
     position: relative;
-    overflow: hidden;
-    border: 1px solid rgba(200, 164, 110, 0.4);
-    background:
-      radial-gradient(ellipse 80% 70% at 100% 0%, rgba(200, 164, 110, 0.18), transparent 60%),
-      var(--if-espresso);
-    box-shadow: 0 50px 100px -40px rgba(0, 0, 0, 0.8);
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: 24px;
+    max-width: 1080px;
+    margin-inline: auto;
+    overflow: visible;
   }
 
-  .product__shade {
-    background: linear-gradient(180deg, transparent 55%, rgba(23, 17, 13, 0.7));
+  .product-item--solo {
+    max-width: 720px;
   }
 
-  @media (min-width: 768px) {
-    .product__shade {
-      background: linear-gradient(90deg, transparent 60%, rgba(23, 17, 13, 0.85));
+  @media (min-width: 860px) {
+    .product-item:not(.product-item--solo) {
+      grid-template-columns: minmax(220px, 0.78fr) minmax(360px, 1.22fr);
+      align-items: center;
+      gap: 0;
     }
   }
 
-  .product__badge {
+  .product-item__media {
+    position: relative;
+    z-index: 4;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: visible;
+  }
+
+  .product-item__img {
+    display: block;
+    width: min(100%, 340px);
+    height: auto;
+    object-fit: contain;
+    filter: drop-shadow(0 32px 50px rgba(0, 0, 0, 0.42));
+  }
+
+  @media (min-width: 860px) {
+    .product-item__media {
+      justify-content: flex-end;
+      margin-right: -28%;
+    }
+
+    .product-item__img {
+      width: min(118%, 480px);
+      max-width: none;
+    }
+  }
+
+  .product-item__body {
+    --product-border-angle: 0deg;
+    position: relative;
+    z-index: 1;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    isolation: isolate;
+    overflow: hidden;
+    padding: clamp(24px, 3.2vw, 40px);
+    /* Ruhiger Basis-Doppelrand */
+    border: 1px solid rgba(200, 164, 110, 0.38);
+    background:
+      radial-gradient(ellipse 70% 80% at 0% 45%, rgba(200, 164, 110, 0.14), transparent 55%),
+      #17110d;
+    box-shadow:
+      inset 0 0 0 3px #17110d,
+      inset 0 0 0 4px rgba(200, 164, 110, 0.38),
+      0 32px 70px -40px rgba(0, 0, 0, 0.55);
+  }
+
+  /* Goldstrahl nur auf dem inneren Rand */
+  .product-item__body::after {
+    content: '';
+    position: absolute;
+    inset: 3px;
+    padding: 1px;
+    background: conic-gradient(
+      from var(--product-border-angle),
+      transparent 0deg,
+      transparent 320deg,
+      rgba(200, 164, 110, 0) 328deg,
+      rgba(200, 164, 110, 0.3) 336deg,
+      #fff8e4 344deg,
+      #ffe7a8 348deg,
+      var(--if-gold-light) 352deg,
+      rgba(200, 164, 110, 0.35) 356deg,
+      transparent 360deg
+    );
+    -webkit-mask:
+      linear-gradient(#fff 0 0) content-box,
+      linear-gradient(#fff 0 0);
+    -webkit-mask-composite: xor;
+    mask-composite: exclude;
+    animation: productBorderSpin 5.5s linear infinite;
+    pointer-events: none;
+    z-index: 5;
+  }
+
+  @media (min-width: 860px) {
+    .product-item:not(.product-item--solo) .product-item__body {
+      /* Brauner Innenraum: leichter Abstand zur überlappenden Box */
+      padding-left: clamp(96px, 11vw, 140px);
+      align-self: center;
+    }
+  }
+
+  @property --product-border-angle {
+    syntax: '<angle>';
+    inherits: false;
+    initial-value: 0deg;
+  }
+
+  @keyframes productBorderSpin {
+    to {
+      --product-border-angle: 360deg;
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .product-item__body::after {
+      animation: none;
+      opacity: 0;
+    }
+  }
+
+  .product-item__meta {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    justify-content: space-between;
+    gap: 12px;
+  }
+
+  .product-item__badge {
     padding: 6px 12px;
     background: linear-gradient(135deg, #e0c592, #a98551);
-    color: var(--if-espresso);
+    color: #17110d;
     font-size: 10px;
     font-weight: 700;
     letter-spacing: 0.22em;
     text-transform: uppercase;
   }
 
-  .proof-list {
-    display: grid;
-    grid-template-columns: repeat(2, minmax(0, 1fr));
-    gap: 14px 24px;
-    text-align: center;
+  .product-item__rule {
+    margin-top: 28px;
+    padding-top: 22px;
+    border-bottom: 1px solid rgba(200, 164, 110, 0.22);
+    padding-bottom: 10px;
   }
 
-  .proof-list li {
-    font-family: var(--if-font-headline);
-    font-size: clamp(16px, 1.6vw, 21px);
-    font-weight: 800;
-    letter-spacing: 0.08em;
+  .product-item__body :global(.btn) {
+    margin-top: 10px;
+  }
+
+  .product-marquee {
+    position: relative;
+    overflow: hidden;
+    white-space: nowrap;
+    border-top: 1px solid rgba(200, 164, 110, 0.22);
+    background: #100c0a;
+  }
+
+  .product-marquee__track {
+    display: flex;
+    width: max-content;
+    animation: product-marquee 32s linear infinite;
+  }
+
+  .product-marquee__group {
+    display: flex;
+    align-items: center;
+    gap: clamp(28px, 5vw, 56px);
+    min-width: max-content;
+    margin: 0;
+    padding: 22px clamp(14px, 2.5vw, 28px);
+    font-family: var(--if-font-sans);
+    font-size: clamp(12px, 1.2vw, 14px);
+    font-weight: 600;
+    letter-spacing: 0.18em;
     text-transform: uppercase;
-    color: var(--if-ink);
+    color: #ffffff;
   }
 
-  @media (min-width: 768px) {
-    .proof-list {
-      display: flex;
-      flex-wrap: wrap;
+  .product-marquee__item {
+    display: inline-flex;
+    align-items: center;
+    gap: clamp(28px, 5vw, 56px);
+  }
+
+  .product-marquee__dot {
+    color: var(--if-gold);
+  }
+
+  .product-marquee__sr {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
+  }
+
+  @keyframes product-marquee {
+    from {
+      transform: translateX(0);
+    }
+    to {
+      transform: translateX(-50%);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .product-marquee__track {
+      animation: none;
       justify-content: center;
-      align-items: center;
-      gap: 12px 0;
+      width: 100%;
     }
 
-    .proof-list li + li::before {
-      content: '◆';
-      display: inline-block;
-      margin: 0 22px;
-      font-size: 7px;
-      vertical-align: middle;
-      color: var(--if-gold-deep);
+    .product-marquee__group:last-child {
+      display: none;
     }
   }
 </style>

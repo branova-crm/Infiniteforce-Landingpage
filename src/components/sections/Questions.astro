@@ -7,187 +7,91 @@ interface Props {
   locale?: Locale;
 }
 
-const locale = resolveLocale(Astro.props.locale);
-const { questions: q } = getHome(locale);
-const privacyHref = locale === 'en' ? site.legal.privacyEn : site.legal.privacy;
-
-const fields = [
-  { name: 'name', label: q.name, type: 'text', autocomplete: 'name', placeholder: q.namePh },
-  { name: 'telefon', label: q.phone, type: 'tel', autocomplete: 'tel', placeholder: q.phonePh },
-  { name: 'email', label: q.email, type: 'email', autocomplete: 'email', placeholder: q.emailPh },
-];
+const { questions: q } = getHome(resolveLocale(Astro.props.locale));
+const { contact } = site;
 ---
 
-<section id="questions" class="surface-cream grain section-pad on-light" aria-labelledby="questions-title">
-  <div class="container-x grid gap-12 lg:grid-cols-12 lg:gap-16">
-    <div class="lg:col-span-5" data-reveal>
-      <p class="eyebrow">{q.eyebrow}</p>
-      <h2 id="questions-title" class="display mt-8 text-[clamp(34px,4.2vw,58px)] text-ink">{q.title}</h2>
-      <p class="lead mt-6 max-w-[30rem]">{q.lead}</p>
+<section id="questions" class="questions-section section-pad on-light" aria-labelledby="questions-title">
+  <div class="container-x">
+    <div class="questions-section__inner mx-auto max-w-[36rem] text-center" data-reveal>
+      <p class="eyebrow eyebrow--center">{q.eyebrow}</p>
+      <h2 id="questions-title" class="headline mt-6 text-[clamp(34px,4.2vw,58px)] text-ink">{q.title}</h2>
+      <p class="lead mt-5 text-ink-soft">{q.lead}</p>
+
+      <p class="questions-section__phone mt-10">
+        <span class="label-caps text-gold-ink">{q.phoneLabel}</span>
+        <a href={contact.phoneHref} class="questions-section__tel">{contact.phoneDisplay}</a>
+      </p>
+
+      <a
+        href={contact.whatsappHref}
+        class="btn-whatsapp mt-8"
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+          <path
+            d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.435 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"
+          ></path>
+        </svg>
+        <span>{q.whatsappCta}</span>
+      </a>
     </div>
-
-    <form
-      class="card-light p-[clamp(24px,4vw,48px)] lg:col-span-7"
-      data-questions-form
-      data-endpoint={site.form.endpoint}
-      novalidate
-      data-reveal
-      style="--reveal-delay:100ms"
-    >
-      <div class="grid gap-5 sm:grid-cols-2" data-fields>
-        {
-          fields.map((f) => (
-            <label class:list={['block', f.name === 'name' && 'sm:col-span-2']}>
-              <span class="label-caps mb-2 block text-[10px] text-ink">{f.label}</span>
-              <input
-                name={f.name}
-                type={f.type}
-                autocomplete={f.autocomplete}
-                required
-                placeholder={f.placeholder}
-                class="field"
-              />
-              <span class="mt-1.5 block text-[12px] text-error" data-err={f.name} hidden />
-            </label>
-          ))
-        }
-
-        <label class="block sm:col-span-2">
-          <span class="label-caps mb-2 block text-[10px] text-ink">{q.message}</span>
-          <textarea name="message" rows="5" required placeholder={q.messagePh} class="field resize-y"></textarea>
-          <span class="mt-1.5 block text-[12px] text-error" data-err="message" hidden></span>
-        </label>
-
-        <input
-          type="text"
-          name="website"
-          tabindex="-1"
-          autocomplete="off"
-          class="absolute -left-[9999px] h-0 w-0 opacity-0"
-          aria-hidden="true"
-        />
-
-        <p class="text-[12px] leading-relaxed text-ink-soft sm:col-span-2">
-          {q.consentBefore}{' '}
-          <a href={privacyHref} class="text-gold-ink underline underline-offset-2 hover:text-ink">{q.consentLink}</a>
-          {q.consentAfter}
-        </p>
-
-        <button type="submit" class="btn btn-ink btn-block sm:col-span-2" data-submit>{q.submit}</button>
-        <p class="text-center text-[13px] text-error sm:col-span-2" data-form-error hidden></p>
-      </div>
-
-      <div class="py-10 text-center" data-success hidden>
-        <p class="display-italic text-[32px] text-gold-ink">{q.successTitle}</p>
-        <p class="body-copy mt-3">{q.successBody}</p>
-      </div>
-    </form>
   </div>
 </section>
 
-<script
-  define:vars={{
-    errName: q.errName,
-    errPhone: q.errPhone,
-    errPhoneInvalid: q.errPhoneInvalid,
-    errEmail: q.errEmail,
-    errEmailInvalid: q.errEmailInvalid,
-    errMessage: q.errMessage,
-    errNetwork: q.errNetwork,
-    submitting: q.submitting,
-    submitLabel: q.submit,
-  }}
->
-  const form = document.querySelector('[data-questions-form]');
-  if (form instanceof HTMLFormElement) {
-    const endpoint = form.dataset.endpoint || '/api/register';
-    const submitBtn = form.querySelector('[data-submit]');
-    const success = form.querySelector('[data-success]');
-    const formError = form.querySelector('[data-form-error]');
-    const fields = form.querySelector('[data-fields]');
-
-    const showErr = (name, msg) => {
-      const el = form.querySelector(`[data-err="${name}"]`);
-      const input = form.querySelector(`[name="${name}"]`);
-      if (el instanceof HTMLElement) {
-        el.textContent = msg;
-        el.hidden = !msg;
-      }
-      if (input instanceof HTMLElement) {
-        if (msg) input.setAttribute('aria-invalid', 'true');
-        else input.removeAttribute('aria-invalid');
-      }
-    };
-
-    const clearErrs = () => {
-      ['name', 'telefon', 'email', 'message'].forEach((n) => showErr(n, ''));
-      if (formError instanceof HTMLElement) formError.hidden = true;
-    };
-
-    form.addEventListener('submit', async (event) => {
-      event.preventDefault();
-      clearErrs();
-
-      const data = new FormData(form);
-      const name = String(data.get('name') || '').trim();
-      const telefon = String(data.get('telefon') || '').trim();
-      const email = String(data.get('email') || '').trim();
-      const message = String(data.get('message') || '').trim();
-      const website = String(data.get('website') || '').trim();
-
-      let ok = true;
-      if (name.length < 2) {
-        showErr('name', errName);
-        ok = false;
-      }
-      const digits = telefon.replace(/\D/g, '');
-      if (!telefon) {
-        showErr('telefon', errPhone);
-        ok = false;
-      } else if (digits.length < 6) {
-        showErr('telefon', errPhoneInvalid);
-        ok = false;
-      }
-      if (!email) {
-        showErr('email', errEmail);
-        ok = false;
-      } else if (!/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(email)) {
-        showErr('email', errEmailInvalid);
-        ok = false;
-      }
-      if (message.length < 5) {
-        showErr('message', errMessage);
-        ok = false;
-      }
-      if (!ok) {
-        form.querySelector('[aria-invalid="true"]')?.focus();
-        return;
-      }
-
-      if (submitBtn instanceof HTMLButtonElement) {
-        submitBtn.disabled = true;
-        submitBtn.textContent = submitting;
-      }
-
-      try {
-        const response = await fetch(endpoint, {
-          method: 'POST',
-          headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
-          body: JSON.stringify({ name, telefon, email, message, website, type: 'question' }),
-        });
-        if (!response.ok) throw new Error('fail');
-        if (fields instanceof HTMLElement) fields.hidden = true;
-        if (success instanceof HTMLElement) success.hidden = false;
-      } catch {
-        if (formError instanceof HTMLElement) {
-          formError.textContent = errNetwork;
-          formError.hidden = false;
-        }
-        if (submitBtn instanceof HTMLButtonElement) {
-          submitBtn.disabled = false;
-          submitBtn.textContent = submitLabel;
-        }
-      }
-    });
+<style>
+  .questions-section {
+    background: #ffffff;
   }
-</script>
+
+  .questions-section__phone {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 10px;
+  }
+
+  .questions-section__tel {
+    font-family: var(--if-font-headline);
+    font-size: clamp(28px, 3.4vw, 40px);
+    font-weight: 800;
+    line-height: 1.1;
+    color: var(--if-ink);
+    text-decoration: none;
+    transition: color 0.2s var(--if-ease);
+  }
+
+  .questions-section__tel:hover {
+    color: var(--if-gold-ink);
+  }
+
+  .btn-whatsapp {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 12px;
+    min-height: 54px;
+    padding: 0 28px;
+    border-radius: 2px;
+    background: #25d366;
+    color: #fff;
+    font-family: var(--if-font-sans);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    text-decoration: none;
+    box-shadow: 0 12px 28px -14px rgba(37, 211, 102, 0.7);
+    transition:
+      background 0.25s var(--if-ease),
+      box-shadow 0.25s var(--if-ease),
+      transform 0.25s var(--if-ease);
+  }
+
+  .btn-whatsapp:hover {
+    background: #1ebe57;
+    box-shadow: 0 16px 36px -14px rgba(37, 211, 102, 0.8);
+    transform: translateY(-1px);
+  }
+</style>

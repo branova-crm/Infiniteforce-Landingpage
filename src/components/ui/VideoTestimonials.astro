@@ -27,20 +27,17 @@ const mediaBySlug = Object.fromEntries(site.media.testimonials.map((t) => [t.slu
               poster={media?.poster}
               src={media?.video}
             />
-            <span class="vt-card__no" aria-hidden="true">
-              {String(i + 1).padStart(2, '0')}
-            </span>
             <span class="vt-card__play" aria-hidden="true">
               <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M8 5v14l11-7z" />
               </svg>
             </span>
-            <span class="vt-card__chip">{item.result}</span>
           </button>
           <div class="vt-card__body">
-            <h3 class="font-display text-[22px] leading-tight font-medium text-cream">{item.name}</h3>
-            <p class="label-caps mt-2 text-gold">{item.role}</p>
-            <p class="display-italic mt-4 text-[18px] leading-snug text-mist">„{item.quote}“</p>
+            <p class="vt-card__no" aria-hidden="true">{String(i + 1).padStart(2, '0')}</p>
+            <h3 class="vt-card__name">{item.name}</h3>
+            <p class="vt-card__role">{item.role}</p>
+            <p class="vt-card__quote">„{item.quote}“</p>
           </div>
         </article>
       );
@@ -51,36 +48,30 @@ const mediaBySlug = Object.fromEntries(site.media.testimonials.map((t) => [t.slu
 <style>
   .vt-grid {
     display: grid;
-    grid-auto-flow: column;
-    grid-auto-columns: minmax(250px, 76%);
-    gap: 18px;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
-    scrollbar-width: none;
-  }
-
-  .vt-grid::-webkit-scrollbar {
-    display: none;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: 10px;
   }
 
   .vt-card {
-    scroll-snap-align: start;
-    border: 1px solid rgba(200, 164, 110, 0.2);
-    background: rgba(23, 17, 13, 0.85);
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    overflow: hidden;
+    border: 1px solid rgba(29, 22, 17, 0.08);
+    background: #ffffff;
+    box-shadow: 0 12px 28px -22px rgba(29, 22, 17, 0.28);
   }
 
   @media (min-width: 640px) {
     .vt-grid {
-      grid-auto-flow: row;
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      overflow: visible;
+      gap: 16px;
     }
   }
 
-  @media (min-width: 1024px) {
+  @media (min-width: 900px) {
     .vt-grid {
       grid-template-columns: repeat(3, minmax(0, 1fr));
-      gap: 24px;
+      gap: 22px;
     }
   }
 
@@ -88,31 +79,23 @@ const mediaBySlug = Object.fromEntries(site.media.testimonials.map((t) => [t.slu
     position: relative;
     display: block;
     width: 100%;
-    aspect-ratio: 4 / 5;
+    aspect-ratio: 3 / 4;
+    overflow: hidden;
     padding: 0;
     border: 0;
-    background: #1a130e;
+    background: #ece6dc;
     cursor: pointer;
   }
 
+  /* 9:16-Quellen → 3:4-Crop über die Safe Zones (oben/unten mittig weg) */
   .vt-card__video {
+    position: absolute;
+    inset: 0;
     width: 100%;
     height: 100%;
     object-fit: cover;
-    background:
-      radial-gradient(circle at 70% 20%, rgba(200, 164, 110, 0.22), transparent 55%),
-      linear-gradient(160deg, #3a2b21, #120d0a 70%);
-  }
-
-  .vt-card__no {
-    position: absolute;
-    top: 18px;
-    left: 20px;
-    font-family: var(--if-font-display);
-    font-size: 64px;
-    font-style: italic;
-    line-height: 1;
-    color: rgba(226, 201, 156, 0.22);
+    object-position: center center;
+    background: #e7dccb;
   }
 
   .vt-card__play {
@@ -121,16 +104,25 @@ const mediaBySlug = Object.fromEntries(site.media.testimonials.map((t) => [t.slu
     top: 50%;
     display: grid;
     place-items: center;
-    width: 64px;
-    height: 64px;
-    border: 1px solid rgba(226, 201, 156, 0.7);
+    width: 44px;
+    height: 44px;
+    border: 0;
     border-radius: 999px;
-    background: rgba(13, 10, 8, 0.45);
-    color: var(--if-gold-light);
+    background: rgba(255, 255, 255, 0.92);
+    color: var(--if-espresso);
+    box-shadow: 0 10px 28px -12px rgba(13, 10, 8, 0.45);
     transform: translate(-50%, -50%);
     transition:
       background 0.25s,
+      color 0.25s,
       transform 0.25s var(--if-ease);
+  }
+
+  @media (min-width: 640px) {
+    .vt-card__play {
+      width: 58px;
+      height: 58px;
+    }
   }
 
   .vt-card__media:hover .vt-card__play {
@@ -139,26 +131,60 @@ const mediaBySlug = Object.fromEntries(site.media.testimonials.map((t) => [t.slu
     transform: translate(-50%, -50%) scale(1.06);
   }
 
-  .vt-card__chip {
-    position: absolute;
-    right: 14px;
-    bottom: 14px;
-    padding: 6px 10px;
-    border: 1px solid rgba(200, 164, 110, 0.5);
-    background: rgba(13, 10, 8, 0.6);
-    color: var(--if-gold-light);
+  .vt-card__body {
+    display: flex;
+    flex: 1;
+    flex-direction: column;
+    padding: 12px 10px 14px;
+    text-align: center;
+    background: #ffffff;
+  }
+
+  @media (min-width: 640px) {
+    .vt-card__body {
+      padding: 20px 18px 22px;
+    }
+  }
+
+  .vt-card__no {
+    margin: 0;
+    font-family: var(--if-font-sans);
     font-size: 10px;
     font-weight: 600;
-    letter-spacing: 0.18em;
+    letter-spacing: 0.16em;
+    color: var(--if-gold-ink);
+  }
+
+  .vt-card__name {
+    margin: 6px 0 0;
+    font-family: var(--if-font-headline);
+    font-size: clamp(14px, 3.8vw, 22px);
+    font-weight: 800;
+    line-height: 1.15;
+    color: var(--if-ink);
+  }
+
+  .vt-card__role {
+    margin: 6px 0 0;
+    font-family: var(--if-font-sans);
+    font-size: 9px;
+    font-weight: 600;
+    letter-spacing: 0.12em;
     text-transform: uppercase;
+    color: var(--if-ink-soft);
   }
 
-  .vt-card__body {
-    padding: 22px 22px 26px;
+  .vt-card__quote {
+    margin: 8px 0 0;
+    font-family: var(--if-font-sans);
+    font-size: clamp(12px, 3.2vw, 14px);
+    font-weight: 400;
+    font-style: normal;
+    line-height: 1.45;
+    color: var(--if-ink-soft);
   }
 
-  .vt-card.is-playing .vt-card__play,
-  .vt-card.is-playing .vt-card__no {
+  .vt-card.is-playing .vt-card__play {
     display: none;
   }
 </style>
@@ -187,7 +213,7 @@ const mediaBySlug = Object.fromEntries(site.media.testimonials.map((t) => [t.slu
         video.muted = false;
         await video.play();
       } catch {
-        /* Platzhalter-Datei fehlt noch */
+        /* Video fehlt oder Autoplay blockiert */
       }
     });
 

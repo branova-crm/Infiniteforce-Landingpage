@@ -20,8 +20,9 @@ const legal = [
 ];
 ---
 
-<footer class="site-footer relative">
-  <div class="container-x grid gap-12 pt-20 pb-12 md:grid-cols-12">
+<footer class="site-footer relative overflow-hidden">
+  <div class="site-footer__glow" aria-hidden="true"></div>
+  <div class="container-x relative grid gap-12 pt-20 pb-12 md:grid-cols-12">
     <div class="md:col-span-5">
       <a href={homePath} class="inline-block" aria-label={`${site.brand} – Home`}>
         <Wordmark variant="white" size="lg" />
@@ -60,7 +61,7 @@ const legal = [
     </nav>
   </div>
 
-  <div class="container-x">
+  <div class="container-x relative">
     <div class="hairline"></div>
     <p class="py-8 text-center text-[11px] tracking-[0.18em] text-ivory/45 uppercase">
       © {year} {site.brand} · {copy.footer.rights}
@@ -70,12 +71,28 @@ const legal = [
 
 <style>
   .site-footer {
-    background: var(--if-black);
+    /* Wie Hero: Silk scheint durch – kein solider Fill */
+    background: linear-gradient(180deg, rgba(13, 10, 8, 0.45), rgba(13, 10, 8, 0.72));
+    background-color: transparent;
+  }
+
+  .site-footer__glow {
+    position: absolute;
+    top: -18%;
+    left: 50%;
+    z-index: 0;
+    width: 70vw;
+    height: 46vw;
+    max-width: 860px;
+    max-height: 420px;
+    background: radial-gradient(ellipse, rgba(200, 164, 110, 0.16), transparent 62%);
+    transform: translateX(-50%);
+    pointer-events: none;
   }
 
   .site-footer__link {
     font-size: 14px;
-    color: rgba(244, 238, 228, 0.66);
+    color: #ffffff;
     transition: color 0.2s;
   }
 

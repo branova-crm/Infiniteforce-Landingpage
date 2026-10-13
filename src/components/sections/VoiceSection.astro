@@ -11,23 +11,39 @@ interface Props {
 const { voice, chatUi } = getHome(resolveLocale(Astro.props.locale));
 ---
 
-<section class="surface-cream grain section-pad-sm on-light" aria-labelledby="voice-title">
-  <div class="container-x grid items-center gap-12 lg:grid-cols-12 lg:gap-16">
-    <div class="lg:col-span-6" data-reveal>
-      <p class="eyebrow">{voice.eyebrow}</p>
+<section class="voice-section grain section-pad-sm on-light" aria-labelledby="voice-title">
+  <div class="container-x grid items-center gap-10 lg:grid-cols-2 lg:gap-16">
+    <div class="voice-section__copy text-center lg:text-left" data-reveal>
+      <p class="eyebrow lg:justify-start">{voice.eyebrow}</p>
       <h2 id="voice-title" class="headline-italic mt-6 text-[clamp(36px,4.4vw,60px)] leading-[1.05] text-ink">
         {voice.title}
       </h2>
-      <p class="lead mt-6 max-w-[32rem] text-ink-soft">{voice.text}</p>
+      <p class="lead mx-auto mt-5 max-w-[32rem] text-ink-soft lg:mx-0">{voice.text}</p>
     </div>
-    <div class="lg:col-span-6" data-reveal style="--reveal-delay:100ms">
+    <div class="flex justify-center lg:justify-end" data-reveal style="--reveal-delay:100ms">
       <VoiceNote
         src={site.media.voice.src}
         durationLabel={site.media.voice.durationLabel}
         voice={voice}
         ui={chatUi}
-        class="mx-auto max-w-[440px]"
+        class="w-full max-w-[440px]"
       />
     </div>
   </div>
 </section>
+
+<style>
+  .voice-section {
+    background: #ffffff;
+  }
+
+  @media (min-width: 1024px) {
+    .voice-section__copy :global(.eyebrow) {
+      justify-content: flex-start;
+    }
+
+    .voice-section__copy :global(.eyebrow::after) {
+      display: none;
+    }
+  }
+</style>

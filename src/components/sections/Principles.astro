@@ -1,0 +1,298 @@
+---
+import { site } from '../../config/site';
+import { resolveLocale, type Locale } from '../../i18n/config';
+import { getHome } from '../../i18n/home';
+
+interface Props {
+  locale?: Locale;
+}
+
+const { principles } = getHome(resolveLocale(Astro.props.locale));
+---
+
+<section id="truth" class="principles-section grain section-pad on-light" aria-labelledby="truth-title">
+  <div class="container-x">
+    <div class="mx-auto max-w-[44rem] text-center" data-reveal>
+      <p class="eyebrow eyebrow--center">{principles.eyebrow}</p>
+      <h2 id="truth-title" class="headline mt-6 text-[clamp(32px,4.2vw,52px)] leading-[1.12] text-ink">
+        {principles.title}
+      </h2>
+      <p class="lead mx-auto mt-5 max-w-[34rem] text-ink-soft">{principles.titleAccent}</p>
+    </div>
+
+    <ol class="truth-grid mt-14 md:mt-16" data-reveal style="--reveal-delay:80ms">
+      {
+        principles.items.map((item, i) => (
+          <li class="truth-card">
+            <span class="truth-card__no" aria-hidden="true">
+              {String(i + 1).padStart(2, '0')}
+            </span>
+            <h3 class="truth-card__title">{item.title}</h3>
+            <p class="truth-card__text">{item.text}</p>
+          </li>
+        ))
+      }
+
+      <li class="truth-card truth-card--cta">
+        <a href={site.shopUrl} class="truth-card__cta-link" target="_blank" rel="noopener noreferrer">
+          <span class="truth-card__shine" aria-hidden="true"></span>
+          <span class="truth-card__no">08</span>
+          <h3 class="truth-card__title">{principles.ctaCard.title}</h3>
+          <p class="truth-card__text">{principles.ctaCard.text}</p>
+          <span class="truth-card__btn">
+            {principles.ctaCard.cta}
+            <svg width="16" height="10" viewBox="0 0 18 10" fill="none" aria-hidden="true">
+              <path d="M0 5h16.5M12.5 1l4 4-4 4" stroke="currentColor" stroke-width="1.2"></path>
+            </svg>
+          </span>
+        </a>
+      </li>
+    </ol>
+
+    {
+      principles.closing && (
+        <p class="truth-closing" data-reveal>
+          {principles.closing.map((part) => (typeof part === 'string' ? part : <strong>{part.strong}</strong>))}
+        </p>
+      )
+    }
+  </div>
+</section>
+
+<style>
+  .principles-section {
+    background: #ffffff;
+  }
+
+  .truth-grid {
+    display: grid;
+    gap: 14px;
+    width: 100%;
+    margin-inline: auto;
+    grid-template-columns: 1fr;
+  }
+
+  @media (min-width: 700px) {
+    .truth-grid {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 16px;
+    }
+  }
+
+  @media (min-width: 1024px) {
+    .truth-grid {
+      grid-template-columns: repeat(4, minmax(0, 1fr));
+      gap: 16px;
+    }
+  }
+
+  .truth-closing {
+    max-width: 36rem;
+    margin: 56px auto 0;
+    font-family: var(--if-font-sans);
+    font-size: clamp(15px, 1.5vw, 18px);
+    font-weight: 400;
+    line-height: 1.45;
+    text-align: center;
+    text-wrap: balance;
+    color: var(--if-ink-soft);
+  }
+
+  .truth-closing strong {
+    font-weight: 700;
+    color: var(--if-ink);
+  }
+
+  .truth-card {
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+    padding: 22px 20px 24px;
+    border: 1px solid rgba(160, 124, 69, 0.28);
+    background: linear-gradient(165deg, #fffefb 0%, #f7f1e6 100%);
+    box-shadow: 0 18px 40px -28px rgba(29, 22, 17, 0.35);
+    transition:
+      transform 0.35s var(--if-ease),
+      border-color 0.35s var(--if-ease),
+      box-shadow 0.35s var(--if-ease);
+  }
+
+  .truth-card:hover {
+    transform: translateY(-3px);
+    border-color: rgba(160, 124, 69, 0.55);
+    box-shadow: 0 28px 50px -24px rgba(29, 22, 17, 0.4);
+  }
+
+  .truth-card--cta {
+    padding: 0;
+    overflow: hidden;
+    border-color: rgba(171, 135, 80, 0.55);
+    background: linear-gradient(145deg, #ecd6ab 0%, #e0c592 28%, var(--if-gold) 55%, #ab8750 100%);
+    box-shadow:
+      0 18px 40px -22px rgba(160, 124, 69, 0.55),
+      inset 0 1px 0 rgba(255, 255, 255, 0.35);
+    animation: truthCtaGlow 3.6s ease-in-out infinite;
+  }
+
+  .truth-card--cta:hover {
+    transform: translateY(-4px);
+    border-color: rgba(224, 197, 146, 0.9);
+    box-shadow:
+      0 28px 50px -20px rgba(160, 124, 69, 0.65),
+      inset 0 1px 0 rgba(255, 255, 255, 0.45);
+  }
+
+  .truth-card__cta-link {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    min-height: 100%;
+    padding: 22px 20px 24px;
+    color: inherit;
+    text-decoration: none;
+    isolation: isolate;
+    overflow: hidden;
+  }
+
+  .truth-card__shine {
+    position: absolute;
+    inset: 0;
+    z-index: 0;
+    pointer-events: none;
+    background: linear-gradient(
+      115deg,
+      transparent 0%,
+      transparent 42%,
+      rgba(255, 255, 255, 0.42) 50%,
+      transparent 58%,
+      transparent 100%
+    );
+    transform: translateX(-130%) skewX(-16deg);
+    animation: truthCtaShine 3.4s ease-in-out infinite;
+  }
+
+  .truth-card--cta .truth-card__no,
+  .truth-card--cta .truth-card__title,
+  .truth-card--cta .truth-card__text,
+  .truth-card--cta .truth-card__btn {
+    position: relative;
+    z-index: 1;
+  }
+
+  .truth-card__no {
+    font-family: var(--if-font-headline);
+    font-size: 13px;
+    font-weight: 800;
+    font-style: italic;
+    letter-spacing: 0.04em;
+    color: var(--if-gold-ink);
+  }
+
+  .truth-card--cta .truth-card__no {
+    color: rgba(23, 17, 13, 0.62);
+  }
+
+  .truth-card__title {
+    margin-top: 12px;
+    font-family: var(--if-font-headline);
+    font-size: clamp(18px, 1.5vw, 21px);
+    font-weight: 800;
+    line-height: 1.2;
+    letter-spacing: -0.02em;
+    color: var(--if-ink);
+  }
+
+  .truth-card--cta .truth-card__title {
+    color: var(--if-espresso);
+  }
+
+  .truth-card__text {
+    margin-top: 10px;
+    font-family: var(--if-font-sans);
+    font-size: 13.5px;
+    font-weight: 400;
+    line-height: 1.6;
+    color: var(--if-ink-soft);
+  }
+
+  .truth-card--cta .truth-card__text {
+    color: rgba(23, 17, 13, 0.78);
+    font-weight: 500;
+  }
+
+  .truth-card__btn {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    margin-top: auto;
+    padding: 14px 16px;
+    min-height: 48px;
+    border: 1px solid #17110d;
+    background: #17110d;
+    color: var(--if-gold-light);
+    font-family: var(--if-font-sans);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    transition:
+      background 0.25s var(--if-ease),
+      color 0.25s var(--if-ease),
+      border-color 0.25s var(--if-ease);
+  }
+
+  .truth-card__cta-link:hover .truth-card__btn {
+    background: #0d0a08;
+    color: #ffffff;
+    border-color: #0d0a08;
+  }
+
+  .truth-card__btn svg {
+    transition: transform 0.25s var(--if-ease);
+  }
+
+  .truth-card__cta-link:hover .truth-card__btn svg {
+    transform: translateX(3px);
+  }
+
+  @keyframes truthCtaShine {
+    0%,
+    55% {
+      transform: translateX(-130%) skewX(-16deg);
+    }
+    78%,
+    100% {
+      transform: translateX(140%) skewX(-16deg);
+    }
+  }
+
+  @keyframes truthCtaGlow {
+    0%,
+    100% {
+      box-shadow:
+        0 18px 40px -22px rgba(160, 124, 69, 0.5),
+        inset 0 1px 0 rgba(255, 255, 255, 0.35);
+    }
+    50% {
+      box-shadow:
+        0 22px 48px -18px rgba(200, 164, 110, 0.72),
+        inset 0 1px 0 rgba(255, 255, 255, 0.5);
+    }
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .truth-card,
+    .truth-card:hover,
+    .truth-card__btn,
+    .truth-card__btn svg {
+      transition: none;
+      transform: none;
+    }
+
+    .truth-card--cta,
+    .truth-card__shine {
+      animation: none;
+    }
+  }
+</style>

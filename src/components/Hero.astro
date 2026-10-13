@@ -14,24 +14,21 @@ const { hero } = copy;
 <section class="hero relative overflow-hidden" aria-labelledby="hero-title">
   <div class="hero__glow" aria-hidden="true"></div>
 
-  <div class="container-x relative py-[clamp(28px,4.2vw,48px)] text-center">
+  <div class="container-x relative py-[clamp(52px,7.5vw,96px)] text-center">
     <p class="eyebrow eyebrow--center">{hero.eyebrow}</p>
 
-    <h1
-      id="hero-title"
-      class="headline mx-auto mt-5 max-w-[20ch] text-[clamp(30px,4.2vw,52px)]"
-    >
-      {hero.titleTop}
-      <em class="headline-italic gold-text mt-1 block pb-1">{hero.titleAccent}</em>
+    <h1 id="hero-title" class="hero__title headline mx-auto mt-5">
+      <span class="hero__title-line">{hero.titleTop}</span>
+      <em class="hero__title-accent headline-italic gold-text">{hero.titleAccent}</em>
     </h1>
 
-    <div class="mx-auto mt-4 max-w-[34rem] space-y-1">
-      {hero.lead.map((line) => <p class="text-[15px] leading-[1.7] text-mist md:text-[16px]">{line}</p>)}
+    <div class="hero__lead mx-auto mt-5 max-w-[38rem]">
+      {hero.lead.map((line) => <p>{line}</p>)}
     </div>
 
-    <div class="mt-7 flex flex-col items-center">
-      <CtaButton label={hero.ctaPrimary} data-hero-cta />
-      <p class="mt-3 text-[12.5px] tracking-[0.04em] text-mist">{hero.priceLine}</p>
+    <div class="mt-8 flex flex-col items-center">
+      <CtaButton label={hero.ctaPrimary} class="btn-shine" data-hero-cta />
+      <p class="hero__price mt-3">{hero.priceLine}</p>
     </div>
   </div>
 </section>
@@ -52,5 +49,50 @@ const { hero } = copy;
     background: radial-gradient(ellipse, rgba(200, 164, 110, 0.16), transparent 62%);
     transform: translateX(-50%);
     pointer-events: none;
+  }
+
+  .hero__title {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0.06em;
+    max-width: min(920px, 100%);
+    font-size: clamp(30px, 4.6vw, 58px);
+    line-height: 1.12;
+    color: #ffffff;
+  }
+
+  .hero__title-line,
+  .hero__title-accent {
+    display: block;
+  }
+
+  .hero__title-accent {
+    padding-bottom: 0.06em;
+  }
+
+  @media (min-width: 720px) {
+    .hero__title-line,
+    .hero__title-accent {
+      white-space: nowrap;
+    }
+  }
+
+  .hero__lead {
+    font-family: var(--if-font-sans);
+    font-size: clamp(17px, 1.4vw, 19px);
+    font-weight: 400;
+    line-height: 1.65;
+    color: #ffffff;
+  }
+
+  .hero__lead p + p {
+    margin-top: 0.15em;
+  }
+
+  .hero__price {
+    font-size: 12.5px;
+    letter-spacing: 0.04em;
+    color: rgba(255, 255, 255, 0.72);
   }
 </style>

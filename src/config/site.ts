@@ -18,6 +18,13 @@ export const site = {
   /** Kauf-CTA – später durch den konkreten Produktlink ersetzen */
   shopUrl: 'https://shop.infiniteforce.ltd',
 
+  /** Kontakt (Impressum) */
+  contact: {
+    phoneDisplay: '01766 2640733',
+    phoneHref: 'tel:+4917662640733',
+    whatsappHref: 'https://wa.me/4917662640733',
+  },
+
   /** First-Movers-Angebot: Success Seller Launcher */
   offer: {
     name: 'Success Seller Launcher',

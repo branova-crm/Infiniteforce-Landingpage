@@ -10,16 +10,32 @@ interface Props {
 const { faq } = getHome(resolveLocale(Astro.props.locale));
 ---
 
-<section id="faq" class="surface-cocoa section-pad" aria-labelledby="faq-title">
-  <div class="container-x grid gap-12 lg:grid-cols-12 lg:gap-16">
-    <div class="lg:col-span-4" data-reveal>
-      <p class="eyebrow">{faq.eyebrow}</p>
-      <h2 id="faq-title" class="display mt-8 text-[clamp(34px,4.2vw,58px)] text-ivory">{faq.title}</h2>
-      <p class="body-copy mt-8 text-mist">{faq.contactText}</p>
-      <a href="#questions" class="link-arrow mt-3 text-gold">{faq.contactCta} →</a>
+<section id="faq" class="faq-section section-pad on-light" aria-labelledby="faq-title">
+  <div class="container-x">
+    <div class="faq-section__head mx-auto max-w-[40rem] text-center" data-reveal>
+      <p class="eyebrow eyebrow--center">{faq.eyebrow}</p>
+      <h2 id="faq-title" class="headline mt-6 text-[clamp(34px,4.2vw,58px)] text-ink">{faq.title}</h2>
+      <p class="body-copy mt-5 text-ink-soft">{faq.contactText}</p>
+      <a href="#questions" class="link-arrow mt-3 justify-center text-gold-ink">{faq.contactCta} →</a>
     </div>
-    <div class="lg:col-span-8" data-reveal style="--reveal-delay:100ms">
+
+    <div class="faq-section__list mt-12 md:mt-14" data-reveal style="--reveal-delay:80ms">
       <Faq items={faq.items} />
     </div>
   </div>
 </section>
+
+<style>
+  .faq-section {
+    background: #ffffff;
+  }
+
+  .faq-section__list {
+    max-width: 920px;
+    margin-inline: auto;
+  }
+
+  .faq-section__list :global(.faq-item__a) {
+    max-width: none;
+  }
+</style>

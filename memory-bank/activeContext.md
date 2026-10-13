@@ -2,7 +2,7 @@
 
 ## Aktueller Fokus
 
-Luxury-Editorial-Landingpage für den Verkauf von **The Success Seller**. Hero ist kompakt (Titel + Kauf-Button), Produktkarte eigener Abschnitt. Weißes Logo in Header/Footer. Problem-Titel in Playfair Display Extra-Bold (weiß + Gold-Italic). Chats starten gestaffelt, sobald der Abschnitt im Viewport ist.
+Kompakter Funnel für **The Success Seller**: Hero → Produkt → Principles → Problem-Chats → Stories → Quote → Voice (nach Patricia-Zitat; Desktop Text links / Chat rechts) → Offer → FAQ → Final CTA → Fragen. Abschnitte hell/dunkel abwechselnd. Keine Founder-Portraits mehr.
 
 ## Entscheidungen
 
