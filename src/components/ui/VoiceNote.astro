@@ -62,11 +62,24 @@ const bars = Array.from({ length: 34 }, (_, i) => 5 + ((i * 13 + (i % 4) * 5) % 
     </div>
   </WhatsAppWindow>
 
+  <button type="button" class="voice__reset" data-voice-reset aria-label={voice.reset}>
+    <svg class="voice__reset-icon" width="20" height="20" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+      <path
+        d="M4.5 12a7.5 7.5 0 0 1 12.4-5.7M19.5 12a7.5 7.5 0 0 1-12.4 5.7"
+        stroke="currentColor"
+        stroke-width="2"
+        stroke-linecap="round"
+      ></path>
+      <path d="M16 4.5v4h4M8 19.5v-4H4" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"></path>
+    </svg>
+    <span>{voice.reset}</span>
+  </button>
+
   <details class="voice__transcript">
     <summary>{voice.transcriptLabel}</summary>
     <p>{voice.transcript}</p>
   </details>
-  <audio data-voice-audio preload="none" src={src}></audio>
+  <audio data-voice-audio preload="none" src={src} data-duration-label={durationLabel}></audio>
 </div>
 
 <style>
@@ -250,8 +263,43 @@ const bars = Array.from({ length: 34 }, (_, i) => 5 + ((i * 13 + (i % 4) * 5) % 
     font-variant-numeric: tabular-nums;
   }
 
+  .voice__reset {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    min-height: 48px;
+    margin-top: 16px;
+    padding: 12px 20px;
+    border: 1px solid rgba(200, 164, 110, 0.55);
+    background: linear-gradient(135deg, rgba(224, 197, 146, 0.18), rgba(200, 164, 110, 0.08));
+    color: var(--if-gold-ink);
+    cursor: pointer;
+    font-family: var(--if-font-sans);
+    font-size: 12px;
+    font-weight: 700;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    transition: background 0.2s ease, border-color 0.2s ease, color 0.2s ease;
+  }
+
+  .voice__reset-icon {
+    flex: 0 0 auto;
+  }
+
+  .voice__reset:hover {
+    border-color: rgba(200, 164, 110, 0.9);
+    background: linear-gradient(135deg, rgba(224, 197, 146, 0.28), rgba(200, 164, 110, 0.14));
+    color: var(--if-ink);
+  }
+
+  .voice__reset:focus-visible {
+    outline: 2px solid var(--if-gold);
+    outline-offset: 3px;
+  }
+
   .voice__transcript {
-    margin-top: 18px;
+    margin-top: 10px;
   }
 
   .voice__transcript summary {
@@ -284,12 +332,21 @@ const bars = Array.from({ length: 34 }, (_, i) => 5 + ((i * 13 + (i % 4) * 5) % 
   document.querySelectorAll<HTMLElement>('[data-voice-note]').forEach((root) => {
     const audio = root.querySelector<HTMLAudioElement>('[data-voice-audio]');
     const playBtn = root.querySelector<HTMLButtonElement>('[data-voice-play]');
+    const resetBtn = root.querySelector<HTMLButtonElement>('[data-voice-reset]');
     const iconPlay = root.querySelector<HTMLElement>('[data-icon-play]');
     const iconPause = root.querySelector<HTMLElement>('[data-icon-pause]');
     const bars = Array.from(root.querySelectorAll<HTMLElement>('[data-voice-wave] span'));
     const dot = root.querySelector<HTMLElement>('[data-voice-dot]');
     const timeEl = root.querySelector<HTMLElement>('[data-voice-time]');
     if (!audio || !playBtn) return;
+
+    const durationLabel = audio.dataset.durationLabel || '0:00';
+
+    const resetWave = () => {
+      bars.forEach((bar) => bar.classList.remove('is-played'));
+      if (dot) dot.style.left = '0%';
+      if (timeEl) timeEl.textContent = durationLabel;
+    };
 
     const setPlaying = (playing: boolean) => {
       if (iconPlay) iconPlay.hidden = playing;
@@ -313,6 +370,18 @@ const bars = Array.from({ length: 34 }, (_, i) => 5 + ((i * 13 + (i % 4) * 5) % 
       }
     });
 
+    resetBtn?.addEventListener('click', async () => {
+      audio.pause();
+      audio.currentTime = 0;
+      resetWave();
+      try {
+        await audio.play();
+        setPlaying(true);
+      } catch {
+        setPlaying(false);
+      }
+    });
+
     audio.addEventListener('timeupdate', () => {
       const ratio = audio.duration ? audio.currentTime / audio.duration : 0;
       const played = Math.floor(ratio * bars.length);
@@ -326,8 +395,7 @@ const bars = Array.from({ length: 34 }, (_, i) => 5 + ((i * 13 + (i % 4) * 5) % 
 
     audio.addEventListener('ended', () => {
       setPlaying(false);
-      bars.forEach((bar) => bar.classList.remove('is-played'));
-      if (dot) dot.style.left = '0%';
+      resetWave();
     });
   });
 </script>

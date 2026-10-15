@@ -353,6 +353,7 @@ export const homeDe: HomeCopy = {
     play: 'Sprachnachricht abspielen',
     pause: 'Sprachnachricht pausieren',
     playHint: 'Jetzt abspielen',
+    reset: 'Von vorn abspielen',
   },
 
   tss: {

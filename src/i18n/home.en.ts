@@ -349,6 +349,7 @@ export const homeEn: HomeCopy = {
     play: 'Play voice message',
     pause: 'Pause voice message',
     playHint: 'Play now',
+    reset: 'Play from start',
   },
 
   tss: {

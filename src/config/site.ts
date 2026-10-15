@@ -20,9 +20,10 @@ export const site = {
 
   /** Kontakt (Impressum) */
   contact: {
-    phoneDisplay: '01766 2640733',
-    phoneHref: 'tel:+4917662640733',
-    whatsappHref: 'https://wa.me/4917662640733',
+    phoneDisplay: '01573 6246091',
+    phoneHref: 'tel:+4915736246091',
+    whatsappHref:
+      'https://wa.me/4915736246091?text=Hey%20Patricia%2C%20ich%20brauche%20eine%20Beratung.',
   },
 
   /** First-Movers-Angebot: Success Seller Launcher */

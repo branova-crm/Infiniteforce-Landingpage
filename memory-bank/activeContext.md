@@ -26,6 +26,7 @@ Kompakter Funnel für **The Success Seller**: Hero → Produkt → Principles �
 
 - `site.shopUrl` → `https://shop.infiniteforce.ltd/?add-to-cart=1029` (alle „Jetzt sichern“-CTAs)
 - Preise: First Movers **6.000 €**, regulär **9.000 €**, Advantage **3.000 €** (`site.offer`)
+- Kontakt: `01573 6246091` · WhatsApp mit Prefill-Text an Patricia (`site.contact`)
 
 ## Dokploy
 

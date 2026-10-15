@@ -173,6 +173,7 @@ export interface HomeCopy {
     play: string;
     pause: string;
     playHint: string;
+    reset: string;
   };
   tss: {
     eyebrow: string;
