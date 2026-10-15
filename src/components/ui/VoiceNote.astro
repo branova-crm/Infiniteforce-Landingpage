@@ -17,6 +17,11 @@ const bars = Array.from({ length: 34 }, (_, i) => 5 + ((i * 13 + (i % 4) * 5) % 
 ---
 
 <div class:list={['voice', className]} data-voice-note data-play-label={voice.play} data-pause-label={voice.pause}>
+  <p class="voice__hint" data-voice-hint aria-hidden="true">
+    <span class="voice__hint-dot"></span>
+    {voice.playHint}
+  </p>
+
   <WhatsAppWindow contact={voice.from} status={voice.status} today={ui.today} placeholder={ui.placeholder} avatar={patricia}>
     <div class="wa-bubble wa-bubble--them wa-bubble--tail">
       {voice.intro}
@@ -26,6 +31,8 @@ const bars = Array.from({ length: 34 }, (_, i) => 5 + ((i * 13 + (i % 4) * 5) % 
     <div class="wa-bubble wa-bubble--them voice__bubble">
       <div class="voice__row">
         <button type="button" class="voice__play" data-voice-play aria-label={voice.play}>
+          <span class="voice__play-ring" aria-hidden="true"></span>
+          <span class="voice__play-ring voice__play-ring--delay" aria-hidden="true"></span>
           <svg data-icon-play width="26" height="26" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
             <path d="M8 5.5v13l10.5-6.5z"></path>
           </svg>
@@ -63,6 +70,32 @@ const bars = Array.from({ length: 34 }, (_, i) => 5 + ((i * 13 + (i % 4) * 5) % 
 </div>
 
 <style>
+  .voice__hint {
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    margin: 0 0 12px;
+    font-family: var(--if-font-sans);
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--if-gold-ink);
+  }
+
+  .voice__hint-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 999px;
+    background: var(--if-gold);
+    box-shadow: 0 0 0 0 rgba(200, 164, 110, 0.55);
+    animation: voice-hint-pulse 1.8s ease-out infinite;
+  }
+
+  .voice.is-playing .voice__hint {
+    opacity: 0.35;
+  }
+
   .voice__bubble {
     width: min(330px, 92%);
     padding: 6px 10px 6px 6px !important;
@@ -75,19 +108,74 @@ const bars = Array.from({ length: 34 }, (_, i) => 5 + ((i * 13 + (i % 4) * 5) % 
   }
 
   .voice__play {
+    position: relative;
     display: grid;
     flex: 0 0 auto;
     place-items: center;
     width: 40px;
     height: 40px;
     border: 0;
+    border-radius: 999px;
     background: transparent;
-    color: #8696a0;
+    color: #00a884;
     cursor: pointer;
+    z-index: 1;
   }
 
   .voice__play:hover {
+    color: #028066;
+  }
+
+  .voice__play-ring {
+    position: absolute;
+    inset: -2px;
+    border-radius: 999px;
+    border: 1.5px solid rgba(0, 168, 132, 0.55);
+    pointer-events: none;
+    animation: voice-play-pulse 1.8s ease-out infinite;
+  }
+
+  .voice__play-ring--delay {
+    animation-delay: 0.9s;
+  }
+
+  .voice.is-playing .voice__play-ring {
+    animation: none;
+    opacity: 0;
+  }
+
+  .voice.is-playing .voice__play {
     color: #54656f;
+  }
+
+  @media (prefers-reduced-motion: reduce) {
+    .voice__hint-dot,
+    .voice__play-ring {
+      animation: none;
+    }
+  }
+
+  @keyframes voice-play-pulse {
+    0% {
+      transform: scale(1);
+      opacity: 0.75;
+    }
+    100% {
+      transform: scale(1.85);
+      opacity: 0;
+    }
+  }
+
+  @keyframes voice-hint-pulse {
+    0% {
+      box-shadow: 0 0 0 0 rgba(200, 164, 110, 0.55);
+    }
+    70% {
+      box-shadow: 0 0 0 8px rgba(200, 164, 110, 0);
+    }
+    100% {
+      box-shadow: 0 0 0 0 rgba(200, 164, 110, 0);
+    }
   }
 
   .voice__wave {
@@ -207,6 +295,8 @@ const bars = Array.from({ length: 34 }, (_, i) => 5 + ((i * 13 + (i % 4) * 5) % 
       if (iconPlay) iconPlay.hidden = playing;
       if (iconPause) iconPause.hidden = !playing;
       playBtn.setAttribute('aria-label', (playing ? root.dataset.pauseLabel : root.dataset.playLabel) || '');
+      root.classList.toggle('is-playing', playing);
+      if (playing) root.classList.add('is-listened');
     };
 
     playBtn.addEventListener('click', async () => {
@@ -214,9 +304,8 @@ const bars = Array.from({ length: 34 }, (_, i) => 5 + ((i * 13 + (i % 4) * 5) % 
         try {
           await audio.play();
           setPlaying(true);
-          root.classList.add('is-listened');
         } catch {
-          /* Platzhalter-Datei fehlt noch – UI bleibt nutzbar */
+          /* Autoplay/Datei – UI bleibt nutzbar */
         }
       } else {
         audio.pause();

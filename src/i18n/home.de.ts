@@ -349,9 +349,10 @@ export const homeDe: HomeCopy = {
     voiceTime: '10:24',
     transcriptLabel: 'Transkript lesen',
     transcript:
-      '[Platzhalter – die Sprachnachricht folgt] Patricia spricht über den Identity Shift hinter The Success Seller und darüber, warum dein Umsatz dir folgt.',
+      'Patricia spricht über den Identity Shift hinter The Success Seller und darüber, warum dein Umsatz dir folgt – und warum dein nächstes Level mit der Person beginnt, die du wirst.',
     play: 'Sprachnachricht abspielen',
     pause: 'Sprachnachricht pausieren',
+    playHint: 'Jetzt abspielen',
   },
 
   tss: {

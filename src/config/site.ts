@@ -52,7 +52,7 @@ export const site = {
   media: {
     voice: {
       src: '/media/voice/patricia.mp3',
-      durationLabel: '0:42',
+      durationLabel: '1:43',
     },
     trailer: {
       src: '/media/trailer/congress.mp4',

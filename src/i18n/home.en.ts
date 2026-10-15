@@ -345,9 +345,10 @@ export const homeEn: HomeCopy = {
     voiceTime: '10:24',
     transcriptLabel: 'Read transcript',
     transcript:
-      '[Placeholder – voice message follows] Patricia talks about the identity shift behind The Success Seller and why your revenue follows you.',
+      'Patricia talks about the identity shift behind The Success Seller and why your revenue follows you – and why your next level begins with the person you become.',
     play: 'Play voice message',
     pause: 'Pause voice message',
+    playHint: 'Play now',
   },
 
   tss: {

@@ -19,7 +19,8 @@ Kompakter Funnel für **The Success Seller**: Hero → Produkt → Principles �
 
 ## Offen von Kunden
 
-- Kundenvideos, Trailer, Sprachnachricht unter `public/media/`
+- Kundenvideos, Trailer unter `public/media/`
+- Sprachnachricht: `public/media/voice/patricia.mp3` (1:43) mit Puls-Play + Hinweis „Jetzt abspielen“
 
 ## Shop
 

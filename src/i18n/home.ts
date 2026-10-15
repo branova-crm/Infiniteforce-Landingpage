@@ -172,6 +172,7 @@ export interface HomeCopy {
     transcript: string;
     play: string;
     pause: string;
+    playHint: string;
   };
   tss: {
     eyebrow: string;
