@@ -19,8 +19,11 @@ Kompakter Funnel für **The Success Seller**: Hero → Produkt → Principles �
 
 ## Offen von Kunden
 
-- Konkreter Shop-Produktlink
 - Kundenvideos, Trailer, Sprachnachricht unter `public/media/`
+
+## Shop
+
+- `site.shopUrl` → `https://shop.infiniteforce.ltd/?add-to-cart=1029` (alle „Jetzt sichern“-CTAs)
 
 ## Dokploy
 

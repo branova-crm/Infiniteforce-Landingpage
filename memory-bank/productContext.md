@@ -8,7 +8,7 @@ Nach Kongress/Webinar sollen Besucher direkt handeln können: Identity + Sales a
 
 - Marke INFINITEFORCE (Patricia Baylan-Paulus + Gökhan Baylan)
 - Produkt: Success Seller Launcher (First Movers 5.000 € / regulär 6.000 €)
-- Primär-CTA → Shop (`shop.infiniteforce.ltd`, Platzhalter bis Produktlink)
+- Primär-CTA → Shop Add-to-Cart (`https://shop.infiniteforce.ltd/?add-to-cart=1029`)
 - Fragen-Formular am Ende (kein Kauf-Ersatz)
 - Keine Masterclass, kein Countdown
 

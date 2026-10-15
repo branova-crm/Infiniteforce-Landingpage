@@ -15,8 +15,8 @@ export const site = {
     black: '/brand/infiniteforce-black.png',
   },
 
-  /** Kauf-CTA – später durch den konkreten Produktlink ersetzen */
-  shopUrl: 'https://shop.infiniteforce.ltd',
+  /** Kauf-CTA: Success Seller direkt in den Warenkorb */
+  shopUrl: 'https://shop.infiniteforce.ltd/?add-to-cart=1029',
 
   /** Kontakt (Impressum) */
   contact: {
